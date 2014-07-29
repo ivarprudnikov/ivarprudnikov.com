@@ -1,0 +1,114 @@
+<div ng-show="formIsSent"
+     class="col-md-4 col-md-offset-4" >
+    <div class="panel panel-success">
+        <div class="panel-heading">Well done!</div>
+        <div class="panel-body">
+            <p>Your email is sent and I will do my best to answer ASAP.</p>
+            <a class="btn btn-default" ng-click="sendAgain()">Send more</a>
+        </div>
+    </div>
+</div>
+
+<form ng-hide="formIsSent"
+      name="hire"
+      novalidate
+      rc-submit="sendEmail()"
+      class="col-md-8 col-md-offset-2"
+      >
+
+        <div class="row">
+            <div class="col-sm-6">
+
+                <div class="form-group"
+                     ng-class="{'has-error': rc.hire.needsAttention(hire.email) && rc.hire.attempted, 'has-warning':rc.hire.needsAttention(hire.email) && !rc.hire.attempted }"
+                        >
+                    <label for="email">Email</label>
+                    <input type="email" required ng-model="visitor.email" class="form-control" id="email" name="email" placeholder="eg: josh.gizzex@company.com" >
+                    <span class="help-block" ng-show="rc.hire.needsAttention(hire.email) && rc.hire.attempted">
+                        Please provide valid email, I will need to reply somehow
+                    </span>
+                </div>
+
+                <div class="form-group"
+                     ng-class="{'has-error': rc.hire.needsAttention(hire.enquiry) && rc.hire.attempted, 'has-warning':rc.hire.needsAttention(hire.enquiry) && !rc.hire.attempted }"
+                        >
+                    <label for="enquiry">Enquiring about:</label>
+                    <select required
+                            ng-model="visitor.enquiry"
+                            id="enquiry"
+                            class="form-control"
+                            name="enquiry"
+                            ng-options="i.name for i in enquiry_types">
+                        <option value="">-- choose --</option>
+                    </select>
+                    <span class="help-block" ng-show="rc.hire.needsAttention(hire.enquiry) && rc.hire.attempted">
+                        Enquiry type is required
+                    </span>
+                </div>
+
+                <div class="form-group"
+                     ng-class="{'has-error': rc.hire.needsAttention(hire.organization_type) && rc.hire.attempted, 'has-warning':rc.hire.needsAttention(hire.organization_type) && !rc.hire.attempted }"
+                        >
+                    <label for="organization_type">I represent:</label>
+                    <select required
+                            ng-model="visitor.organization_type"
+                            id="organization_type"
+                            class="form-control"
+                            name="organization_type"
+                            ng-options="i.name for i in person_represents">
+                        <option value="">-- choose --</option>
+                    </select>
+                    <span class="help-block" ng-show="rc.hire.needsAttention(hire.organization_type) && rc.hire.attempted">
+                        Please provide type of entity you represent
+                    </span>
+                </div>
+
+            </div><!-- END COL -->
+
+            <div class="col-sm-6">
+
+                <div class="form-group"
+                     ng-class="{'has-error': rc.hire.needsAttention(hire.subject) && rc.hire.attempted, 'has-warning':rc.hire.needsAttention(hire.subject) && !rc.hire.attempted }"
+                        >
+                    <label for="subject">Subject</label>
+                    <input type="text" required ng-model="visitor.subject" class="form-control" id="subject" name="subject" placeholder="eg: Website redesign" >
+                    <span class="help-block" ng-show="rc.hire.needsAttention(hire.subject) && rc.hire.attempted">
+                        Subject is required and is used in email subject field
+                    </span>
+                </div>
+
+                <div class="form-group"
+                     ng-class="{'has-error': rc.hire.needsAttention(hire.message) && rc.hire.attempted, 'has-warning':rc.hire.needsAttention(hire.message) && !rc.hire.attempted }"
+                        >
+                    <label for="message">Message</label>
+                    <textarea rows="10"
+                              required
+                              ng-model="visitor.message"
+                              class="form-control"
+                              id="message"
+                              name="message"
+                              placeholder="eg: I am gathering new team for this awesome new project and I need your help ..."
+                            >
+                    </textarea>
+                    <span class="help-block" ng-show="rc.hire.needsAttention(hire.message) && rc.hire.attempted">
+                        Please add some meaningful text
+                    </span>
+                </div>
+
+            </div><!-- END COL -->
+        </div>
+
+        <p class="alert alert-danger" ng-if="rc.hire.attempted && !hire.$valid">
+            Form contains errors
+        </p>
+
+        <p ng-if="formErrors && formErrors.length" ng-repeat="err in formErrors" class="alert alert-danger">
+            <span class="close" ng-click="formErrors.splice($index,1)">&times;</span>
+            {{err}}
+        </p>
+
+        <button type="submit" class="btn btn-default btn-branded pull-right" value="Send" title="Send" ng-disabled="submittingData" >
+            <span>Send</span>
+        </button>
+
+</form>

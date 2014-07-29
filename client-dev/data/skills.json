@@ -1,0 +1,62 @@
+[
+	{
+		"id": "1",
+		"name": "Illustrator",
+		"description":"Usage of Adobe Illustrator to design graphical assets"
+	},
+	{
+		"id": "2",
+		"name": "Photoshop",
+		"description":"Usage of Adobe Photoshop to design graphical assets"
+	},
+	{
+		"id": "3",
+		"name": "Version control",
+		"description":"SVN and GIT, latter used with Github and Bitbucket."
+	},
+	{
+		"id": "4",
+		"name": "Linux",
+		"description":"Shell scripting, Upstart, Server management"
+	},
+	{
+		"id": "5",
+		"name": "AWS",
+		"description":"Amazon Web Services infrastructure"
+	},
+	{
+		"id": "6",
+		"name": "Documentation",
+		"description":"General and/or API documentation"
+	},
+	{
+		"id": "7",
+		"name": "Maps API",
+		"description":"Implementations of Google Maps web apis and Mapbox usage"
+	},
+	{
+		"id": "8",
+		"name": "CAD Design",
+		"description":"Drawing and virtual building, mostly AutoCAD and Archicad"
+	},
+	{
+		"id": "9",
+		"name": "Visualizing",
+		"description":"Visualizing 3D models in Artlantins, C4D"
+	},
+	{
+		"id": "10",
+		"name": "REST",
+		"description":"Resource manipulation by exchanging their representation."
+	},
+	{
+		"id": "11",
+		"name": "SPA",
+		"description":"Single page application"
+	},
+	{
+		"id": "12",
+		"name": "Web services",
+		"description":"Development of public and private web services, APIs"
+	}
+]

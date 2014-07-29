@@ -1,0 +1,59 @@
+.header {
+  color: @main-foreground-color;
+  text-align: center;
+
+  .header-title-wrapper {
+    display: block;
+    height: 60px;
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+    padding-left: 70px;
+    padding-right: 70px;
+  }
+
+  .header-title-wrapper h1 {
+    position: relative;
+    top: 28px;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    font-family: @hand-font;
+
+    @media (min-width: @grid-float-breakpoint) {
+      top: 23px;
+      font-size: 34px;
+    }
+
+    a {
+      color: @main-link-color;
+    }
+
+    a:hover,
+    a:focus {
+      text-decoration: none;
+      color: @main-foreground-color;
+    }
+  }
+
+  .firstName {
+    margin-right: 10px;
+  }
+  .lastName {
+  }
+
+}
+
+.header .separator {
+  font-size: 8px;
+  width: 100%;
+  white-space: nowrap;
+  display: block;
+  margin: 0;
+  line-height: 1;
+  font-weight: 800;
+  font-family: @code-font;
+  letter-spacing: 2px;
+  overflow: hidden;
+  color: @main-dim-color;
+}

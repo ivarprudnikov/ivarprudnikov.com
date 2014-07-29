@@ -1,0 +1,28 @@
+<div ng-if="projects && projects.length > 1" class="col-sm-12 ">
+
+    <ul class="work-items {{animationClass}}">
+
+        <li class="projects-gallery-pagination-previous">
+            <a ng-show="pagination.prevOffset != null" tabindex="0" ng-click="prevPage()" ui-keypress="{13:'prevPage()'}"><span class="glyphicon glyphicon-chevron-left"></span></a>
+            <a ng-show="pagination.prevOffset == null" class="inactive"><span class="glyphicon glyphicon-chevron-left"></span></a>
+        </li>
+
+        <li class="work-items-thumb-wrap repeater" ng-repeat="project in projects"
+                ng-class="{active: project.id === active_project_id}">
+            <a ui-sref="main.work.gallery.item({itemId:project.id})" class="" >
+
+                <span class="work-items-thumb-mask" ng-attr-style="background-image: url('{{projectImagePath && project.images[0] ? projectImagePath + project.images[0] : ''}}')">
+                    <img ng-attr-src="{{ projectImagePath && project.images[0] ? projectImagePath + project.images[0] : ''}}" class="work-items-thumb-image">
+                </span>
+
+                {{project.title}}
+            </a>
+        </li>
+
+        <li class="projects-gallery-pagination-next">
+            <a ng-show="pagination.nextOffset != null" tabindex="0" ng-click="nextPage()" ui-keypress="{13:'nextPage()'}"><span class="glyphicon glyphicon-chevron-right"></span></a>
+            <a ng-show="pagination.nextOffset == null" class="inactive"><span class="glyphicon glyphicon-chevron-right"></span></a>
+        </li>
+    </ul>
+
+</div>

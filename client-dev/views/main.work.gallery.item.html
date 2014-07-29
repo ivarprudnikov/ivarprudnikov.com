@@ -1,0 +1,83 @@
+
+    <a ui-sref="main.work.gallery" class="gallery-item-back-link">Back</a>
+
+
+   {{carouselControls}}
+
+    <div ng-if="item.images && item.images.length" class="project-images clearfix">
+
+        <ul rn-carousel
+            rn-carousel-buffered
+            rn-carousel-control="true"
+            rn-carousel-indicator="true"
+            class="project-images-carousel" >
+            <li ng-repeat="image in item.images" class="project-images-carousel-slide" ng-attr-style="background-image:url({{ projectImagePath && image ? projectImagePath + image : '' }});">
+
+            </li>
+
+        </ul>
+
+    </div>
+
+
+<div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 ">
+
+    <section class="description-item">
+
+        <section ng-if="item.title" class="description-item-section">
+            <h2 class="description-item-title">Project</h2>
+            <p class="description-item-text-lead">{{item.title}}</p>
+        </section>
+
+        <section ng-if="item.description" class="description-item-section">
+            <h2 class="description-item-title">Description</h2>
+            <p class="description-item-text">{{ item.description }}</p>
+        </section>
+
+        <section class="description-item-section">
+            <h2 class="description-item-title">Period</h2>
+            <p class="description-item-text">
+                {{ item.from | date:'mediumDate' }}
+                <span ng-if="item.to"> --- {{ item.to | date:'mediumDate' }}</span>
+                <span ng-if="!item.to"> --- Still maintaining</span>
+            </p>
+        </section>
+
+        <section ng-if="company" class="description-item-section">
+            <h2 class="description-item-title">Company</h2>
+            <p class="description-item-text">
+                <a class="btn btn-default btn-sm btn-branded"
+                   ui-sref="main.work.timeline.item({itemId:company.id})">{{company.name}}</a>
+            </p>
+        </section>
+
+        <section ng-if="languages" class="description-item-section">
+            <h2 class="description-item-title">Technologies</h2>
+            <p class="description-item-text">
+                <a class="btn btn-default btn-sm btn-branded btn-popover"
+                   ng-repeat="lang in languages"
+                   tabindex="0"
+                   popover-trigger="focus"
+                   popover="{{lang.description}}"
+                   popover-title="{{lang.name}}">{{lang.name}}</a>
+            </p>
+        </section>
+
+        <section ng-if="skills" class="description-item-section">
+            <h2 class="description-item-title">Skills</h2>
+            <p class="description-item-text">
+                <a class="btn btn-default btn-sm btn-branded btn-popover"
+                   ng-repeat="skill in skills"
+                   tabindex="0"
+                   popover-trigger="focus"
+                   popover="{{skill.description}}"
+                   popover-title="{{skill.name}}">{{skill.name}}</a>
+            </p>
+        </section>
+
+    </section>
+
+
+</div>
+
+

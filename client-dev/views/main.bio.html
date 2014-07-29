@@ -1,0 +1,150 @@
+<div ng-include="'views/header.html'"></div>
+
+<article class="page page-bio">
+    <section class="container">
+
+        <div class="row">
+
+                <div class="col-sm-offset-4 col-sm-4">
+                    <div class="animation-block" ng-class="{active:animateHeader}">
+                        <img src="../images/ivar_prudnikov.jpeg">
+                    </div>
+                </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-offset-3 col-md-6">
+                <p class="intro">Hi, I am web developer, currently based in Ireland.
+                    My position is self explanatory and I do work with web based projects I might even call those web applications.
+                Most of the time I write code and dive into both frontend and backend. While I do love frontend development (css, html, js)
+                I do enjoy backend as well. My primary backend languages are Java and Groovy.</p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <h3 class="bio-main-title">Expertise</h3>
+
+    <div id="expertise">
+        <div class="expertise-stripe" ng-class="expertiseDescription != null ? 'active' : ''">
+
+            <div class="expertise-item-description">
+                <div ng-if="expertiseDescription.text" class="expertise-description-text">
+                    <span class="close-description">
+                        <span
+                                tabindex="0"
+                                class="glyphicon glyphicon-remove"
+                                ng-click="updateExpertise()"
+                                ui-keypress="{13:'updateExpertise()'}"></span>
+                    </span>
+                    {{ expertiseDescription.text }}
+                </div>
+            </div>
+
+            <div class="expertise-group expertise-backend">
+                <div class="expertise-group-title">
+                    <div class="expertise-group-title-dot">
+                        <h4>back-end</h4>
+                    </div>
+                </div>
+                <ul>
+                    <li ng-repeat="exp in expertiseBack" class="{{exp.className}}">
+                        <a tabindex="0"
+                           ng-class="expertiseDescription && exp.title === expertiseDescription.title ? 'active' : ''"
+                           ng-click="updateExpertise('back',$index)"
+                           ui-keypress="{13:'updateExpertise(\'back\',$index)'}">
+
+                            <span class="face front"></span>
+                            <span class="face back">{{exp.title}}</span>
+
+                           </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="expertise-group expertise-frontend">
+                <div class="expertise-group-title">
+                    <div class="expertise-group-title-dot">
+                        <h4>front-end</h4>
+                    </div>
+                </div>
+                <ul>
+                    <li ng-repeat="exp in expertiseFront" class="{{exp.className}}">
+                        <a tabindex="0"
+                           ng-class="expertiseDescription && exp.title === expertiseDescription.title ? 'active' : ''"
+                           ng-click="updateExpertise('front',$index)"
+                           ui-keypress="{13:'updateExpertise(\'front\',$index)'}">
+
+                            <span class="face front"></span>
+                            <span class="face back">{{exp.title}}</span>
+
+                           </a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+
+    <h3 class="bio-main-title">Technologies</h3>
+
+    <div id="coding-skills">
+
+        <div class="skill-description-wrapper" ng-class="languageBlock != null ? 'active' : ''">
+
+            <div class="coding-skills-block coding-skills-frontend">
+
+                <h4 class="coding-skills-title">front-end</h4>
+
+                <ul class="coding-skills-navigation clearfix">
+                    <li ng-repeat="language in codeDataFrontEnd">
+
+                        <a tabindex="0" title="{{language.lang}}"
+                           ng-class="language.lang === languageBlock.lang ? 'active' : ''"
+                           ng-click="updateLanguageBlock('front',$index)"
+                           ui-keypress="{13:'updateLanguageBlock(\'front\',$index)'}">
+
+                            <span class="coding-skills-tooltip">{{language.lang}}</span>
+                            <span class="d-o-t"></span>
+                        </a>
+
+                    </li>
+                </ul>
+            </div>
+            <div class="coding-skills-block coding-skills-backend">
+
+                <h4 class="coding-skills-title">back-end</h4>
+
+                <ul class="coding-skills-navigation clearfix">
+                    <li ng-repeat="language in codeDataBackEnd">
+
+                        <a tabindex="0" title="{{language.lang}}"
+                           ng-class="language.lang === languageBlock.lang ? 'active' : ''"
+                           ng-click="updateLanguageBlock('back',$index)"
+                           ui-keypress="{13:'updateLanguageBlock(\'back\',$index)'}">
+
+                            <span class="coding-skills-tooltip">{{language.lang}}</span>
+                            <span class="d-o-t"></span>
+                        </a>
+
+                    </li>
+                </ul>
+            </div>
+
+            <div ng-if="languageBlock" class="description">
+                <a class="close" ng-click="updateLanguageBlock()">&times;</a>
+                <h3 class="coding-skills-language">{{languageBlock.lang}}</h3>
+                <p class="coding-skills-text">{{languageBlock.text}}</p>
+            </div>
+
+        </div>
+    </div>
+
+</article>
+
+<div ng-include="'views/footer.html'"></div>
+

@@ -1,0 +1,113 @@
+<div class="page-navigation clearfix ">
+
+    <div class="col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+
+        <nav class="navbar navbar-default " role="navigation">
+            <ul class="nav navbar-nav">
+                <li ng-class="currentState.name.indexOf('main_work_gallery') > -1 ? 'active' : ''"><a ui-sref="main.work.gallery"><span class="glyphicon glyphicon-th-large"></span> Grid</a></li>
+                <li ng-class="currentState.name.indexOf('main_work_timeline') > -1 ? 'active' : ''"><a ui-sref="main.work.timeline"><span class="glyphicon glyphicon-calendar"></span> Timeline</a></li>
+            </ul>
+        </nav>
+
+        <nav class="navbar navbar-filter " role="navigation">
+            <ul class="nav navbar-nav ">
+
+                <li ng-show="isFilterActive()" class="navbar-filter-clear-all-wrapper">
+                    <a class="navbar-filter-clear-all" tabindex="0" ng-click="clearAllFilters()" ui-keypress="{13:'clearAllFilters()'}">
+                        <span class="glyphicon glyphicon-refresh"></span>
+                        Show all
+                    </a>
+                </li>
+
+
+                <filterdropdown title="Companies"  class="{{ isAnyItemSelected(companies) ? 'selected' : 'not-selected' }}">
+
+                    <a class="navbar-filter-toggler" tabindex="0" ng-show="isAnyItemSelected(companies)" ng-click="toggleCompany()" ui-keypress="{13:'toggleCompany()'}"><i class="glyphicon glyphicon-remove-circle"></i> Show all</a>
+
+                    <a class="navbar-filter-toggler" ng-repeat="c in companies" tabindex="0" ng-click="toggleCompany(c.id)" ui-keypress="{13:'toggleCompany(c.id)'}">
+                        <i class="glyphicon " ng-class="c.selected ? 'glyphicon-ok-sign' : 'glyphicon-unchecked' "></i> {{c.name}}
+                    </a>
+
+                </filterdropdown>
+                <filterdropdown title="Years"  class="{{ isAnyItemSelected(years) ? 'selected' : 'not-selected' }}">
+
+                    <a class="navbar-filter-toggler" tabindex="0" ng-show="isAnyItemSelected(years)" ng-click="toggleYear()" ui-keypress="{13:'toggleYear()'}"><i class="glyphicon glyphicon-remove-circle"></i> Show all</a>
+
+                    <a class="navbar-filter-toggler" ng-repeat="obj in years" tabindex="0" ng-click="toggleYear(obj.year)" ui-keypress="{13:'toggleYear(obj.year)'}">
+                        <i class="glyphicon " ng-class="obj.selected ? 'glyphicon-ok-sign' : 'glyphicon-unchecked' "></i> {{obj.year}}
+                    </a>
+
+                </filterdropdown>
+                <filterdropdown title="Skills"  class="{{ isAnyItemSelected(skills) ? 'selected' : 'not-selected' }}">
+
+                    <a class="navbar-filter-toggler" tabindex="0" ng-show="isAnyItemSelected(skills)" ng-click="toggleSkill()" ui-keypress="{13:'toggleSkill()'}"><i class="glyphicon glyphicon-remove-circle"></i> Show all</a>
+
+                    <a class="navbar-filter-toggler" ng-repeat="obj in skills" tabindex="0" ng-click="toggleSkill(obj.id)" ui-keypress="{13:'toggleSkill(obj.id)'}">
+                        <i class="glyphicon " ng-class="obj.selected ? 'glyphicon-ok-sign' : 'glyphicon-unchecked' "></i> {{obj.name}}
+                    </a>
+
+                </filterdropdown>
+                <filterdropdown title="Technologies"  class="{{ isAnyItemSelected(languages) ? 'selected' : 'not-selected' }}">
+
+                    <a class="navbar-filter-toggler" tabindex="0" ng-show="isAnyItemSelected(languages)" ng-click="toggleLanguage()" ui-keypress="{13:'toggleLanguage()'}"><i class="glyphicon glyphicon-remove-circle"></i> Show all</a>
+
+                    <a class="navbar-filter-toggler" ng-repeat="obj in languages" tabindex="0" ng-click="toggleLanguage(obj.id)" ui-keypress="{13:'toggleLanguage(obj.id)'}">
+                        <i class="glyphicon " ng-class="obj.selected ? 'glyphicon-ok-sign' : 'glyphicon-unchecked' "></i> {{obj.name}}
+                    </a>
+
+                </filterdropdown>
+            </ul>
+        </nav>
+
+    </div>
+</div>
+
+<div class="projects-gallery clearfix">
+
+    <div class="col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+
+        <div class="row">
+
+        <div class="col-sm-6 col-md-4 repeater" ng-repeat="project in projects" >
+            <a ui-sref="main.work.gallery.item({itemId:project.id})" class="projects-gallery-item">
+                <span class="projects-gallery-item-image-wrapper">
+
+                    <span class="spinner">
+                        <span class="rect1"></span>
+                        <span class="rect2"></span>
+                        <span class="rect3"></span>
+                        <span class="rect4"></span>
+                        <span class="rect5"></span>
+                    </span>
+
+                    <span class="projects-gallery-item-image-mask" ng-attr-style="background-image: url('{{ projectImagePath && project.images[0] ? projectImagePath + project.images[0] : ''}}')">
+                        <img class="projects-gallery-item-image" ng-attr-src="{{ projectImagePath && project.images[0] ? projectImagePath + project.images[0] : ''}}" >
+                    </span>
+                </span>
+                <span class="projects-gallery-item-label">{{project.title}}</span>
+            </a>
+        </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<nav class="projects-gallery-pagination">
+    <div class="projects-gallery-pagination-previous">
+        <a ng-show="pagination.prevOffset != null" tabindex="0" ng-click="prevPage()" ui-keypress="{13:'prevPage()'}"><span class="glyphicon glyphicon-chevron-left"></span></a>
+        <a ng-show="pagination.prevOffset == null" class="inactive"><span class="glyphicon glyphicon-chevron-left"></span></a>
+    </div>
+    <div class="projects-gallery-pagination-next">
+        <a ng-show="pagination.nextOffset != null" tabindex="0" ng-click="nextPage()" ui-keypress="{13:'nextPage()'}"><span class="glyphicon glyphicon-chevron-right"></span></a>
+        <a ng-show="pagination.nextOffset == null" class="inactive"><span class="glyphicon glyphicon-chevron-right"></span></a>
+    </div>
+</nav>
+
+
+
+
+
+

@@ -1,0 +1,50 @@
+<div class="page-navigation clearfix">
+
+    <div class="col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+
+        <nav class="navbar navbar-default " role="navigation">
+            <ul class="nav navbar-nav">
+                <li ng-class="currentState.name.indexOf('main_work_gallery') > -1 ? 'active' : ''"><a ui-sref="main.work.gallery"><span class="glyphicon glyphicon-th-large"></span> Grid</a></li>
+                <li ng-class="currentState.name.indexOf('main_work_timeline') > -1 ? 'active' : ''"><a ui-sref="main.work.timeline"><span class="glyphicon glyphicon-calendar"></span> Timeline</a></li>
+            </ul>
+        </nav>
+
+    </div>
+</div>
+
+<div id="timeline">
+
+    <div class="timeline-year {{years[0] + 1}}">
+        <div class="timeline-year-value">{{years[0] + 1}}</div>
+    </div>
+    <div ng-repeat="year in years" class="timeline-year {{year}}">
+
+        <div ng-repeat="month in months" class="timeline-month {{year}}">
+            <div class="dot" title="{{monthName(month)}}"></div>
+        </div>
+
+        <div class="timeline-year-value">{{year}}</div>
+
+
+    </div>
+
+    <div ng-repeat="job in companies"
+         class="timeline-job"
+         ng-attr-style="top:{{jobDistanceFromNow(job)}}px;">
+
+        <div class="timeline-job-line"
+             ng-attr-style="height:{{jobLineHeight(job)}}px;top:-{{jobLineHeight(job)}}px">
+            <a class="timeline-job-label" ui-sref="main.work.timeline.item({itemId:job.id})" tabindex="0">
+                {{job.name}}
+            </a>
+        </div>
+
+    </div>
+
+    <div class="timeline-end">
+        <div class="timeline-end-dot"></div>
+        <div class="timeline-end-dot"></div>
+        <div class="timeline-end-dot"></div>
+    </div>
+
+</div>
