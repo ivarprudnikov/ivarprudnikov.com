@@ -88,16 +88,6 @@ module.exports = function (grunt) {
           }
         }
       },
-      test : {
-        options : {
-          middleware : function (connect) {
-            return [
-              mountFolder(connect, '.tmp'),
-              mountFolder(connect, 'test')
-            ];
-          }
-        }
-      },
       dist : {
         options : {
           middleware : function (connect) {
@@ -286,10 +276,6 @@ module.exports = function (grunt) {
         'less',
         'copy:styles'
       ],
-      test : [
-        'less',
-        'copy:styles'
-      ],
       dist : [
         'less',
         'copy:styles',
@@ -297,12 +283,6 @@ module.exports = function (grunt) {
         'svgmin',
         'htmlmin'
       ]
-    },
-    karma : {
-      unit : {
-        configFile : 'karma.conf.js',
-        singleRun : true
-      }
     },
     cdnify : {
       dist : {
@@ -330,6 +310,7 @@ module.exports = function (grunt) {
         }
       }
     },
+
     manifest : {
       generate : {
         options : {
@@ -354,8 +335,14 @@ module.exports = function (grunt) {
         ],
         dest : '<%= yeoman.manifest %>'
       }
+    },
+
+    exec: {
+      aws: 'sh ./deploy_to_elastic_beastalk.sh'
     }
+
   });
+
 
   grunt.registerTask('server', function (target) {
     if (target === 'dist') {
@@ -371,14 +358,6 @@ module.exports = function (grunt) {
       'watch'
     ]);
   });
-
-  grunt.registerTask('test', [
-    'clean:server',
-    'concurrent:test',
-    'autoprefixer',
-    'connect:test',
-    'karma'
-  ]);
 
   grunt.registerTask('build', [
     'clean:dist',
@@ -400,7 +379,11 @@ module.exports = function (grunt) {
 
   grunt.registerTask('default', [
     'jshint',
-    'test',
     'build'
+  ]);
+
+  grunt.registerTask('deploy', [
+    'build',
+    'exec:aws'
   ]);
 };
