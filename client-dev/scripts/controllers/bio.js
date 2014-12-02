@@ -62,7 +62,7 @@ angular.module('tApp')
 			},
 			{
 				lang:'mysql',
-				text:"the world's most widely used[5][6] open-source relational database management system (RDBMS)"
+				text:"the world's most widely used open-source relational database management system"
 			},
 			{
 				lang:'hibernate',
@@ -70,7 +70,7 @@ angular.module('tApp')
 			},
 			{
 				lang:'mongodb',
-				text:'MongoDB (from "humongous") is a cross-platform document-oriented database system.'
+				text:'MongoDB is a cross-platform document-oriented database system.'
 			}
 		];
 
@@ -112,7 +112,7 @@ angular.module('tApp')
 			{
 				title:'UI',
 				className: 'expertise-ui',
-				text:'Drawing in notepad, creating posters, it was starting point of everything I am now, and although I do not design houses anymore I still enjoy and maintain graphical assets, create new ones.'
+				text:'Drawings, flyers, posters - it was starting point of everything I am now, and although I work mainly on engineering solutions I still enjoy and maintain graphical assets, create new ones.'
 			},
 			{
 				title:'UX',
@@ -122,7 +122,7 @@ angular.module('tApp')
 			{
 				title:'SPA',
 				className: 'expertise-spa',
-				text:"Single Page Applications are present & future. It is also challenging as requires adoption of new dev techniques, new design patterns and more fights with backend devs."
+				text:"Single Page Applications are present & future. It is also challenging as requires adoption of new dev techniques, new design patterns."
 			}
 		];
 
@@ -130,17 +130,17 @@ angular.module('tApp')
 			{
 				title:'REST',
 				className: 'expertise-rest',
-				text:'Representational state transfer is usually first choice when I develop backend services as it is predictable and modular, sometimes repetitive though.'
+				text:'Representational state transfer is usually the first choice when I develop backend services as it is predictable and modular, sometimes repetitive though.'
 			},
 			{
 				title:'API',
 				className: 'expertise-api',
-				text:"Cannot imagine rich application without some sort of third party api that needs implementation. Maps, social networks, video, you name it, I've been there"
+				text:"Cannot imagine rich application without some sort of third party api that needs integration. Maps, social networks, video, you name it, I've been there"
 			},
 			{
 				title:'Servers',
 				className: 'expertise-servers',
-				text:"'Servers' title relates to server instance management, vertical and horizontal scaling. Those are often achieved with the help of Amazon Services."
+				text:"I am no stranger to DevOps, usually using IaaS (Infrastructure as a Service) from Amazon"
 			}
 		];
 
