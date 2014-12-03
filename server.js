@@ -55,7 +55,8 @@ var directoriesAndFiles = [
 	'500.html',
 	'favicon.ico',
 	'index.html',
-	'robots.txt'
+	'robots.txt',
+  'sitemap.xml'
 ];
 
 
