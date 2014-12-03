@@ -33,8 +33,10 @@ angular.module('tApp', ['ui.router','ui.bootstrap','ngResource','ngAnimate','ui.
 			}
 		);
 	})
-	.config(['$stateProvider', '$urlRouterProvider',
-		function ( $stateProvider, $urlRouterProvider ) {
+	.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
+		function ( $stateProvider, $urlRouterProvider, $locationProvider ) {
+
+    $locationProvider.hashPrefix('!');
 
 		$urlRouterProvider.otherwise('/main')
 

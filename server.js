@@ -26,9 +26,19 @@ app.use(function (req, res, next) {
 	res.locals.token = req.session._csrf;
 	next();
 });
+
+
+// Prerender service (https://github.com/prerender/prerender-node)
+// will need the token to be exported
+///////////////////////////////////////////////////////
+
+app.use(require('prerender-node'));
+
+
+// App routes
+///////////////////////////////////////////////////////
+
 app.use(app.router);
-
-
 
 
 // all necessary client resources
