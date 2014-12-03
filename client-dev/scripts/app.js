@@ -5,11 +5,13 @@ angular.module('tApp', ['ui.router','ui.bootstrap','ngResource','ngAnimate','ui.
 
 		$rootScope.projectImagePath = "https://s3-eu-west-1.amazonaws.com/ivarprudnikov/img/projects/";
 
-		$rootScope.currentState = { name:'' };
+		$rootScope.currentState = { name:'', pageTitle:'', pageDescription: '' };
 
 		$rootScope.$on('$stateChangeStart',
 			function(event, toState, toParams, fromState, fromParams){
 				$rootScope.currentState.name = toState.name.replace(/\./g,'_');
+        $rootScope.currentState.pageTitle = toState.data.pageTitle || '';
+        $rootScope.currentState.pageDescription = toState.data.pageDescription || '';
 				$("body").animate({ scrollTop: 0 }, 100);
 			}
 		);
@@ -50,7 +52,11 @@ angular.module('tApp', ['ui.router','ui.bootstrap','ngResource','ngAnimate','ui.
 						templateUrl: 'views/menu.html',
 						controller: 'MenuController'
 					}
-				}
+				},
+        data: {
+          pageTitle: 'Home page',
+          pageDescription: 'Please welcome to my minimal protfolio site'
+        }
 			})
 			.state("main.home", {
 				url: "",
@@ -68,7 +74,10 @@ angular.module('tApp', ['ui.router','ui.bootstrap','ngResource','ngAnimate','ui.
 						templateUrl: 'views/main.bio.html',
 						controller: 'BioController'
 					}
-				}
+				},
+        data: {
+          pageTitle: 'Short bio'
+        }
 			})
 			.state("main.work", {
 				url: "/work",
@@ -77,7 +86,10 @@ angular.module('tApp', ['ui.router','ui.bootstrap','ngResource','ngAnimate','ui.
 						templateUrl: 'views/main.work.html',
 						controller: 'WorkController'
 					}
-				}
+				},
+        data: {
+          pageTitle: 'Work examples'
+        }
 			})
 			.state("main.work.gallery", {
 				url: "/gallery",
@@ -86,7 +98,10 @@ angular.module('tApp', ['ui.router','ui.bootstrap','ngResource','ngAnimate','ui.
 						templateUrl: 'views/main.work.gallery.html',
 						controller: 'WorkGalleryController'
 					}
-				}
+				},
+        data: {
+          pageTitle: 'Gallery of project examples'
+        }
 			})
 			.state("main.work.gallery.item", {
 				url: '/:itemId',
@@ -109,7 +124,10 @@ angular.module('tApp', ['ui.router','ui.bootstrap','ngResource','ngAnimate','ui.
 						templateUrl: 'views/main.work.timeline.html',
 						controller: 'WorkTimelineController'
 					}
-				}
+				},
+        data: {
+          pageTitle: 'Timeline of experience'
+        }
 			})
 			.state("main.work.timeline.item", {
 				url: '/:itemId',
@@ -136,7 +154,10 @@ angular.module('tApp', ['ui.router','ui.bootstrap','ngResource','ngAnimate','ui.
 					"hireContent@main.hire" : {
 						templateUrl: 'views/main.hire.form.html'
 					}
-				}
+				},
+        data: {
+          pageTitle: 'Hire me form'
+        }
 			})
 			.state("main.hire.locations", {
 				url: "/locations",
@@ -144,7 +165,10 @@ angular.module('tApp', ['ui.router','ui.bootstrap','ngResource','ngAnimate','ui.
 					"hireContent" : {
 						templateUrl: 'views/main.hire.locations.html'
 					}
-				}
+				},
+        data: {
+          pageTitle: 'Available locations'
+        }
 			})
 			.state("main.hire.future", {
 				url: "/future",
@@ -152,7 +176,10 @@ angular.module('tApp', ['ui.router','ui.bootstrap','ngResource','ngAnimate','ui.
 					"hireContent" : {
 						templateUrl: 'views/main.hire.future.html'
 					}
-				}
+				},
+        data: {
+          pageTitle: 'Future locations'
+        }
 			})
 			.state("main.hire.documents", {
 				url: "/documents",
@@ -160,7 +187,10 @@ angular.module('tApp', ['ui.router','ui.bootstrap','ngResource','ngAnimate','ui.
 					"hireContent" : {
 						templateUrl: 'views/main.hire.documents.html'
 					}
-				}
+				},
+        data: {
+          pageTitle: 'Documentation'
+        }
 			})
 
 
