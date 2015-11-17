@@ -310,10 +310,10 @@
       ul > li > a.active {
 
         .front {
-          .transform( scale(1) rotate3d(0,1,0, 0deg) );
+          .transform( scale(0.9) rotate3d(0,1,0, 180deg) );
         }
         .back {
-          .transform( scale(0.9) rotate3d(0,1,0, 0deg) );
+          .transform( scale(1) rotate3d(0,1,0, 0deg) );
         }
 
       }
@@ -463,6 +463,9 @@
       .coding-skills-language {
         font-family: @code-font;
         margin: 0 0 0.5em;
+        white-space: nowrap;
+        font-size: 21px;
+        font-weight: bold;
       }
 
       .close {
@@ -581,7 +584,8 @@
       font-size: 12px;
       line-height: 20px;
       border-radius: 4px;
-
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
 
     &:hover .coding-skills-tooltip {
