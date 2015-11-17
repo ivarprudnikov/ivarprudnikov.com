@@ -146,52 +146,16 @@ angular.module('tApp', ['ui.router','ui.bootstrap','ngResource','ngAnimate','ui.
 				}
 			})
 
-			.state('main.hire', {
-				url: '/hire',
+			.state('main.contacts', {
+				url: '/contacts',
 				views: {
 					'main@' : {
-						templateUrl: 'views/main.hire.html',
-						controller: 'HireController'
-					},
-					'hireContent@main.hire' : {
-						templateUrl: 'views/main.hire.form.html'
+						templateUrl: 'views/main.contacts.html',
+						controller: 'ContactsController'
 					}
 				},
         data: {
-          pageTitle: 'Hire me form'
-        }
-			})
-			.state('main.hire.locations', {
-				url: '/locations',
-				views: {
-					'hireContent' : {
-						templateUrl: 'views/main.hire.locations.html'
-					}
-				},
-        data: {
-          pageTitle: 'Available locations'
-        }
-			})
-			.state('main.hire.future', {
-				url: '/future',
-				views: {
-					'hireContent' : {
-						templateUrl: 'views/main.hire.future.html'
-					}
-				},
-        data: {
-          pageTitle: 'Future locations'
-        }
-			})
-			.state('main.hire.documents', {
-				url: '/documents',
-				views: {
-					'hireContent' : {
-						templateUrl: 'views/main.hire.documents.html'
-					}
-				},
-        data: {
-          pageTitle: 'Documentation'
+          pageTitle: 'Contacts'
         }
 			});
 

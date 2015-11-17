@@ -10,7 +10,7 @@ angular.module('tApp')
 			github: 'http://github.com/ivarprudnikov',
 			stackoverflow: 'http://stackoverflow.com/users/906265/ivarprudnikov',
 			twitter: 'https://twitter.com/ivarPrudnikov',
-			email: 'main.hire'
+			email: 'main.contacts'
 		};
 
 
