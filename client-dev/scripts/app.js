@@ -1,7 +1,15 @@
 'use strict';
 
-angular.module('tApp', ['ui.router','ui.bootstrap','ngResource','ngAnimate','ui.keypress','ui.event','ngTouch'])
-	.run(function($rootScope,$timeout,$window,$location) {
+angular.module('tApp', [
+  'ui.router',
+  'ui.bootstrap',
+  'ngResource',
+  'ngAnimate',
+  'ui.keypress',
+  'ui.event',
+  'ngTouch',
+  'app.html-templates'
+  ]).run(function($rootScope,$timeout,$window,$location) {
 
 		$rootScope.menuIsActive = false;
 

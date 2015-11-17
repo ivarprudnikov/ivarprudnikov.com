@@ -19,7 +19,8 @@ module.exports = function (grunt) {
   // configurable paths
   var yeomanConfig = {
     app : 'client-dev',
-    dist : 'dist'
+    dist : 'dist',
+    tplsFile: 'generatedTemplates.js'
   };
 
   try {
@@ -44,12 +45,16 @@ module.exports = function (grunt) {
         files : ['<%= yeoman.app %>/styles/{,*/}*.css', '<%= yeoman.app %>/less/{,*/}*.less'],
         tasks : ['less', 'copy:styles', 'autoprefixer']
       },
+      templates: {
+        files: ['<%= yeoman.app %>/*/{,**/}*.html'],
+        tasks: ['ngtemplates']
+      },
       livereload : {
         options : {
           livereload : LIVERELOAD_PORT
         },
         files : [
-          '<%= yeoman.app %>/{,*/}*.html',
+          '<%= yeoman.app %>/*.html',
           '<%= yeoman.app %>/less/{,*/}*.less',
           '.tmp/styles/{,*/}*.css',
           '{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js',
@@ -58,7 +63,7 @@ module.exports = function (grunt) {
       }
     },
     autoprefixer : {
-      options : ['last 10 version', 'ie 8', 'ie 7'],
+      options : ['last 10 version', 'ie 8'],
       dist : {
         files : [
           {
@@ -126,36 +131,87 @@ module.exports = function (grunt) {
         '<%= yeoman.app %>/scripts/{,**/}*.js'
       ]
     },
-    // not used since Uglify task does concat,
-    // but still available if needed
-    /*concat: {
-     dist: {}
-     },*/
-    rev : {
-      dist : {
-        files : {
-          src : [
-            '<%= yeoman.dist %>/scripts/{,*/}*.js',
-            '<%= yeoman.dist %>/styles/{,*/}*.css',
-            '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-            '<%= yeoman.dist %>/fonts/*'
+
+    // Renames files for browser caching purposes
+    filerev: {
+      dist: {
+        src: [
+          '<%= yeoman.dist %>/scripts/{,**/}*.js',
+          '<%= yeoman.dist %>/styles/{,**/}*.css',
+          '<%= yeoman.dist %>/images/{,**/}*.{png,jpg,jpeg,gif,webp,svg}',
+          '<%= yeoman.dist %>/fonts/*'
+        ]
+      }
+    },
+
+    useminPrepare : {
+      html : '<%= yeoman.app %>/index.html',
+      options : {
+        dest : '<%= yeoman.dist %>',
+        flow: {
+          html: {
+            steps: {
+              js: ['concat'],
+              css: ['concat']
+            },
+            post: {}
+          }
+        }
+      }
+    },
+
+    usemin : {
+      html : ['<%= yeoman.dist %>/{,*/}*.html'],
+      css : ['<%= yeoman.dist %>/styles/{,*/}*.css'],
+      js: ['<%= yeoman.dist %>/scripts/*.js'],
+      options : {
+        assetsDirs: [
+          '<%= yeoman.dist %>',
+          '<%= yeoman.dist %>/images',
+          '<%= yeoman.dist %>/styles'
+        ],
+        // This is so we update image references in our ng-templates
+        patterns: {
+          js: [
+            [/(images\/.*?\.(?:gif|jpeg|jpg|png|webp|svg))/gm, 'Update the JS to reference our revved images']
           ]
         }
       }
     },
-    useminPrepare : {
-      html : '<%= yeoman.app %>/index.html',
-      options : {
-        dest : '<%= yeoman.dist %>'
+
+    htmlmin: {
+      dist: {
+        options: {
+          // collapseWhitespace: true,
+          // conservativeCollapse: true,
+          // collapseBooleanAttributes: true,
+          // removeCommentsFromCDATA: true,
+          // removeOptionalTags: true
+        },
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.app %>',
+          src: ['*.html'],
+          dest: '<%= yeoman.dist %>'
+        }]
       }
     },
-    usemin : {
-      html : ['<%= yeoman.dist %>/{,*/}*.html'],
-      css : ['<%= yeoman.dist %>/styles/{,*/}*.css'],
-      options : {
-        dirs : ['<%= yeoman.dist %>']
+
+    // angular templates
+    // extract all templates and create
+    // separate module for injection
+    ///////////////////////////////////////
+    ngtemplates : {
+      'app.html-templates' : {
+        cwd     : '<%= yeoman.app %>',
+        src     : 'views/{,**/}*.html',
+        dest    : '<%= yeoman.app %>/scripts/<%= yeoman.tplsFile %>',
+        options : {
+          standalone : true
+        }
       }
     },
+
     imagemin : {
       dist : {
         files : [
@@ -207,29 +263,7 @@ module.exports = function (grunt) {
         }
       }
     },
-    htmlmin : {
-      dist : {
-        options : {
-          /*removeCommentsFromCDATA: true,
-           // https://github.com/yeoman/grunt-usemin/issues/44
-           //collapseWhitespace: true,
-           collapseBooleanAttributes: true,
-           removeAttributeQuotes: true,
-           removeRedundantAttributes: true,
-           useShortDoctype: true,
-           removeEmptyAttributes: true,
-           removeOptionalTags: true*/
-        },
-        files : [
-          {
-            expand : true,
-            cwd : '<%= yeoman.app %>',
-            src : ['*.html', 'views/*.html'],
-            dest : '<%= yeoman.dist %>'
-          }
-        ]
-      }
-    },
+
     // Put files not handled in other tasks here
     copy : {
       dist : {
@@ -278,21 +312,17 @@ module.exports = function (grunt) {
         'htmlmin'
       ]
     },
-    cdnify : {
-      dist : {
-        html : ['<%= yeoman.dist %>/*.html']
-      }
-    },
-    ngmin : {
-      dist : {
-        files : [
-          {
-            expand : true,
-            cwd : '<%= yeoman.dist %>/scripts',
-            src : '*.js',
-            dest : '<%= yeoman.dist %>/scripts'
-          }
-        ]
+
+    // ng-annotate tries to make the code safe for minification automatically
+    // by using the Angular long form for dependency injection.
+    ngAnnotate: {
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.dist %>/scripts',
+          src: ['{,*/}*.js'],
+          dest: '<%= yeoman.dist %>/scripts'
+        }]
       }
     },
     uglify : {
@@ -308,7 +338,7 @@ module.exports = function (grunt) {
   });
 
 
-  grunt.registerTask('server', function (target) {
+  grunt.registerTask('serve', function (target) {
     if (target === 'dist') {
       return grunt.task.run(['build', 'open', 'connect:dist:keepalive']);
     }
@@ -317,6 +347,7 @@ module.exports = function (grunt) {
       'clean:server',
       'concurrent:server',
       'autoprefixer',
+      'ngtemplates',
       'connect:livereload',
       'open',
       'watch'
@@ -324,22 +355,22 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('build', [
-    'clean:dist',
-    'useminPrepare',
-    'concurrent:dist',
-    'autoprefixer',
+    'jshint',
+    'clean:dist',     // clean temp and dist directories
+    'concurrent:dist',// compile less, move images to dist
+    'autoprefixer',   // prefix styles in tmp and app
+    'ngtemplates',    // generate angular templates file in app
+    'useminPrepare',  // read html build blocks and prepare to concatenate and move css,js to dist
     'concat',
-    'copy:dist',
-    'cdnify',
-    'ngmin',
     'cssmin',
+    'ngAnnotate',
+    'copy:dist',
     'uglify',
-    'rev',
+    'filerev',
     'usemin'
   ]);
 
   grunt.registerTask('default', [
-    'jshint',
     'build'
   ]);
 };

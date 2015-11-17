@@ -10,7 +10,7 @@
         Building enterprise web products, IOT infrastructure, Microservices and Android apps.">
         <meta name="viewport" content="width=device-width">
 
-        <!-- build:css styles/core.css -->
+        <!-- build:css(.tmp) styles/core.css -->
         <link rel="stylesheet" href="styles/core.css">
         <!-- endbuild -->
 
@@ -33,7 +33,7 @@
             <div class="main page-wrapper ui-view-container" ui-view="main" autoscroll="false"></div>
         </div>
 
-        <!-- build:js scripts/app.js -->
+        <!-- build:js({.tmp,client-dev}) scripts/vendor.js -->
         <script src="bower_components/jquery/dist/jquery.js"></script>
         <script src="bower_components/underscore/underscore.js"></script>
         <script src="bower_components/angular/angular.js"></script>
@@ -43,7 +43,13 @@
         <script src="bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js"></script>
         <script src="bower_components/angular-animate/angular-animate.js"></script>
         <script src="bower_components/angular-touch/angular-touch.js"></script>
+        <!-- endbuild -->
 
+        <!-- build:js({.tmp,client-dev}) scripts/tpls.js -->
+        <script src="scripts/generatedTemplates.js"></script>
+        <!-- endbuild -->
+
+        <!-- build:js({.tmp,client-dev}) scripts/app.js -->
         <script src="scripts/app.js"></script>
 
         <script src="scripts/directives/directives.js"></script>
