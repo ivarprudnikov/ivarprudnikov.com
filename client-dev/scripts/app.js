@@ -7,13 +7,12 @@ angular.module('tApp', ['ui.router','ui.bootstrap','ngResource','ngAnimate','ui.
 
 		$rootScope.projectImagePath = 'https://s3-eu-west-1.amazonaws.com/ivarprudnikov/img/projects/';
 
-		$rootScope.currentState = { name:'', pageTitle:'', pageDescription: '' };
+		$rootScope.currentState = { name:'', pageTitle:'' };
 
 		$rootScope.$on('$stateChangeStart',
 			function(event, toState, toParams, fromState, fromParams){
 				$rootScope.currentState.name = toState.name.replace(/\./g,'_');
         $rootScope.currentState.pageTitle = toState.data.pageTitle || '';
-        $rootScope.currentState.pageDescription = toState.data.pageDescription || '';
 				$('body').animate({ scrollTop: 0 }, 100);
 			}
 		);
@@ -56,8 +55,7 @@ angular.module('tApp', ['ui.router','ui.bootstrap','ngResource','ngAnimate','ui.
 					}
 				},
         data: {
-          pageTitle: 'Home page',
-          pageDescription: 'Please welcome to my minimal protfolio site'
+          pageTitle: 'Home page'
         }
 			})
 			.state('main.home', {
