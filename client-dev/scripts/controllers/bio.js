@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('tApp')
 	.controller('BioController', ['$scope','$rootScope','$timeout', function ($scope,$rootScope,$timeout) {
 
@@ -11,15 +13,16 @@ angular.module('tApp')
 		// Technologies visibility
 		/////////////////////////////////////
 
-		$scope.languageBlock;
+		$scope.languageBlock = null;
 		$scope.updateLanguageBlock = function(frontOrBack,idx){
 			if(frontOrBack === 'front' && (!$scope.languageBlock || $scope.codeDataFrontEnd[idx].lang !== $scope.languageBlock.lang) ){
 				$scope.languageBlock = $scope.codeDataFrontEnd[idx];
 			} else if(frontOrBack === 'back' && (!$scope.languageBlock || $scope.codeDataBackEnd[idx].lang !== $scope.languageBlock.lang) ) {
 				$scope.languageBlock = $scope.codeDataBackEnd[idx];
-			} else
-				$scope.languageBlock = null
-		}
+			} else {
+        $scope.languageBlock = null;
+      }
+		};
 
 
 		// Expertise visibility
@@ -35,9 +38,10 @@ angular.module('tApp')
 				$scope.expertiseBack[idx].title !== $scope.expertiseDescription.title) ) {
 
 				$scope.expertiseDescription = $scope.expertiseBack[idx];
-			} else
-				$scope.expertiseDescription = null;
-		}
+			} else {
+        $scope.expertiseDescription = null;
+      }
+		};
 
 
 		// Technologies
@@ -46,7 +50,7 @@ angular.module('tApp')
 		$scope.codeDataBackEnd = [
 			{
 				lang:'node.js',
-				text:"Node.js is a platform built on Chrome's JavaScript runtime for easily building fast, scalable network applications."
+				text:'Node.js is a platform built on Chrome\'s JavaScript runtime for easily building fast, scalable network applications.'
 			},
 			{
 				lang:'groovy',
@@ -62,7 +66,7 @@ angular.module('tApp')
 			},
 			{
 				lang:'mysql',
-				text:"the world's most widely used open-source relational database management system"
+				text:'the world\'s most widely used open-source relational database management system'
 			},
 			{
 				lang:'hibernate',
@@ -122,7 +126,7 @@ angular.module('tApp')
 			{
 				title:'SPA',
 				className: 'expertise-spa',
-				text:"Single Page Applications are present & future. It is also challenging as requires adoption of new dev techniques, new design patterns."
+				text:'Single Page Applications are present & future. It is also challenging as requires adoption of new dev techniques, new design patterns.'
 			}
 		];
 
@@ -135,12 +139,12 @@ angular.module('tApp')
 			{
 				title:'API',
 				className: 'expertise-api',
-				text:"Cannot imagine rich application without some sort of third party api that needs integration. Maps, social networks, video, you name it, I've been there"
+				text:'Cannot imagine rich application without some sort of third party api that needs integration. Maps, social networks, video, you name it, I\'ve been there'
 			},
 			{
 				title:'Servers',
 				className: 'expertise-servers',
-				text:"I am no stranger to DevOps, usually using IaaS (Infrastructure as a Service) from Amazon"
+				text:'I am no stranger to DevOps, usually using IaaS (Infrastructure as a Service) from Amazon'
 			}
 		];
 

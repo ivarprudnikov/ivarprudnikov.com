@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('tApp')
 	.factory('Languages', ['$resource', function ($resource) {
 

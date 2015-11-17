@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('tApp')
 
 /**
@@ -22,20 +24,21 @@ angular.module('tApp')
 				$scope.active = false;
 
 				$scope.toggle = function(){
-					$scope.active ? $scope.hide() : $scope.show();
-				}
+					return $scope.active ? $scope.hide() : $scope.show();
+				};
+
 				$scope.show = function(){
 					$scope.$parent.$broadcast('filterdropdown_opening');
 					$scope.active = true;
+				};
 
-				}
 				$scope.hide = function(){
 					$scope.active = false;
-				}
+				};
 
 				$scope.$on('filterdropdown_opening',$scope.hide);
 
-				$element.on('mouseleave',$scope.hide)
+				$element.on('mouseleave',$scope.hide);
 
 			}],
 			replace: true,

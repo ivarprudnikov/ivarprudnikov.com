@@ -1,9 +1,11 @@
+'use strict';
+
 angular.module('tApp', ['ui.router','ui.bootstrap','ngResource','ngAnimate','ui.keypress','ui.event','ngTouch'])
 	.run(function($rootScope,$timeout,$window,$location) {
 
 		$rootScope.menuIsActive = false;
 
-		$rootScope.projectImagePath = "https://s3-eu-west-1.amazonaws.com/ivarprudnikov/img/projects/";
+		$rootScope.projectImagePath = 'https://s3-eu-west-1.amazonaws.com/ivarprudnikov/img/projects/';
 
 		$rootScope.currentState = { name:'', pageTitle:'', pageDescription: '' };
 
@@ -12,7 +14,7 @@ angular.module('tApp', ['ui.router','ui.bootstrap','ngResource','ngAnimate','ui.
 				$rootScope.currentState.name = toState.name.replace(/\./g,'_');
         $rootScope.currentState.pageTitle = toState.data.pageTitle || '';
         $rootScope.currentState.pageDescription = toState.data.pageDescription || '';
-				$("body").animate({ scrollTop: 0 }, 100);
+				$('body').animate({ scrollTop: 0 }, 100);
 			}
 		);
 
@@ -21,11 +23,12 @@ angular.module('tApp', ['ui.router','ui.bootstrap','ngResource','ngAnimate','ui.
 			function(event){
 				var pagePaths, pagePath;
 
-				pagePaths = $window.location.href.split($window.location.host)
-				if(pagePaths.length > 1)
-					pagePath = pagePaths[1]
-				else
-					pagePath = "/"
+				pagePaths = $window.location.href.split($window.location.host);
+				if(pagePaths.length > 1) {
+          pagePath = pagePaths[1];
+        } else {
+          pagePath = '/';
+        }
 
 				ga('send', {
 					'hitType': 'pageview',
@@ -40,15 +43,14 @@ angular.module('tApp', ['ui.router','ui.bootstrap','ngResource','ngAnimate','ui.
 
     $locationProvider.hashPrefix('!');
 
-		$urlRouterProvider.otherwise('/main')
+		$urlRouterProvider.otherwise('/main');
 
 		$stateProvider
-
-			.state( "main", {
-				url: "/main",
+			.state( 'main', {
+				url: '/main',
 				abstract: true,
 				views: {
-					"navigation" : {
+					'navigation' : {
 						templateUrl: 'views/menu.html',
 						controller: 'MenuController'
 					}
@@ -58,19 +60,19 @@ angular.module('tApp', ['ui.router','ui.bootstrap','ngResource','ngAnimate','ui.
           pageDescription: 'Please welcome to my minimal protfolio site'
         }
 			})
-			.state("main.home", {
-				url: "",
+			.state('main.home', {
+				url: '',
 				views: {
-					"main@" : {
+					'main@' : {
 						templateUrl: 'views/main.home.html',
 						controller: 'HomeController'
 					}
 				}
 			})
-			.state("main.bio", {
-				url: "/bio",
+			.state('main.bio', {
+				url: '/bio',
 				views: {
-					"main@" : {
+					'main@' : {
 						templateUrl: 'views/main.bio.html',
 						controller: 'BioController'
 					}
@@ -79,10 +81,10 @@ angular.module('tApp', ['ui.router','ui.bootstrap','ngResource','ngAnimate','ui.
           pageTitle: 'Short bio'
         }
 			})
-			.state("main.work", {
-				url: "/work",
+			.state('main.work', {
+				url: '/work',
 				views: {
-					"main@" : {
+					'main@' : {
 						templateUrl: 'views/main.work.html',
 						controller: 'WorkController'
 					}
@@ -91,10 +93,10 @@ angular.module('tApp', ['ui.router','ui.bootstrap','ngResource','ngAnimate','ui.
           pageTitle: 'Work examples'
         }
 			})
-			.state("main.work.gallery", {
-				url: "/gallery",
+			.state('main.work.gallery', {
+				url: '/gallery',
 				views: {
-					"list@main.work" : {
+					'list@main.work' : {
 						templateUrl: 'views/main.work.gallery.html',
 						controller: 'WorkGalleryController'
 					}
@@ -103,24 +105,24 @@ angular.module('tApp', ['ui.router','ui.bootstrap','ngResource','ngAnimate','ui.
           pageTitle: 'Gallery of project examples'
         }
 			})
-			.state("main.work.gallery.item", {
+			.state('main.work.gallery.item', {
 				url: '/:itemId',
 				views: {
-					"list@main.work" : {
+					'list@main.work' : {
 						templateUrl: 'views/main.work.gallery.list.html',
 						controller: 'WorkGalleryController'
 					},
 					// absolutely target content view
-					"item@main.work" : {
-						templateUrl: "views/main.work.gallery.item.html",
+					'item@main.work' : {
+						templateUrl: 'views/main.work.gallery.item.html',
 						controller: 'WorkGalleryItemController'
 					}
 				}
 			})
-			.state("main.work.timeline", {
-				url: "/timeline",
+			.state('main.work.timeline', {
+				url: '/timeline',
 				views: {
-					"list@main.work" : {
+					'list@main.work' : {
 						templateUrl: 'views/main.work.timeline.html',
 						controller: 'WorkTimelineController'
 					}
@@ -129,29 +131,29 @@ angular.module('tApp', ['ui.router','ui.bootstrap','ngResource','ngAnimate','ui.
           pageTitle: 'Timeline of experience'
         }
 			})
-			.state("main.work.timeline.item", {
+			.state('main.work.timeline.item', {
 				url: '/:itemId',
 				views: {
-					"list@main.work" : {
+					'list@main.work' : {
 						templateUrl: 'views/main.work.timeline.list.html',
 						controller: 'WorkTimelineController'
 					},
 					// absolutely target content view
-					"item@main.work" : {
-						templateUrl: "views/main.work.timeline.item.html",
+					'item@main.work' : {
+						templateUrl: 'views/main.work.timeline.item.html',
 						controller: 'WorkTimelineItemController'
 					}
 				}
 			})
 
-			.state("main.hire", {
-				url: "/hire",
+			.state('main.hire', {
+				url: '/hire',
 				views: {
-					"main@" : {
+					'main@' : {
 						templateUrl: 'views/main.hire.html',
 						controller: 'HireController'
 					},
-					"hireContent@main.hire" : {
+					'hireContent@main.hire' : {
 						templateUrl: 'views/main.hire.form.html'
 					}
 				},
@@ -159,10 +161,10 @@ angular.module('tApp', ['ui.router','ui.bootstrap','ngResource','ngAnimate','ui.
           pageTitle: 'Hire me form'
         }
 			})
-			.state("main.hire.locations", {
-				url: "/locations",
+			.state('main.hire.locations', {
+				url: '/locations',
 				views: {
-					"hireContent" : {
+					'hireContent' : {
 						templateUrl: 'views/main.hire.locations.html'
 					}
 				},
@@ -170,10 +172,10 @@ angular.module('tApp', ['ui.router','ui.bootstrap','ngResource','ngAnimate','ui.
           pageTitle: 'Available locations'
         }
 			})
-			.state("main.hire.future", {
-				url: "/future",
+			.state('main.hire.future', {
+				url: '/future',
 				views: {
-					"hireContent" : {
+					'hireContent' : {
 						templateUrl: 'views/main.hire.future.html'
 					}
 				},
@@ -181,17 +183,17 @@ angular.module('tApp', ['ui.router','ui.bootstrap','ngResource','ngAnimate','ui.
           pageTitle: 'Future locations'
         }
 			})
-			.state("main.hire.documents", {
-				url: "/documents",
+			.state('main.hire.documents', {
+				url: '/documents',
 				views: {
-					"hireContent" : {
+					'hireContent' : {
 						templateUrl: 'views/main.hire.documents.html'
 					}
 				},
         data: {
           pageTitle: 'Documentation'
         }
-			})
+			});
 
 
   }]);

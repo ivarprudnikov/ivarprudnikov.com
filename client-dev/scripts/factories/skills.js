@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('tApp')
 	.factory('Skills', ['$resource', function ($resource) {
 

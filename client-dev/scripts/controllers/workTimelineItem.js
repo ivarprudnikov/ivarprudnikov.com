@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('tApp')
 	.controller('WorkTimelineItemController', ['Companies','Projects','Skills','Languages','$scope','$stateParams',
 		function (Companies, Projects, Skills, Languages, $scope, $stateParams) {
@@ -23,14 +25,16 @@ angular.module('tApp')
 
 			var fromDate, toDate, fromYear, toYear;
 
-			$scope.item = _.find(items, function(item){ return item.id === id });
+			$scope.item = _.find(items, function(item){ return item.id === id; });
 
 			fromDate = new Date();
 			fromDate.setTime( $scope.item.from );
 			fromYear = fromDate.getFullYear();
 
 			toDate = new Date();
-			if($scope.item.to) toDate.setTime( $scope.item.to );
+			if($scope.item.to) {
+        toDate.setTime( $scope.item.to );
+      }
 			toYear = toDate.getFullYear();
 
 			$scope.jobYears = _.range(fromYear, toYear + 1).reverse();
@@ -38,21 +42,21 @@ angular.module('tApp')
 			Projects.getAll(function(projects){
 
 				// company projects
-				$scope.projects = _.filter(projects, function(item){ return item.company_id === id });
+				$scope.projects = _.filter(projects, function(item){ return item.company_id === id; });
 
 				// company skills
 				Skills.getAll(function(skills){
 					var skillIds = _.flatten( _.pluck($scope.projects,'skills') );
-					$scope.skills = _.filter(skills, function(s){ return _.indexOf(skillIds, s.id) > -1 });
+					$scope.skills = _.filter(skills, function(s){ return _.indexOf(skillIds, s.id) > -1; });
 				});
 
 				// company technologies used
 				Languages.getAll(function(languages){
 					var languageIds = _.flatten( _.pluck($scope.projects,'languages') );
-					$scope.languages = _.filter(languages, function(l){ return _.indexOf(languageIds, l.id) > -1 });
+					$scope.languages = _.filter(languages, function(l){ return _.indexOf(languageIds, l.id) > -1; });
 				});
 
-			})
+			});
 
 
 
@@ -60,11 +64,13 @@ angular.module('tApp')
 
 		$scope.timelineBlockHeight = function(){
 
-			if(!$scope.jobYears) return 0;
+			if(!$scope.jobYears) {
+        return 0;
+      }
 
 			return $scope.jobYears.length * yearHeight + yearLabelHeight;
 
-		}
+		};
 
 		/**
 		 * Almost the same as in workTimeline.js
@@ -74,24 +80,31 @@ angular.module('tApp')
 		 * @returns {number}
 		 */
 		$scope.jobLineHeight = function(job){
-			return ($scope.jobDistanceFromNow(job) - $scope.jobDistanceToEnd(job))
-		}
+			return ($scope.jobDistanceFromNow(job) - $scope.jobDistanceToEnd(job));
+		};
+
 		$scope.jobDistanceToEnd = function(job){
 
-			if(!job) return 0;
+			if(!job) {
+        return 0;
+      }
 
 			var toDate = new Date();
-			if(job.to)
-				toDate.setTime( job.to );
+			if(job.to){
+        toDate.setTime( job.to );
+      }
 			var year = toDate.getFullYear();
 			var month = toDate.getMonth() + 1;
 			var yearsFromNow = $scope.jobYears[0] - year;
 
 			return ( (yearsFromNow + 1) * yearHeight - (month * monthHeight) );
-		}
+		};
+
 		$scope.jobDistanceFromNow = function(job){
 
-			if(!job) return 0;
+			if(!job) {
+        return 0;
+      }
 
 			var fromDate = new Date();
 			fromDate.setTime( job.from );
@@ -100,6 +113,6 @@ angular.module('tApp')
 			var yearsFromNow = $scope.jobYears[0] - year;
 
 			return ( (yearsFromNow + 1) * yearHeight - (month * monthHeight) );
-		}
+		};
 
 	}]);

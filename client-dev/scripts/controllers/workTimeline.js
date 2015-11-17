@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('tApp')
 	.controller('WorkTimelineController', ['Companies','$scope','$rootScope','$timeout',
 		function (Companies,$scope,$rootScope,$timeout) {
@@ -15,7 +17,7 @@ angular.module('tApp')
 		 * Populate array of available years
 		 * [ 2003, 2004, .... ]
 		 */
-		$scope.years = _.range(2003, (new Date).getFullYear() + 1).reverse();
+		$scope.years = _.range(2003, (new Date()).getFullYear() + 1).reverse();
 
 		/**
 		 * Populate array of available months
@@ -30,29 +32,30 @@ angular.module('tApp')
 		$scope.companies = Companies.query();
 
 		$scope.jobLineHeight = function(job){
-			return ($scope.jobDistanceFromNow(job) - $scope.jobDistanceToEnd(job))
-		}
+			return ($scope.jobDistanceFromNow(job) - $scope.jobDistanceToEnd(job));
+		};
 
 		$scope.jobDistanceToEnd = function(job){
 			var toDate = new Date();
-			if(job.to)
-				toDate.setTime( job.to );
+			if(job.to){
+        toDate.setTime( job.to );
+      }
 			var year = toDate.getFullYear();
 			var month = toDate.getMonth() + 1;
-			var yearsFromNow = (new Date).getFullYear() - year;
+			var yearsFromNow = (new Date()).getFullYear() - year;
 
 			return ( (yearsFromNow + 1) * yearHeight - (month * monthHeight) );
-		}
+		};
 
 		$scope.jobDistanceFromNow = function(job){
 			var fromDate = new Date();
 			fromDate.setTime( job.from );
 			var year = fromDate.getFullYear();
 			var month = fromDate.getMonth() + 1;
-			var yearsFromNow = (new Date).getFullYear() - year;
+			var yearsFromNow = (new Date()).getFullYear() - year;
 
 			return ( (yearsFromNow + 1) * yearHeight - (month * monthHeight) );
-		}
+		};
 
 
 	}]);

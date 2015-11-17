@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('tApp')
 	.factory('Projects', ['$resource', function ($resource) {
 

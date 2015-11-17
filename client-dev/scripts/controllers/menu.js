@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('tApp')
 	.controller('MenuController', ['$scope','$state','$rootScope',
 		function ($scope,$state,$rootScope) {
@@ -11,24 +13,26 @@ angular.module('tApp')
 			$rootScope.menuIsActive = ! $rootScope.menuIsActive;
 			$scope.menuIsActive = $rootScope.menuIsActive;
 
-			if(!!$scope.menuIsActive)
-				$('body').addClass($scope.activeMenuClass)
-			else
-				$('body').removeClass($scope.activeMenuClass)
-		}
+			if(!!$scope.menuIsActive) {
+        $('body').addClass($scope.activeMenuClass);
+      } else {
+        $('body').removeClass($scope.activeMenuClass);
+      }
+		};
 
 		$scope.mouseOpenNavigation = function(){
 			if(!$rootScope.menuIsActive){
 				$('body').addClass($scope.activeMenuClass);
 				$scope.menuIsActive = true;
 			}
-		}
+		};
+
 		$scope.mouseHideNavigation = function(){
 			if(!$rootScope.menuIsActive){
 				$('body').removeClass($scope.activeMenuClass);
 				$scope.menuIsActive = false;
 			}
-		}
+		};
 
 
 		$scope.stateMatches =  function(stateName){
@@ -37,6 +41,6 @@ angular.module('tApp')
 
 			return !!$state.current.name.match(regexp);
 
-		}
+		};
 
 	}]);

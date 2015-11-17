@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('tApp')
 	.controller('HireController', ['$scope','$rootScope','$timeout','$http','$window', function ($scope,$rootScope,$timeout,$http,$window) {
 
@@ -39,7 +41,7 @@ angular.module('tApp')
 			{ id:2, active:true, name:'Private company'},
 			{ id:3, active:true, name:'Project'},
 			{ id:4, active:true, name:'Other'}
-		]
+		];
 
 		$scope.enquiry_types = [
 			{ id:1, active:true, name:'Contract role'},
@@ -52,7 +54,7 @@ angular.module('tApp')
 
 		$scope.sendAgain = function(){
 			$window.location.reload();
-		}
+		};
 
 		$scope.sendEmail = function(){
 
@@ -107,19 +109,25 @@ angular.module('tApp')
 		function validateVisitor(visitorObj){
 			var errors = [];
 
-			if(!visitorObj.email)
-				errors.push("Email is required");
-			if(!visitorObj.subject)
+			if(!visitorObj.email) {
+        errors.push("Email is required");
+      }
+			if(!visitorObj.subject){
 				errors.push("Subject is required");
-			if(!visitorObj.message)
-				errors.push("Message is required");
-			if(!visitorObj.enquiry || !visitorObj.enquiry.name)
-				errors.push("Enquiry type must be selected");
-			if(!visitorObj.organization_type || !visitorObj.organization_type.name)
-				errors.push("Organization type must be selected");
+      }
+			if(!visitorObj.message) {
+        errors.push("Message is required");
+      }
+			if(!visitorObj.enquiry || !visitorObj.enquiry.name) {
+        errors.push("Enquiry type must be selected");
+      }
+			if(!visitorObj.organization_type || !visitorObj.organization_type.name) {
+        errors.push("Organization type must be selected");
+      }
+
 
 			return errors.length ? errors : null;
-		};
+		}
 
 
 		function buildPostData(visitorObj, callback){
@@ -139,7 +147,7 @@ angular.module('tApp')
 				.success(function(data, status, headers, config) {
 					if(status == 200 && data && data.token){
 
-						o2._csrf = data.token
+						o2._csrf = data.token;
 						callback(o2);
 
 					} else {
@@ -156,7 +164,7 @@ angular.module('tApp')
 
 			$http.post("/sendemail", emailData )
 				.success(function(data, status, headers, config) {
-					if(status == 200 && data && data.sent == true){
+					if(status == 200 && data && data.sent === true){
 						handleEmailSuccess();
 					} else {
 						handleEmailError(errorMap.general);

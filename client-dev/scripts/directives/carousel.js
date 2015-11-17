@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Angular Carousel - Mobile friendly touch carousel for AngularJS
  * @version v0.2.0 - 2014-02-18
@@ -83,9 +85,9 @@ angular.module('tApp')
 
 						$timeout(function(){
 							$scope.controls.onOrientationChange();
-						},1000)
+						},1000);
 
-					}
+					};
 				},
 
 				compile: function(tElement, tAttributes) {
@@ -115,7 +117,7 @@ angular.module('tApp')
 							repeatCollection = exprMatch[2];
 
 							if (repeatItem) {
-								if (angular.isDefined(tAttributes['rnCarouselBuffered'])) {
+								if (angular.isDefined(tAttributes.rnCarouselBuffered)) {
 									// update the current ngRepeat expression and add a slice operator if buffered
 									isBuffered = true;
 									repeatAttribute.value = repeatItem + ' in ' + repeatCollection + '|carouselSlice:carouselBufferIndex:carouselBufferSize';
@@ -149,6 +151,35 @@ angular.module('tApp')
 						// add a wrapper div that will hide the overflow
 						var carousel = iElement.wrap("<div id='carousel-" + carouselId +"' class='rn-carousel-container'></div>"),
 							container = carousel.parent();
+
+            function updateIndicatorArray() {
+              // generate an array to be used by the indicators
+              var items = [];
+              for (var i = 0; i < slidesCount; i++) {
+                items[i] = i;
+              }
+              scope.carouselIndicatorArray = items;
+            }
+
+            function getCarouselWidth() {
+              // container.css('width', 'auto');
+              var slides = carousel.children();
+              if (slides.length === 0) {
+                containerWidth = carousel[0].getBoundingClientRect().width;
+              } else {
+                containerWidth = slides[0].getBoundingClientRect().width;
+              }
+
+              //console.log('getCarouselWidth', containerWidth);
+              return Math.floor(containerWidth);
+            }
+
+            function updateContainerWidth() {
+              // force the carousel container width to match the first slide width
+              container.css('width', '100%');
+              getCarouselWidth();
+              //container.css('width', getCarouselWidth() + 'px');
+            }
 
 						// if indicator or controls, setup the watch
 						if (angular.isDefined(iAttributes.rnCarouselIndicator) || angular.isDefined(iAttributes.rnCarouselControl)) {
@@ -219,40 +250,15 @@ angular.module('tApp')
 									slidesCount = Object.keys(newValue).length;
 								}
 								updateIndicatorArray();
-								if (!containerWidth) updateContainerWidth();
+								if (!containerWidth) {
+                  updateContainerWidth();
+                }
 								goToSlide(scope.carouselIndex);
 							});
 						} else {
 							slidesCount = iElement.children().length;
 							updateIndicatorArray();
 							updateContainerWidth();
-						}
-
-						function updateIndicatorArray() {
-							// generate an array to be used by the indicators
-							var items = [];
-							for (var i = 0; i < slidesCount; i++) items[i] = i;
-							scope.carouselIndicatorArray = items;
-						}
-
-						function getCarouselWidth() {
-							// container.css('width', 'auto');
-							var slides = carousel.children();
-							if (slides.length === 0) {
-								containerWidth = carousel[0].getBoundingClientRect().width;
-							} else {
-								containerWidth = slides[0].getBoundingClientRect().width;
-							}
-
-							//console.log('getCarouselWidth', containerWidth);
-							return Math.floor(containerWidth);
-						}
-
-						function updateContainerWidth() {
-							// force the carousel container width to match the first slide width
-							container.css('width', '100%');
-							getCarouselWidth();
-							//container.css('width', getCarouselWidth() + 'px');
 						}
 
 						function scroll(x) {
@@ -278,7 +284,7 @@ angular.module('tApp')
 								delta = amplitude * Math.exp(-elapsed / timeConstant);
 								if (delta > rubberTreshold || delta < -rubberTreshold) {
 									scroll(destination - delta);
-									requestAnimationFrame(autoScroll);
+                  $window.requestAnimationFrame(autoScroll);
 								} else {
 									goToSlide(destination / containerWidth);
 								}
@@ -379,7 +385,7 @@ angular.module('tApp')
 								if (delta > 2 || delta < -2) {
 									swipeMoved = true;
 									startX = x;
-									requestAnimationFrame(function() {
+                  $window.requestAnimationFrame(function() {
 										scroll(capPosition(offset + delta));
 									});
 								}
@@ -421,7 +427,7 @@ angular.module('tApp')
 							if (forceAnimation) {
 								amplitude = offset - currentOffset;
 							}
-							requestAnimationFrame(autoScroll);
+              $window.requestAnimationFrame(autoScroll);
 
 							return false;
 						}
@@ -473,8 +479,7 @@ angular.module('tApp')
 						//if(containerCtrl && typeof containerCtrl.registerCarouselControls === 'function')
 						containerCtrl.registerCarouselControls({
 							onOrientationChange:onOrientationChange
-						})
-
+						});
 
 						scope.$on('$destroy', function() {
 							$document.unbind('mouseup', documentMouseUpEvent);
