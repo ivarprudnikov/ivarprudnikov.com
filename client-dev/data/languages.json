@@ -31,7 +31,7 @@
 		"id":"5",
 		"name":"mysql",
 		"type":"backend",
-		"description":"The world's most widely used open-source relational database management system",
+		"description":"The world's most widely used relational database management system",
 		"relative":["6","7"]
 	},
 	{
@@ -117,6 +117,20 @@
 		"type":"backend",
 		"description":"WordPress is a free and open source blogging tool and a content management system (CMS) based on PHP and MySQL",
 		"relative":["5","15"]
-	}
+	},
+  {
+    "id":"18",
+    "name":"cassandra",
+    "type":"backend",
+    "description":"The Apache Cassandra database is the right choice when you need scalability and high availability without compromising performance.",
+    "relative":["5","7"]
+  },
+  {
+    "id":"19",
+    "name":"android",
+    "type":"frontend",
+    "description":"Android is the customizable, easy to use operating system that powers more than a billion devices across the globe — from phones and tablets to watches, TV, cars and more to come.",
+    "relative":[]
+  }
 
 ]

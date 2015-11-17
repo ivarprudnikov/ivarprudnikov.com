@@ -1,10 +1,18 @@
 [
+  {
+    "id": "0",
+    "name": "lila.io",
+    "position": "Senior software engineer",
+    "from": "1421511300000",
+    "to": "",
+    "description": ""
+  },
 	{
 		"id": "1",
 		"name": "kidsvideos.io",
 		"position": "Senior software engineer",
 		"from": "1367362800000",
-		"to": "",
+		"to": "1421511200000",
 		"description":""
 	},
 	{
