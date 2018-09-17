@@ -1,9 +1,0 @@
-<footer class="footer" ng-controller="FooterController">
-    <span class="footer-date">{{ date | date:'yyyy' }}</span>
-
-    <span ng-if="links" ng-repeat="(link,href) in links">
-        <span class="footer-link-separator">//</span>
-        <a ng-if="link !== 'email'" class="footer-link" href="{{href}}" ng-click="onClickFooterLink($event,link)">{{link}}</a>
-        <a ng-if="link === 'email'" class="footer-link" ui-sref="{{href}}" ng-click="onClickFooterLink($event,link)">{{link}}</a>
-    </span>
-</footer>
