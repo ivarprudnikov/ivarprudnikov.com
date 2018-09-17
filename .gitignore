@@ -9,3 +9,12 @@ client-dev/styles/core.css
 .elasticbeanstalk/
 node_modules/
 npm-debug.log
+
+_site
+.jekyll
+.jekyll-metadata
+.bundle
+.sass-cache
+Gemfile
+Gemfile.lock
+package.jso
