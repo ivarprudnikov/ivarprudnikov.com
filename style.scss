@@ -1,21 +1,9 @@
 ---
 ---
 
-//
-// IMPORTS
-//
-
-@import "reset";
+@import "normalize";
+@import "boilerplate";
 @import "variables";
-// Syntax highlighting @import is at the bottom of this file
-
-/**************/
-/* BASE RULES */
-/**************/
-
-html {
-  font-size: 100%;
-}
 
 body {
   background: $white;
@@ -274,8 +262,6 @@ nav {
 .wrapper-footer {
   margin-top: 50px;
   border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-  background-color: $lightGray;
 }
 
 footer {
