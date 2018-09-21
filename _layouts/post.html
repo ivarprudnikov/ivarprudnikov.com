@@ -2,15 +2,9 @@
 layout: default
 ---
 
-<article class="post">
-  <h1>{{ page.title }}</h1>
+<div class="blog-post">
+  <h2 class="blog-post-title">{{ page.title }}</h2>
+  <p class="blog-post-meta">{{ page.date | date: "%B %e, %Y" }}</p>
 
-  <div class="entry">
-    {{ content }}
-  </div>
-
-  <div class="date">
-    Written on {{ page.date | date: "%B %e, %Y" }}
-  </div>
-
-</article>
+  {{ content }}
+</div><!-- /.blog-post -->
