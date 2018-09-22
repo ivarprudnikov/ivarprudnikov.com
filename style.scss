@@ -5,6 +5,10 @@
 
 /* stylelint-disable selector-list-comma-newline-after */
 
+#main {
+  min-height: 60vh;
+}
+
 .blog-header {
   line-height: 1;
   border-bottom: 1px solid #e5e5e5;
@@ -132,4 +136,3 @@ h1, h2, h3, h4, h5, h6 {
 // Settled on moving the import of syntax highlighting to the bottom of the CSS
 // ... Otherwise it really bloats up the top of the CSS file and makes it difficult to find the start
 @import "highlights";
-@import "svg-icons";

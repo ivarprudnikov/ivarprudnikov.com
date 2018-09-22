@@ -15,22 +15,23 @@ avatar: https://avatars.githubusercontent.com/u/1052642
 #
 # Flags below are optional
 #
-
-# Includes an icon in the footer for each username you enter
-footer-links:
-  dribbble:
-  email: ivar.prudnikov@gmail.com
-  facebook:
-  flickr:
-  github: ivarprudnikov
-  instagram:
-  linkedin: ivarprudnikov
-  pinterest:
-  rss: # just type anything here for a working RSS icon
-  twitter:
-  stackoverflow: users/906265/aivaras-prudnikovas
-  youtube: # channel/<your_long_string> or user/<user-name>
-  googleplus: # anything in your profile username that comes after plus.google.com/
+external_links:
+  - label: 'Email me'
+    href: 'mailto:ivar.prudnikov@gmail.com'
+  - label: 'Github'
+    href: 'https://github.com/ivarprudnikov'
+  - label: 'Medium'
+    href: 'https://medium.com/@ivarprudnikov'
+  - label: 'Linkedin'
+    href: 'https://www.linkedin.com/in/ivarprudnikov'
+  - label: 'Stackoverflow'
+    href: 'http://stackoverflow.com/users/906265/aivaras-prudnikovas'
+  - label: 'Instagram'
+    href: 'https://instagram.com/ivarprudnikov'
+  - label: 'Twitter'
+    href: 'https://www.twitter.com/ivarprudnikov'
+  - label: 'RSS feed'
+    href: 'http://www.ivarprudnikov.com/feed.xml'
 
 
 # Enter your Disqus shortname (not your username) to enable commenting on posts

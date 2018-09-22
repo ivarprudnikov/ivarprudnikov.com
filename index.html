@@ -84,13 +84,13 @@ layout: default
 
   <aside class="col-md-4 blog-sidebar">
     <div class="p-3 mb-3 bg-light rounded">
-      <h4 class="font-italic">About</h4>
-      <p class="mb-0">{{ site.description }}</p>
-    </div>
-
-    <div class="p-3">
-      <h4 class="font-italic">Elsewhere</h4>
-      {% include svg-icons.html %}
+      <img class="rounded mx-auto mb-2"
+           alt="Avatar"
+           src="{{ site.avatar }}"
+           width="120"
+           height="120"/>
+      <h4 class="font-italic">About me</h4>
+      <p class="">{{ site.description }}</p>
     </div>
   </aside><!-- /.blog-sidebar -->
 </div>
