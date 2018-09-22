@@ -1,6 +1,8 @@
 ---
 ---
 
+$primary: #a73f3f;
+
 @import "bootstrap/bootstrap";
 
 /* stylelint-disable selector-list-comma-newline-after */
@@ -11,7 +13,7 @@
 
 .blog-header {
   line-height: 1;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid $gray-200;
 }
 
 .blog-header-logo {
@@ -88,7 +90,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 .blog-description {
   font-size: 1.1rem;
-  color: #999;
+  color: $gray-600;
 }
 
 @media (min-width: 40em) {
@@ -117,7 +119,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 .blog-post-meta {
   margin-bottom: 1.25rem;
-  color: #999;
+  color: $gray-600;
 }
 
 /*
@@ -125,10 +127,10 @@ h1, h2, h3, h4, h5, h6 {
  */
 .blog-footer {
   padding: 2.5rem 0;
-  color: #999;
+  color: $gray-600;
   text-align: center;
-  background-color: #f9f9f9;
-  border-top: .05rem solid #e5e5e5;
+  background-color: $gray-100;
+  border-top: .05rem solid $gray-200;
 }
 .blog-footer p:last-child {
   margin-bottom: 0;
