@@ -1,0 +1,24 @@
+---
+layout: default
+---
+
+<article class="row my-4 error justify-content-center">
+  <div class="col-lg-8">
+    <figure class="mb-4">
+      <img alt="Farting unicorn" class="mx-auto d-block" height="200" src="/assets/unicorn-fart.jpg" />
+    </figure>
+
+    {% if page.title %}
+      <h1 class="text-center">{{ page.title }}</h1>
+    {% endif %}
+
+    <div class="entry">
+      {{ content }}
+    </div>
+
+  </div>
+</article>
+
+<p class="mt-6 align-text-bottom text-small text-muted text-center">
+  Image credit: <a href="https://www.deviantart.com/yellowbellyhill">@Yellowbellyhill</a>
+</p>
