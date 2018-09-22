@@ -2,6 +2,7 @@
 ---
 
 $primary: #a73f3f;
+$font-family-serif: "Playfair Display", Georgia, "Times New Roman", serif;
 
 @import "bootstrap/bootstrap";
 
@@ -17,7 +18,7 @@ $primary: #a73f3f;
 }
 
 .blog-header-logo {
-  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+  font-family: $font-family-serif;
   font-size: 2.25rem;
 }
 
@@ -26,7 +27,7 @@ $primary: #a73f3f;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+  font-family: $font-family-serif;
 }
 
 .display-4 {
