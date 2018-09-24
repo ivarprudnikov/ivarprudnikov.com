@@ -42,3 +42,16 @@ Configuration file: /Users/hacker/cloned/repo/_config.yml
     Server address: http://127.0.0.1:4000/
   Server running... press ctrl-c to stop.
 ```
+
+## Import post from Medium
+
+Install [`mediumexporter`](https://www.npmjs.com/package/mediumexporter)
+```bash
+npm install -g mediumexporter
+```
+
+**Convert post to markdown**
+
+```bash
+$ mediumexporter link-to-medium-post > _posts/2018-02-01-post-name.md
+```
