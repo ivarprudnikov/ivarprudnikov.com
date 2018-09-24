@@ -140,6 +140,18 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 0;
 }
 
+.blog-footer-secondary {
+  padding: 10px;
+  color: $gray-200;
+  font-size: 12px;
+  background-color: $gray-700;
+
+  a {
+    color: $gray-200;
+    text-decoration: underline;
+  }
+}
+
 // Settled on moving the import of syntax highlighting to the bottom of the CSS
 // ... Otherwise it really bloats up the top of the CSS file and makes it difficult to find the start
 @import "highlights";

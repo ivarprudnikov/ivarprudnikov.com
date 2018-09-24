@@ -41,10 +41,21 @@
     </li>
     {% endfor %}
   </ul>
-  <p><a href="http://getbootstrap.com/docs/4.1/examples/blog/">Bootstrap blog template</a> by <a href="https://twitter.com/mdo">@mdo</a> adapted for Jekyll - <a href="https://github.com/ivarprudnikov/ivarprudnikov.com">source in Github repo</a></p>
+
   <p>
     <a href="#">Back to top</a>
   </p>
+</footer>
+<footer class="blog-footer-secondary">
+  <div class="container text-sm-center">
+    <span>&copy; {{ "now" | date: "%Y" }} {{ site.name }}.</span>
+    <span>
+        <a href="http://getbootstrap.com/docs/4.1/examples/blog/">Bootstrap blog template</a> by <a
+      href="https://twitter.com/mdo">@mdo</a> adapted for Jekyll - <a
+      href="https://github.com/ivarprudnikov/ivarprudnikov.com">source in Github repo</a>
+    </span>
+  </div>
+
 </footer>
 
 {% include analytics.html %}
