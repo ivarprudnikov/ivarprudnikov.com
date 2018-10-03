@@ -5,6 +5,7 @@ layout: default
 {% assign first_post = site.posts[0] %}
 {% assign second_post = site.posts[1] %}
 {% assign third_post = site.posts[2] %}
+{% assign excerpt_max_len = 180 %}
 
 <!-- top most blog entry -->
 <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
@@ -12,8 +13,10 @@ layout: default
     <h1 class="display-4 font-italic">
       {{ first_post.title }}
     </h1>
-    <p class="lead my-3">{{ first_post.excerpt }}</p>
-    <p class="lead mb-0"><a href="{{ first_post.url | prepend: site.baseurl }}" class="btn btn-primary">Continue reading</a></p>
+    <p class="lead my-3">{{ first_post.excerpt | strip_html | strip_newlines | truncate: excerpt_max_len }}</p>
+    <p class="lead mb-0">
+      <a href="{{ first_post.url | prepend: site.baseurl }}" class="btn btn-primary">Continue reading</a>
+    </p>
   </div>
 </div>
 
@@ -30,7 +33,7 @@ layout: default
           <a class="text-dark" href="{{ second_post.url | prepend: site.baseurl}}">{{ second_post.title }}</a>
         </h3>
         <div class="mb-1 text-muted">{{ second_post.date | date: "%B %e, %Y" }}</div>
-        <div class="card-text mb-auto">{{ second_post.excerpt }}</div>
+        <div class="card-text mb-1 excerpt">{{ second_post.excerpt | strip_html | strip_newlines | truncate: excerpt_max_len }}</div>
         <a href="{{ second_post.url | prepend: site.baseurl }}">Continue reading</a>
       </div>
     </div>
@@ -46,7 +49,7 @@ layout: default
           <a class="text-dark" href="{{ third_post.url | prepend: site.baseurl }}">{{ third_post.title }}</a>
         </h3>
         <div class="mb-1 text-muted">{{ third_post.date | date: "%B %e, %Y" }}</div>
-        <div class="card-text mb-auto">{{ third_post.excerpt }}</div>
+        <div class="card-text mb-1 excerpt">{{ third_post.excerpt | strip_html | strip_newlines | truncate: excerpt_max_len }}</div>
         <a href="{{ third_post.url | prepend: site.baseurl }}">Continue reading</a>
       </div>
     </div>
@@ -74,8 +77,8 @@ layout: default
             <a class="text-dark" href="{{ site.posts[i].url | prepend: site.baseurl }}">{{ site.posts[i].title }}</a>
           </h3>
           <div class="mb-1 text-muted">{{ site.posts[i].date | date: "%B %e, %Y" }}</div>
-          <div class="mb-auto">{{ site.posts[i].excerpt }}</div>
-          <a href="{{ site.posts[i].url | prepend: site.baseurl }}">Read More</a>
+          <div class="mb-1">{{ site.posts[i].excerpt | strip_html | strip_newlines | truncate: excerpt_max_len }}</div>
+          <a href="{{ site.posts[i].url | prepend: site.baseurl }}">Continue reading</a>
         </div>
         {% endif %}
 
