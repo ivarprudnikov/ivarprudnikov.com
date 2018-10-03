@@ -2,6 +2,8 @@
 layout: default
 ---
 
+{% assign excerpt_max_len = 180 %}
+
 <article class="row my-4 justify-content-center">
   <div class="col-lg-8">
     <div class="blog-post">
@@ -22,6 +24,51 @@ layout: default
       <div class="blog-post-content">
         {{ content }}
       </div>
+
     </div>
   </div>
 </article>
+
+<div class="row mb-4">
+
+  <div class="col-md-6">
+
+    {% if page.previous.url %}
+
+    <div class="card mb-5 shadow-sm">
+      <div class="card-body d-flex flex-column align-items-start">
+        <strong class="d-inline-block mb-2 text-info">Older post</strong>
+        <h3 class="mb-0">
+          <a class="text-dark" href="{{page.previous.url}}">{{page.previous.title}}</a>
+        </h3>
+        <div class="mb-1 text-muted">{{ page.previous.date | date: "%B %e, %Y" }}</div>
+        <div class="card-text mb-1 excerpt">{{ page.previous.excerpt | strip_html | strip_newlines | truncate: excerpt_max_len }}</div>
+        <a href="{{page.previous.url}}">Continue reading</a>
+      </div>
+    </div>
+
+    {% endif %}
+
+  </div>
+
+  <div class="col-md-6">
+
+    {% if page.next.url %}
+
+    <div class="card mb-5 shadow-sm">
+      <div class="card-body d-flex flex-column align-items-start">
+        <strong class="d-inline-block mb-2 text-info">Newer post</strong>
+        <h3 class="mb-0">
+          <a class="text-dark" href="{{page.next.url}}">{{page.next.title}}</a>
+        </h3>
+        <div class="mb-1 text-muted">{{ page.next.date | date: "%B %e, %Y" }}</div>
+        <div class="card-text mb-1 excerpt">{{ page.next.excerpt | strip_html | strip_newlines | truncate: excerpt_max_len }}</div>
+        <a href="{{page.next.url}}">Continue reading</a>
+      </div>
+    </div>
+
+    {% endif %}
+
+  </div>
+
+</div>
