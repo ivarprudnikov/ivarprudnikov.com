@@ -3,6 +3,7 @@
 
 $primary: #a73f3f;
 $font-family-serif: "Playfair Display", Georgia, "Times New Roman", serif;
+$font-family-sans-serif: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
 @import "bootstrap/bootstrap";
 
@@ -124,6 +125,29 @@ h1, h2, h3, h4, h5, h6 {
 }
 .blog-post-content {
   font-size: 1.2rem;
+
+  a {
+    text-decoration: underline;
+  }
+
+  > p {
+    margin-bottom: 1.5rem;
+  }
+
+  blockquote {
+    position: relative;
+    margin: 2rem 0 2rem 1rem;
+    color: $purple;
+    padding-left: 1rem;
+
+    &::before {
+      content: "\201C"; // left double quotation mark
+      font-size: 4rem;
+      position: absolute;
+      top: -2rem;
+      left: -1rem;
+    }
+  }
 }
 
 /*
