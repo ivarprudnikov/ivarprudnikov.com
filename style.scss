@@ -137,8 +137,10 @@ h1, h2, h3, h4, h5, h6 {
   blockquote {
     position: relative;
     margin: 2rem 0 2rem 1rem;
-    color: $purple;
+    color: $gray-600;
     padding-left: 1rem;
+    font-size: 1.3rem;
+    font-weight: 300;
 
     &::before {
       content: "\201C"; // left double quotation mark
