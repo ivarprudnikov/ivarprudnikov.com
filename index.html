@@ -13,6 +13,7 @@ layout: default
     <h1 class="display-4 font-italic">
       {{ first_post.title }}
     </h1>
+    <div class="mb-1 text-muted">{{ first_post.date | date: "%B %e, %Y" }}</div>
     <p class="lead my-3">{{ first_post.excerpt | strip_html | strip_newlines | truncate: excerpt_max_len }}</p>
     <p class="lead mb-0">
       <a href="{{ first_post.url | prepend: site.baseurl }}" class="btn btn-primary">Continue reading</a>
