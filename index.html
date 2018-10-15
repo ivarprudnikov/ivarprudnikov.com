@@ -8,16 +8,26 @@ layout: default
 {% assign excerpt_max_len = 180 %}
 
 <!-- top most blog entry -->
-<div class="jumbotron p-3 p-md-5 text-white rounded jumbotron-dark">
-  <div class="col-md-6 px-0">
-    <h1 class="display-4 font-italic">
-      {{ first_post.title }}
-    </h1>
-    <div class="mb-1 text-muted">{{ first_post.date | date: "%B %e, %Y" }}</div>
-    <p class="lead my-3">{{ first_post.excerpt | strip_html | strip_newlines | truncate: excerpt_max_len }}</p>
-    <p class="lead mb-0">
-      <a href="{{ first_post.url | prepend: site.baseurl }}" class="btn btn-primary">Continue reading</a>
-    </p>
+<div class="featured-1 mb-4 p-4 p-md-5 text-white rounded jumbotron-dark">
+  <div class="row">
+
+    <div class="col-md-6 order-md-12">
+      {% if first_post.image %}
+      <img class="img-fluid rounded mb-4 mb-md-0" src="{{ first_post.image | prepend: site.baseurl }}">
+      {% endif %}
+    </div>
+
+    <div class="col-md-6 order-md-1">
+      <h1 class="display-4 font-italic">
+        {{ first_post.title }}
+      </h1>
+      <div class="mb-1 text-muted">{{ first_post.date | date: "%B %e, %Y" }}</div>
+      <p class="lead my-3">{{ first_post.excerpt | strip_html | strip_newlines | truncate: excerpt_max_len }}</p>
+      <p class="lead mb-0">
+        <a href="{{ first_post.url | prepend: site.baseurl }}" class="btn btn-primary">Continue reading</a>
+      </p>
+    </div>
+
   </div>
 </div>
 
@@ -28,7 +38,8 @@ layout: default
   {% if second_post %}
 
   <div class="col-md-6">
-    <div class="card flex-md-row mb-5 shadow-sm">
+    <div class="card featured-2 mb-5 shadow-sm">
+      <header class="card-img-top" style="background-image: url('{{ second_post.image | prepend: site.baseurl }}')"></header>
       <div class="card-body d-flex flex-column align-items-start">
         <h3 class="mb-0">
           <a class="text-dark" href="{{ second_post.url | prepend: site.baseurl}}">{{ second_post.title }}</a>
@@ -44,7 +55,8 @@ layout: default
   {% if third_post %}
 
   <div class="col-md-6">
-    <div class="card flex-md-row mb-5 shadow-sm">
+    <div class="card featured-2 mb-5 shadow-sm">
+      <header class="card-img-top" style="background-image: url('{{ third_post.image | prepend: site.baseurl }}')"></header>
       <div class="card-body d-flex flex-column align-items-start">
         <h3 class="mb-0">
           <a class="text-dark" href="{{ third_post.url | prepend: site.baseurl }}">{{ third_post.title }}</a>

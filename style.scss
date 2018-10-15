@@ -14,10 +14,22 @@ $font-family-sans-serif: "IBM Plex Serif", "Helvetica Neue", Arial, sans-serif, 
 }
 
 .jumbotron-dark {
-  background: $gray-800;
-  background: -moz-linear-gradient(-45deg, $gray-800 0%, $gray-600 100%);
-  background: -webkit-linear-gradient(-45deg, $gray-800 0%,$gray-600 100%);
-  background: linear-gradient(135deg, $gray-800 0%,$gray-600 100%);
+  background: #2b3a42;
+  background: -moz-linear-gradient(-45deg, #2b3a42 0%, #232f3f 100%);
+  background: -webkit-linear-gradient(-45deg, #2b3a42 0%, #232f3f 100%);
+  background: linear-gradient(135deg, #2b3a42 0%, #232f3f 100%);
+}
+
+.featured-1 img {
+
+}
+
+.featured-2 .card-img-top {
+  height: 180px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #2b3a42;
 }
 
 .blog-header {
