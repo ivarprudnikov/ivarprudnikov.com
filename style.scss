@@ -2,8 +2,8 @@
 ---
 
 $primary: #a73f3f;
-$font-family-serif: "Playfair Display", Georgia, "Times New Roman", serif;
-$font-family-sans-serif: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+$font-family-serif: Georgia, "Times New Roman", serif;
+$font-family-sans-serif: "IBM Plex Serif", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
 @import "bootstrap/bootstrap";
 
@@ -53,6 +53,7 @@ h1, h2, h3, h4, h5, h6 {
   z-index: 2;
   height: 2.75rem;
   overflow-y: hidden;
+  font-size: 0.9rem;
 }
 
 .nav-scroller .nav {
@@ -131,7 +132,8 @@ h1, h2, h3, h4, h5, h6 {
   color: $gray-600;
 }
 .blog-post-content {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+  line-height: 1.7;
 
   a {
     text-decoration: underline;
@@ -179,7 +181,8 @@ h1, h2, h3, h4, h5, h6 {
  * Footer
  */
 .blog-footer {
-  padding: 2.5rem 0;
+  font-size: 0.9rem;
+  padding: 2.5rem 0.5rem;
   color: $gray-600;
   text-align: center;
   background-color: $gray-100;
