@@ -74,7 +74,7 @@ layout: default
 {% endif %}
 
 <div class="row">
-  <div class="col-md-8 blog-main">
+  <div class="col-lg-10 offset-lg-1 col-xl-8 offset-xl-2 blog-main">
 
     {% if site.posts.size > 3 %}
 
@@ -86,12 +86,25 @@ layout: default
 
         {% if i < sz %}
         <div class="blog-post">
-          <h3 class="mb-0">
-            <a class="text-dark" href="{{ site.posts[i].url | prepend: site.baseurl }}">{{ site.posts[i].title }}</a>
-          </h3>
-          <div class="mb-1 text-muted">{{ site.posts[i].date | date: "%B %e, %Y" }}</div>
-          <div class="mb-1">{{ site.posts[i].excerpt | strip_html | strip_newlines | truncate: excerpt_max_len }}</div>
-          <a href="{{ site.posts[i].url | prepend: site.baseurl }}">Continue reading</a>
+
+          <div class="d-flex flex-column flex-md-row">
+
+            {% if site.posts[i].image %}
+              <div class="flex-auto mr-3 mb-3">
+                <img width="150" src="{{ site.posts[i].image | prepend: site.baseurl }}">
+              </div>
+            {% endif %}
+
+            <div class="d-flex flex-column align-items-start">
+              <h3 class="mb-0">
+                <a class="text-dark" href="{{ site.posts[i].url | prepend: site.baseurl }}">{{ site.posts[i].title }}</a>
+              </h3>
+              <div class="mb-1 text-muted">{{ site.posts[i].date | date: "%B %e, %Y" }}</div>
+              <div class="mb-1">{{ site.posts[i].excerpt | strip_html | strip_newlines | truncate: excerpt_max_len }}</div>
+              <a href="{{ site.posts[i].url | prepend: site.baseurl }}">Continue reading</a>
+            </div>
+          </div>
+
         </div>
         {% endif %}
 
@@ -103,15 +116,4 @@ layout: default
 
   </div>
 
-  <aside class="col-md-4 blog-sidebar">
-    <div class="p-3 mb-5 bg-light rounded">
-      <img class="rounded mx-auto mb-2"
-           alt="Avatar"
-           src="{{ site.avatar }}"
-           width="120"
-           height="120"/>
-      <h4 class="font-italic">About me</h4>
-      <p class="">{{ site.description }}</p>
-    </div>
-  </aside><!-- /.blog-sidebar -->
 </div>
