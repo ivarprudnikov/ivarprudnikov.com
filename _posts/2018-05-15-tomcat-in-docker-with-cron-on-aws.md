@@ -154,11 +154,11 @@ $ docker run --rm -it -p 8080:8080 somename
 Provided that everything is all right and container is running it is necessary to get inside of it to perform checks:
 
 * `$ docker ps` - find docker CONTAINER ID and use it in next command (replace $id)
-* `$ docker exec` -it $id bash - ssh into docker container
-* `root@$id:/usr/local/tomcat# top` - should show all processes, there should be: supervisord, java, cron, python
-* `root@$id:/usr/local/tomcat# supervisorctl` - states of processes under supervisor, all of them should be RUNNING : exit_on_any_fatal, catalina, cron
-* `supervisor> exit` - exit the supervisor
-* `root@$id:/usr/local/tomcat# crontab -l` - list cron jobs, should contain contents from crontab.txt
+* `$ docker exec -it $id bash` - ssh into docker container
+* `root@$id:/usr/local/tomcat# top` - should show all processes, there should be: `supervisord`, `java`, `cron`, `python`
+* `root@$id:/usr/local/tomcat# supervisorctl` - states of processes under supervisor, all of them should be `RUNNING` : `exit_on_any_fatal`, `catalina`, `cron`
+* `supervisor> exit` - exit the `supervisor`
+* `root@$id:/usr/local/tomcat# crontab -l` - list cron jobs, should contain contents from `crontab.txt`
 * `root@$id:/usr/local/tomcat# wc -l logs/cron.log` - check how many lines log contains, it should increase every minute.
 
 ### Preparing to deploy to AWS Elasticbeanstalk
