@@ -31,7 +31,7 @@ Resolving dependencies...
 **Run locally**
 
 ```bash
-$ bundle exec jekyll serve
+$ bundle exec jekyll serve --drafts
 Configuration file: /Users/hacker/cloned/repo/_config.yml
             Source: /Users/hacker/cloned/repo/
        Destination: /Users/hacker/cloned/repo/_site
@@ -42,6 +42,8 @@ Configuration file: /Users/hacker/cloned/repo/_config.yml
     Server address: http://127.0.0.1:4000/
   Server running... press ctrl-c to stop.
 ```
+
+Above flag `--drafts` includes draft posts from `_drafts/` directory. [Docs](https://jekyllrb.com/docs/posts/#drafts)
 
 ## Import post from Medium
 
