@@ -43,8 +43,91 @@ if __name__ == "__main__":
     main(sys.argv[1:])
 ```
 
-Above script will not execute immediately which makes it necessary to hold on to the process and read from its output until it finishes. We could not use it sequentially in a webapp as this might take too long to execute.
+Above script will not execute immediately which makes it necessary to hold on to the process and read from its output until it finishes. We do not want to use it sequentially in a webapp as this might takes quite long time to execute.
 
 ## Node server
+
+There are three main problems that need be solving: call Python script, pass script output to client, render output in the client. Lets start with creating simple _Node.js_ program, call it `server.js`, for now it is empty.
+
+### Run python script
+
+One of the accessible commands provided in _Node.js_ API is [`child_process.spawn()`](https://nodejs.org/dist/latest-v10.x/docs/api/child_process.html#child_process_child_process_spawn_command_args_options).
+
+> The child_process.spawn() method spawns a new process using the given command, with command line arguments in args.
+
+So to run above Python script, provided it is called `script.py`, we could add following to out `server.js`:
+
+```javascript
+const path = require('path')
+const {spawn} = require('child_process')
+
+function runScript(){
+  return spawn('python', [
+    "-u", 
+    path.join(__dirname, 'script.py'),
+    "--foo", "some value for foo",
+  ]);
+}
+
+const subprocess = runScript()
+
+subprocess.stdout.on('data', (data) => {
+  console.log(`data:${data}`);
+});
+subprocess.stderr.on('data', (data) => {
+  console.log(`error:${data}`);
+});
+subprocess.stderr.on('close', () => {
+  console.log("Closed");
+});
+```
+
+In above example the script output is going to come in through `.on('data', callback)`. Also it was necessary to use `-u` flag when running the script to prevent Python from buffering output, otherwise `data` event would not get `print()` statements from script up until the end of execution.
+
+To test if everything works just run it and check the Python script output is visible in the shell.
+
+```bash
+$ node server.js
+``` 
+
+### Render script output in HTTP response
+
+If you are using _Express_ framework then sending back output would be as easy as:
+
+```javascript
+const express = require('express')
+const app = express()
+
+// <...>
+
+app.get('/run', function (req, res) {
+  const subprocess = runScript()
+  res.set('Content-Type', 'text/plain');
+  subprocess.stdout.pipe(res)
+  subprocess.stderr.pipe(res)
+})
+
+app.listen(8080, () => console.log('Server running'))
+```
+
+Unfortunately _piping_ everything back to response requires client either to understand that response is chunked or to wait for execution of script to finish before rendering output. Latter is going to happen if you will be consuming endpoint with the likes of `jQuery`:
+
+```javascript
+jQuery.get("/run").done(function (data) {
+  console.log(data) // rendered after all data was transferred
+})
+```
+
+### Using WebSocket to render output
+
+To send back script output in chunks, we could use _WebSockets_, this will require _Node.js_ server to accept incoming requests via this protocol and the client to be able to connect to it.
+
+First lets install some dependencies:
+```bash
+$ npm i -S ws
+```
+
+Then expand our previous `server.js` to deal with new _WebSocket_ conections:
+
 
 
