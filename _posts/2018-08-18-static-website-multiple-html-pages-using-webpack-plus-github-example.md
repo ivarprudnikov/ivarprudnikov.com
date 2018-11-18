@@ -64,7 +64,7 @@ Now to serve it we need some basic *Webpack* config `webpack.dev.js`:
 $ touch webpack.dev.js
 ```
 
-Above will create our config file. Paste following inside it.
+Above will create our config file. Paste following inside it:
 
 ```js
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -99,7 +99,7 @@ At this moment you can start development server and inspect results in the brows
 ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --config webpack.dev.js --mode development
 ```
 
-You will see previously create `index.html` with a injected `index.js` in it. This is the magic of `HtmlWebpackPlugin` achieved by creating entry point and then referencing it in its plugin config with `inject: true` and `chunks: [‘index’]` .
+You will see previously created `index.html` with injected `index.js` in it. This is the magic of `HtmlWebpackPlugin` achieved by creating entry point and then referencing it in its plugin config with `inject: true` and `chunks: [‘index’]` .
 
 **Pro tip:** to simplify above command just put it into `package.json` under scripts then you will be able to just `npm start` from command line:
 
@@ -227,7 +227,7 @@ module.exports = {
 }
 ```
 
-Now after `npm start` you’ll see `css` inlined in `head` element of `html` file. To add more styles just _require_ them in _Javascript_ file.
+Now after `npm start` you’ll see `css` inlined in the `head` element of `html` file. To add more styles just _require_ them in _Javascript_ file.
 
 **Pro tip:** use Sass instead of plain `css` by adding one more loader [https://github.com/webpack-contrib/style-loader](https://github.com/webpack-contrib/style-loader)
 
@@ -430,6 +430,8 @@ To build and preview website locally run:
 ```bash
 $ npm run preview
 ```
+
+*Source files*
 
 Check out repository with above example, a better example to be frank, including image loader and links between pages.
 [**ivarprudnikov/webpack-static-html-pages**](https://github.com/ivarprudnikov/webpack-static-html-pages)
