@@ -4,8 +4,15 @@ layout: default
 
 {% assign excerpt_max_len = 180 %}
 
-<article class="row my-4 justify-content-center">
-  <div class="col-lg-8">
+<article class="row my-4">
+
+  {% if page.toc %}
+  <div class="d-none d-lg-block col-lg-2 bd-toc">
+    {{ content | toc_only }}
+  </div>
+  {% endif %}
+
+  <div class="col-lg-8 offset-lg-2">
     <div class="blog-post">
       <h2 class="blog-post-title">{{ page.title }}</h2>
       <p class="blog-post-meta">{{ page.date | date: "%B %e, %Y" }}</p>
