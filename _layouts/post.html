@@ -8,13 +8,18 @@ layout: default
 
   {% if page.toc %}
   <div class="d-none d-lg-block col-lg-2 bd-toc">
+    <ul class="section-nav">
+      <li class="toc-entry">
+        <a href="#blog-post-title">{{ page.title }}</a>
+      </li>
+    </ul>
     {{ content | toc_only }}
   </div>
   {% endif %}
 
   <div class="col-lg-8 offset-lg-2">
     <div class="blog-post">
-      <h2 class="blog-post-title">{{ page.title }}</h2>
+      <h2 id="blog-post-title" class="blog-post-title">{{ page.title }}</h2>
       <p class="blog-post-meta">{{ page.date | date: "%B %e, %Y" }}</p>
 
       {% if page.image %}
