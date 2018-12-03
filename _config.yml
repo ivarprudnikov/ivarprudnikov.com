@@ -16,22 +16,22 @@ avatar: https://avatars.githubusercontent.com/u/1052642
 # Flags below are optional
 #
 external_links:
-  - label: 'Email me'
-    href: 'mailto:ivar.prudnikov@gmail.com'
-  - label: 'Github'
-    href: 'https://github.com/ivarprudnikov'
-  - label: 'Medium'
-    href: 'https://medium.com/@ivarprudnikov'
-  - label: 'Linkedin'
-    href: 'https://www.linkedin.com/in/ivarprudnikov'
-  - label: 'Stackoverflow'
-    href: 'http://stackoverflow.com/users/906265/aivaras-prudnikovas'
-  - label: 'Instagram'
-    href: 'https://instagram.com/ivarprudnikov'
-  - label: 'Twitter'
-    href: 'https://www.twitter.com/ivarprudnikov'
-  - label: 'RSS feed'
-    href: 'http://www.ivarprudnikov.com/feed.xml'
+- label: 'Email me'
+  href: 'mailto:ivar.prudnikov@gmail.com'
+- label: 'Github'
+  href: 'https://github.com/ivarprudnikov'
+- label: 'Medium'
+  href: 'https://medium.com/@ivarprudnikov'
+- label: 'Linkedin'
+  href: 'https://www.linkedin.com/in/ivarprudnikov'
+- label: 'Stackoverflow'
+  href: 'http://stackoverflow.com/users/906265/aivaras-prudnikovas'
+- label: 'Instagram'
+  href: 'https://instagram.com/ivarprudnikov'
+- label: 'Twitter'
+  href: 'https://www.twitter.com/ivarprudnikov'
+- label: 'RSS feed'
+  href: 'http://www.ivarprudnikov.com/feed.xml'
 
 
 # Enter your Google Analytics web tracking code (e.g. UA-2110908-2) to activate tracking
@@ -85,3 +85,7 @@ exclude:
 - README.md
 - CNAME
 - .idea
+
+toc:
+  min_level:        2
+  max_level:        4
