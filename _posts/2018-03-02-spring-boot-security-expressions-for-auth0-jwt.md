@@ -3,6 +3,7 @@ layout: post
 title: "Spring Boot security expressions for Auth0 JWT"
 image: /assets/spring-boot-with-auth0.jpeg
 image_caption: "Logos: Spring, Spring Boot and Auth0"
+toc: true
 ---
 
 Usage of separate authorization server comes with a bit of challenges, first you want to be able to login with a client without using session then you need to share this authentication with your API server. First issue could be solved by using services like [Auth0](https://auth0.com/), they provide user management, access control and authentication libraries for websites; second issue is a bit more complex as your api would need to validate requests that come from the website and make sure that user has access to resource she is requesting.

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Wrap Tensorflow scripts in Docker and deploy to AWS
+toc: true
 ---
 
 Machine and deep learning tooling is excitingly accessible and fun for a developer to work with. There are couple of ways to develop/play with machine learning code:

@@ -3,6 +3,7 @@ layout: post
 title: "Dockerized tomcat and cron on AWS"
 image: /assets/tomcat-docker-aws.png
 image_caption: "AWS, Docker, Tomcat logos"
+toc: true
 ---
 
 Long time ago there was an app built using great framework called [Grails](https://grails.org/), it was a monolith rendering its html pages, exposing API for its children [Android](https://www.android.com/) and [iOS](https://www.apple.com/ios), sending stats over to [BigQuery](https://cloud.google.com/bigquery/), and more. It was living inside a privately hosted environment on a [Apache Tomcat](http://tomcat.apache.org/) along with several other web apps as well.

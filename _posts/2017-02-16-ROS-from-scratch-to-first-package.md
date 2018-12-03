@@ -3,6 +3,7 @@ layout: post
 title: "ROS: from scratch to first package"
 image: /assets/ubuntu-terminal-window.png
 image_caption: "Ubuntu terminal window"
+toc: true
 ---
 
 I started using *[Robot Operating System (ROS)](http://www.ros.org/about-ros/)* for my [fresh robot idea](http://dasmicrobot.com) and found first steps of setting up, distribution, version control a bit frustrating. Following text is meant for beginners.

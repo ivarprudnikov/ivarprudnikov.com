@@ -3,6 +3,7 @@ layout: post
 title: "Android DI with Dagger2 plus sample app"
 image: /assets/appcomponent-java-preview-in-ide.png
 image_caption: "AppComponent.java preview"
+toc: true
 ---
 
 Here we are, app is already in production, codebase is growing bit by bit.

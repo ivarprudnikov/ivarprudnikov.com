@@ -3,6 +3,7 @@ layout: post
 title: Using Python scripts in Node.js server
 image: /assets/node-python-websockets-preview.png
 image_caption: "Preview of sample app available on Github"
+toc: true
 ---
 
 A while back ago I was learning/playing with machine/deep learning but all that was only in _Python_, in a _Jupyter Notebook_. Latter allows writing and running and executing scripts in a browser window. Unfortunately I was not aware of any obvious way to easily reuse those scripts in a webapp. So I decided to write an example of how would it look like to be able to call _Python_ scripts from withing a running server application, hence this article.

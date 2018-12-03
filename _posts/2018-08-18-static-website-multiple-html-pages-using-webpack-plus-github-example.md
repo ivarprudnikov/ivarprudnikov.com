@@ -3,6 +3,7 @@ layout: post
 title: "Static website, multiple html pages, using Webpack + example on Github"
 image: /assets/webpack-process-infographics.png
 image_caption: "Taken from webpack.js.org"
+toc: true
 ---
 
 Most of the time I tend to client needs — integration, search functionality, complex business logic. But this time I needed a simple website for myself.
