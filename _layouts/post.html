@@ -24,7 +24,7 @@ layout: default
 
       {% if page.image %}
       <figure class="blog-post-image">
-        <img class="mx-auto d-block img-fluid" src="{{ page.image | prepend: site.baseurl }}" />
+        <img class="mx-auto d-block img-fluid rounded" src="{{ page.image | prepend: site.baseurl }}" />
         {% if page.image_caption %}
         <figcaption class="text-center text-muted">
           {{ page.image_caption }}
