@@ -6,39 +6,41 @@ layout: default
 
 <article class="row my-4">
 
-  {% if false %}
-  <div class="d-none d-lg-block col-lg-2 bd-toc">
-    <ul class="section-nav">
-      <li class="toc-entry">
+  <div class="col-lg-8 offset-lg-2">
+
+    <h2 id="blog-post-title" class="blog-post-title">{{ page.title }}</h2>
+    <p class="blog-post-meta">{{ page.date | date: "%B %e, %Y" }}</p>
+
+    {% if page.image %}
+    <figure class="blog-post-image">
+      <img class="mx-auto d-block img-fluid rounded" src="{{ page.image | prepend: site.baseurl }}" />
+      {% if page.image_caption %}
+      <figcaption class="text-center text-muted">
+        {{ page.image_caption }}
+      </figcaption>
+      {% endif %}
+    </figure>
+    {% endif %}
+
+  </div>
+
+  {% if page.toc %}
+  <div class="col-lg-2 bd-toc">
+    <ul class="d-none d-lg-block">
+      <li>
         <a href="#blog-post-title">{{ page.title }}</a>
       </li>
     </ul>
-    {{ content | toc_only }}
+    {% include toc.html html=content %}
   </div>
   {% endif %}
 
   <div class="col-lg-8 offset-lg-2">
-    <div class="blog-post">
-      <h2 id="blog-post-title" class="blog-post-title">{{ page.title }}</h2>
-      <p class="blog-post-meta">{{ page.date | date: "%B %e, %Y" }}</p>
-
-      {% if page.image %}
-      <figure class="blog-post-image">
-        <img class="mx-auto d-block img-fluid rounded" src="{{ page.image | prepend: site.baseurl }}" />
-        {% if page.image_caption %}
-        <figcaption class="text-center text-muted">
-          {{ page.image_caption }}
-        </figcaption>
-        {% endif %}
-      </figure>
-      {% endif %}
-
-      <div class="blog-post-content">
-        {{ content }}
-      </div>
-
+    <div class="blog-post-content">
+      {{ content }}
     </div>
   </div>
+
 </article>
 
 <div class="row mb-4">

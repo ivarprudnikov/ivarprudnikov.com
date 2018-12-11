@@ -133,9 +133,6 @@ h1, h2, h3, h4, h5, h6 {
 /*
  * Blog posts
  */
-.blog-post {
-  margin-bottom: 4rem;
-}
 .blog-post-title {
   margin-bottom: .25rem;
   font-size: 2.5rem;
@@ -147,6 +144,7 @@ h1, h2, h3, h4, h5, h6 {
 .blog-post-content {
   font-size: 1.1rem;
   line-height: 1.7;
+  margin-bottom: 4rem;
 
   a {
     text-decoration: underline;

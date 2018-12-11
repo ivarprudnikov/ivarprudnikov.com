@@ -1,37 +1,42 @@
 .bd-toc {
-  @supports (position: sticky) {
-    position: sticky;
-    top: 3rem;
-    height: calc(100vh - 3rem);
-    overflow-y: auto;
-  }
-  order: 2;
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
-  font-size: .875rem;
-}
 
-.section-nav {
-  padding-left: 0;
-  margin-bottom: 0;
+  @media (min-width: map_get($grid-breakpoints, 'lg')) {
 
-  ul {
-    padding-left: 1rem;
-  }
-}
+    @supports (position: sticky) {
+      position: sticky;
+      top: 3rem;
+      height: calc(100vh - 3rem);
+      overflow-y: auto;
+    }
+    order: 2;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    font-size: .875rem;
 
-.toc-entry {
-  display: block;
+    > ul {
+      padding-left: 0;
+      margin-bottom: 0;
 
-  a {
-    display: block;
-    padding: .25rem;
-    color: $text-muted;
-    line-height: 1;
+      ul {
+        padding-left: 1rem;
+      }
 
-    &:hover {
-      color: $primary;
-      text-decoration: none;
+      li {
+        display: block;
+
+        a {
+          display: block;
+          padding: .25rem;
+          color: $text-muted;
+          line-height: 1.2;
+
+          &:hover {
+            color: $primary;
+            text-decoration: none;
+          }
+        }
+      }
     }
   }
 }
+
