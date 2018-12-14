@@ -11,33 +11,32 @@ Machine and deep learning tooling is excitingly accessible and fun for a develop
 	- [_Kaggle_](https://www.kaggle.com/kernels)
 	- [_Google Colab_](http://colab.research.google.com)
 	- [_Floydhub_](https://www.floydhub.com/)
+	- [_SageMaker_](https://aws.amazon.com/sagemaker/)
 - Scripting/developing locally
 
 There might be more options I am unaware of or more likely I just cannot find them using simple search engine queries.
 
 I tried couple of those above - _Jupyter notebook_, scripting locally and _Kaggle_. The approach you take usually depends on what you want to achieve. If you want to learn then starting with the cloud solution is the shortest way which gives the most pleasure, picking _Kaggle_ could probably be one of the best choices, you can see what others do and can fork their _kernels_ and learn by example.
 
-Whilst playing/learning with machine learning is undeniably a great way to spend your time, it is a bit more exciting to use the skills and build a production ready model for others to consume. For this choice now I pick scripting - writing _Python_ scripts which are later deployed to production and exposed via _HTTP_ API.
+Whilst playing/learning with machine learning is undeniably a great way to spend your time, it is a bit more exciting to use the skills and build a production ready model for others to consume. For this choice now I pick scripting - writing _Python_ scripts which are later deployed to production and exposed via browser interface.
 
 **Note:** if you prefer looking into code then check out an implementation supporting this article in [Github repo ivarprudnikov/char-rnn-tensorflow](https://github.com/ivarprudnikov/char-rnn-tensorflow)
 
 ## Objectives
 
-- Prepare text generator which takes training text as an argument
-- Store text model variables for later reuse
-- Develop API that generates text based on previously saved variables
-- Expose API via _HTTP_ which can:
-  - accept training data via _POST_
-  - train new model in the background
-  - list all trained models
-  - generate text based on selected trained model
-- Run it on AWS
+- Prepare _Python_ scripts for training & generating
+- Store training data & training parameters
+- Train models in browser interface
+- Generate text based on previously trained model
+- Wrap implementation in _Docker_
+- Use _CI_ service to build _Docker_ image for the registry
+- Run _Docker_ image on _AWS_ and expose it to the _WWW_
 
 ## Text generator
 
-As it happens there are examples of simple text generators in the web. I am interested in _simple_ examples which leads me to a character generator detailed in Andrei Karpathy's blog post ["The Unreasonable Effectiveness of Recurrent Neural Networks (RNN)"](http://karpathy.github.io/2015/05/21/rnn-effectiveness/) published in mid 2015. This RNN example relieves me from any explanations how/why it works and is generally concise in its implementation.
+As it happens there are examples of simple text generators in the web. One of them leads me to a character generator detailed in Andrei Karpathy's blog post ["The Unreasonable Effectiveness of Recurrent Neural Networks (RNN)"](http://karpathy.github.io/2015/05/21/rnn-effectiveness/) published in mid 2015. This RNN example relieves me from any explanations how/why it works and is generally concise in its implementation.
 
-Part of the problem is solved but current article mentions [Tensorflow](https://www.tensorflow.org/) and [Karpathy's implementation](https://github.com/karpathy/char-rnn) is written in [Torch](http://torch.ch/). For this reason there was a reimplementation of `char-rnn` I found in another _Github_ repository [hzy46/Char-RNN-TensorFlow](https://github.com/hzy46/Char-RNN-TensorFlow) which I [forked and tweaked](https://github.com/ivarprudnikov/char-rnn-tensorflow).
+Part of the problem is solved but current article mentions [Tensorflow](https://www.tensorflow.org/) and [Karpathy's implementation](https://github.com/karpathy/char-rnn) is written in [Torch](http://torch.ch/). For this reason there was a reimplementation of `char-rnn` I found in another _Github_ repository [hzy46/Char-RNN-TensorFlow](https://github.com/hzy46/Char-RNN-TensorFlow) which I [forked and tweaked](https://github.com/ivarprudnikov/char-rnn-tensorflow) a bit.
 
 ### Training
 
@@ -72,7 +71,7 @@ Above script needs a path to checkpoint data to pull variable values from it and
 
 Given we have `python` scripts for training and character generation it is possible to wrap those in a simple _app_ exposed to the public internet. User will be able to upload and train her own sample then generate some text after training finishes.
 
-To build an app I'll use Node.js with Express framework. There will be couple of publicly accessible paths to deal with uploading of training data, training of that data and generating text out of it. User will also be able to see other submissions as we do not care about security and accounts to make this exercise simpler.
+To build an app I'll use _Node.js_ with _Express_ framework. There will be couple of publicly accessible paths to deal with uploading of training data, training of that data and generating text out of it. User will also be able to see other submissions as we do not care about security and accounts to make this exercise simpler.
 
 ### Uploading data
 
@@ -185,7 +184,7 @@ There are 2 thigs I want to store:
 
 Now that there is a relationship between models and structure is known in advance - will not likely to change, it is sensible to choose relational database. I believe that lowest common denominator will be _MySQL_. Document store such as _Mongo_ does not really make much sense here and not only because of relationship but more due to the nature of log data which will drip line by line.
 
-```mysql
+```sql
 create table model (
   id             varchar(255) not null,
   created_at     timestamp             DEFAULT CURRENT_TIMESTAMP,
@@ -235,10 +234,15 @@ To verify that connection works we could try listing models:
 const mysql = require('mysql')
 const pool = mysql.createPool({
   connectionLimit: 10,
+  connectTimeout: 20 * 1000,
+  acquireTimeout: 20 * 1000,
+  timeout: 10 * 1000,
   host: process.env.MYSQL_HOST || 'localhost',
   user: process.env.MYSQL_USER || 'root',
   password: process.env.MYSQL_PASSWORD || '',
-  database: process.env.MYSQL_DATABASE || 'rnn_generator'
+  database: process.env.MYSQL_DATABASE || 'rnn_generator',
+  port: process.env.MYSQL_PORT || 3306,
+  // ssl: "Amazon RDS", will be necessary later
 })
 
 pool.query("select * from model order by updated_at desc limit ? offset ?", [10, 0], (error, rows) => {
@@ -246,7 +250,56 @@ pool.query("select * from model order by updated_at desc limit ? offset ?", [10,
 })
 ```
 
-### Python scripts
+### Training parameters
+
+Just before being able to run those scripts we need to pass some arguments to them as well. Before that user ought to be able to tweak them in _UI_. Arguments are going to be exposed as a web form to the user and upon _POST_ those values will be stored in the database. You can see [all of training options used in a web form in the git repository](https://github.com/ivarprudnikov/char-rnn-tensorflow/blob/master/server/views/training_options.ejs). As an example a form looks similar to the following:
+
+```html
+<form action="/model/<%= locals.model.id %>/options" method="post" enctype="multipart/form-data">
+
+  <h1 class="h3 text-center mb-3">Update training options</h1>
+
+  <% if(locals.errors){ %>
+    <p class="alert alert-warning">
+      Form contains errors
+    </p>
+  <% } %>
+
+  <fieldset>
+    <legend>Training options</legend>
+
+    <div class="form-group row">
+      <label for="num_seqs" class="col-sm-6 col-form-label">Number of seqs in one batch</label>
+      <div class="col-sm-6">
+        <input name="num_seqs" placeholder="Default: 32" type="number" id="num_seqs"
+               class="form-control <% if(fieldErr("num_seqs")){ %>is-invalid<% } %>"
+               min="1"
+               value="<%=fieldData("num_seqs")%>">
+        <% if(fieldErr("num_seqs")){ %>
+        <div class="invalid-feedback"><%= fieldErr("num_seqs") %></div>
+        <% } %>
+      </div>
+    </div>
+    
+    <!-- More fields in Github repository -->
+    
+    <hr class="mt-5">
+    
+    <div class="text-right">
+      <a href="/model/<%= locals.model.id %>" class="btn btn-outline-secondary">Cancel</a>
+      <button type="submit" class="btn btn-primary">Update</button>
+    </div>
+  </fieldset>
+</form>
+```
+
+Above you can see I am using variable interpolation `<%= variable %>` which is part of [`ejs` templating engine](https://ejs.co/) I have configured _Express_ app with. This form expects `model` to be passed to renderer, the one returned from _MySQL_ and `data` which holds form field values, it also expects helper functions `fieldData()` which is a shorcut to access values in `data` object and `fieldErr()` which checks if there is an error for a given form field.
+
+TODO: show how values are stored in DB
+
+### Running python scripts
+
+All ingredients are ready to be used as arguments for Python scripts: user stored training data, training options in database
 
 ## Deployment to AWS
 
