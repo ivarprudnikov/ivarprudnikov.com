@@ -255,7 +255,7 @@ pool.query("select * from model order by updated_at desc limit ? offset ?", [10,
 Just before being able to run those scripts we need to pass some arguments to them as well. Before that user ought to be able to tweak them in _UI_. Arguments are going to be exposed as a web form to the user and upon _POST_ those values will be stored in the database. You can see [all of training options used in a web form in the git repository](https://github.com/ivarprudnikov/char-rnn-tensorflow/blob/master/server/views/training_options.ejs). As an example a form looks similar to the following:
 
 ```html
-<form action="/model/<%= locals.model.id %>/options" method="post" enctype="multipart/form-data">
+<form action="/<%= locals.model.id %>/options" method="post" enctype="multipart/form-data">
 
   <h1 class="h3 text-center mb-3">Update training options</h1>
 
@@ -293,9 +293,149 @@ Just before being able to run those scripts we need to pass some arguments to th
 </form>
 ```
 
-Above you can see I am using variable interpolation `<%= variable %>` which is part of [`ejs` templating engine](https://ejs.co/) I have configured _Express_ app with. This form expects `model` to be passed to renderer, the one returned from _MySQL_ and `data` which holds form field values, it also expects helper functions `fieldData()` which is a shorcut to access values in `data` object and `fieldErr()` which checks if there is an error for a given form field.
+Above you can see I am using variable interpolation `<%= variable %>` which is part of [`ejs` templating engine](https://ejs.co/) I have configured _Express_ app with. This form expects `model` to be passed to renderer, the one returned from _MySQL_ and `data` which holds form field values, it also expects helper functions `fieldData()` which is a shorcut to access values in `data` object and `fieldErr()` which checks if there is an error for a given form field. Rendering of the above looks like:
 
-TODO: show how values are stored in DB
+```javascript
+router.get('/:id/options', checkPathParamSet("id"), loadInstanceById(), (req, res) => {
+  res.render('training_options', Object.assign(res.locals, {
+    data: JSON.parse(req.instance.train_params),
+    model: req.instance
+  }))
+})
+```
+
+Here `checkPathParamSet` and `loadInstanceById` are helper middleware functions that are reused amongst other methods as well:
+
+```javascript
+function checkPathParamSet(paramName) {
+  return (req, res, next) => {
+    if (!req.params[paramName]) {
+      res.render('404')
+      return
+    }
+    next()
+  }
+}
+
+function loadInstanceById() {
+  return async (req, res, next) => {
+    let instance = await db.findModel(req.params.id)
+    if (!instance) {
+      res.render('404')
+    } else {
+      req.instance = instance;
+      next()
+    }
+  }
+}
+```
+
+#### Schema validation
+
+Storage of training parameters is pretty much straightforward except their validation. To make sure we comply with _Python_ script api those requirements need to be formalized somewhere else but script itself and then validated against before storage. This could also be an _ad hoc_ implementation but validation ought to be reused before calling script as well, also reading code is harder that looking into schema. I am using JSON schema for parameter definition and validation, below example shows only couple of fields:
+
+```json
+{
+  "$id": "generator/schema/training/options.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "num_seqs": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "number of seqs in one batch"
+    },
+    "num_steps": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "length of one seq"
+    }
+  },
+  "additionalProperties": false
+}
+```
+
+There are couple of JSON schema validators in the wild but I chose [`ajv`](https://github.com/epoberezkin/ajv) as it supports latest schema drafts. Lets see how validation logic is implemented:
+
+```javascript
+const Ajv = require('ajv')
+// above schema sample
+const trainOptionsSchema = require("train_arguments_schema.json") 
+const ajv = new Ajv({allErrors: true, coerceTypes: true, removeAdditional: true})
+const validator = ajv.compile(trainOptionsSchema)
+
+/**
+ * @param params {object}
+ * @return {object} Errors if any
+ */
+function chackTrainParams(params) {
+  if (validator(params)) {
+    return null
+  }
+  let errors = {}
+  // validator shows path of failing leaf starting with a dot
+  // changing it to simplify rendering of error messages
+  validator.errors.forEach((err) => {
+    let keyWithoutTrailingDot = err.dataPath.replace(/^\./, "");
+    errors[keyWithoutTrailingDot] = err.message
+  })
+  return errors
+}
+```
+
+With above implementation it is easy enough to check if there are any errors in current object:
+
+```javascript
+chackTrainParams({num_seqs: 0})
+
+// returns
+// { num_seqs: 'should be >= 1' }
+```
+
+#### Storage
+
+Previously for document upload I used `Busboy` but when using it with form fields it is a bit verbose, gladly there is a wrapper around that dependency called [`multer`](https://github.com/expressjs/multer#readme) which puts form fields into `req.body`. For just the form field submissions use `multerUpload.none()` middleware.
+
+```js
+router.post('/:id/options', checkPathParamSet("id"), loadInstanceById(), multerUpload.none(), asyncErrHandler.bind(null, async (req, res) => {
+
+  let model = req.instance
+
+  // filter out empty values
+  let params = Object.keys(req.body).reduce((memo, val) => {
+    if (req.body[val] != null && req.body[val] !== "") {
+      memo[val] = req.body[val]
+    }
+    return memo
+  }, {})
+
+  let errors = chackTrainParams(params)
+  if (errors) {
+    return res.render('training_options', Object.assign(res.locals, {
+      error: "Found " + Object.keys(errors).length + " errors",
+      errors: errors,
+      data: params,
+      model: req.instance
+    }))
+  }
+
+  await db.updateModel(model.id, {
+    train_params: JSON.stringify(params)
+  })
+
+  res.redirect(`${req.baseUrl}/${model.id}`)
+}))
+```
+
+Another thing above is `async` error handler which ought to be explicitly written as until now _Express_ does not allow handling them:
+
+```javascript
+const asyncErrHandler = (asyncFn, req, res) => asyncFn(req, res)
+  .catch(err => {
+    console.log((new Date()).toISOString(), "[ERROR]", util.inspect(err))
+    res.status(500).render('500')
+  });
+```
 
 ### Running python scripts
 
