@@ -67,7 +67,7 @@ python sample.py \
 
 Above script needs a path to checkpoint data to pull variable values from it and use in the rebuilt model, it also uses the vocabulary file which was dumped in the process of training, that includes characters used for text generation.
 
-## Access over _HTTP_
+## Web application
 
 Given we have `python` scripts for training and character generation it is possible to wrap those in a simple _app_ exposed to the public internet. User will be able to upload and train her own sample then generate some text after training finishes.
 
@@ -439,7 +439,89 @@ const asyncErrHandler = (asyncFn, req, res) => asyncFn(req, res)
 
 ### Running python scripts
 
-All ingredients are ready to be used as arguments for Python scripts: user stored training data, training options in database
+All ingredients are ready to be used, training data will be uploaded to a location on disk, training parameters will be stored in a database. It is now necessary to use those details and run _Python_ scripts which were forked already. I've written about how to run _Python_ scripts from within _Node.js_ application already so will not delve into much details, make sure to skim it through though ["Using Python scripts in Node.js server"]({{ site.baseurl }}{% post_url 2018-11-11-nodejs-server-running-python-scripts %}).
+
+**Action buttons**
+
+First I need action buttons in UI which will start/stop training process, upon click those should hit appropriate path handler in application which will do the rest. Those buttons will be exposed only in certain conditions - start when training data is uploaded and stop only when training is in progress:
+
+```html
+<% if(model.is_in_progress){ %>
+  <form class="d-inline-block" action="/model/<%= model.id %>/stop" method="post">
+    <button type="submit" class="btn btn-sm btn-danger">Stop training</button>
+  </form>
+<% } else if (model.has_data) { %>
+  <form class="d-inline-block" action="/model/<%= model.id %>/start" method="post">
+    <button type="submit" class="btn btn-sm btn-outline-primary">Start training</button>
+  </form>
+<% } %>
+```
+
+**Start training**
+
+Before executing training script we need to be sure it is not running currently, this is achieved by checking if `training_pid` is present on `model` instance. It is also necessary to clean up any existing log entries if those exist because relationship prohibits having more than one log representation for training, in other words - one model one log. Then script will be started in a separate process and events coming from it will be both stored in the database and sent to websocket connection to be rendered in real time.
+
+```javascript
+routerModel.post('/:id/start', checkPathParamSet("id"), loadInstanceById(), asyncErrHandler.bind(null, async (req, res) => {
+
+  let model = req.instance
+  
+  // if in progress then cancel
+  if (model.training_pid) {
+    return res.redirect(`${req.baseUrl}/${model.id}`)
+  }
+
+  const params = JSON.parse(model.train_params || "{}")
+  
+  // clear any existing logging
+  await db.deleteLogEntries(model.id)
+
+  // launch script process
+  let subprocess
+  try {
+    subprocess = await trainModel(model.id, params)
+  } catch (err) {
+    // cleanup if error
+    await db.setModelTrainingStopped(model.id)
+    return res.render('show', Object.assign(res.locals, {
+      model: req.instance,
+      error: util.inspect(err)
+    }))
+  }
+
+  // obtain a running websocket instance
+  const wss = req.app.get(WEBSOCKET)
+
+  // store logs and also spit it out to websocket ro render them in real time
+  let chunkPosition = 1
+  subprocess.stdout.on('data', async (data) => {
+    let logEntry = {
+      model_id: model.id,
+      chunk: data + "",
+      position: chunkPosition
+    }
+    await db.insertLogEntry(logEntry)
+    wss.broadcast(JSON.stringify(logEntry))
+    chunkPosition++
+  });
+  subprocess.stderr.on('data', async (data) => {
+    let logEntry = {
+      model_id: model.id,
+      chunk: `Error: ${data}`,
+      position: chunkPosition
+    }
+    await db.insertLogEntry(logEntry)
+    wss.broadcast(JSON.stringify(logEntry))
+    chunkPosition++
+  });
+
+  // mark model as in progress
+  await db.setModelTrainingStarted(model.id, subprocess.pid);
+
+  // get back to page it was initiated on
+  res.redirect(`${req.baseUrl}/${model.id}`)
+}))
+```
 
 ## Deployment to AWS
 
