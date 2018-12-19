@@ -31,7 +31,7 @@ Resolving dependencies...
 **Run locally**
 
 ```bash
-$ bundle exec jekyll serve --drafts
+$ bundle exec jekyll serve --drafts --incremental
 Configuration file: /Users/hacker/cloned/repo/_config.yml
             Source: /Users/hacker/cloned/repo/
        Destination: /Users/hacker/cloned/repo/_site
