@@ -941,9 +941,10 @@ This exercise explored a naive way of running Tensorflow powered scripts via web
 - _Websockets_ to see live progress in UI
 - _Docker_ to make sure the application is running in predictable environment
 - _CI server_ to automate deployments
-- Docker container registry to store images
+- _Docker container registry_ to store images
 - _Elastic Beanstalk_ to run Docker container images
 - _RDS_ to store sequential data
+- _Bootstrap_ framework to assemble UI in html
 
 If you asked me why is there no _React_ in this list I might do something stupid.
 
