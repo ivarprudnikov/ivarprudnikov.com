@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Run Tensorflow scripts from Node.js server deployed on AWS as Docker container
+image: /assets/rnn-trainer-generator-website-screenshot.jpg
 toc: true
 ---
 
@@ -75,11 +76,11 @@ To build an app I'll use _Node.js_ with _Express_ framework. There will be coupl
 
 ### Uploading data
 
-Simplest approach to solving the upload problem is a basic html form. User should have UTF-8 encoded plain text file available on her system. And app should be able to render the form and process form _POST_ with `multipart/form-data`. Ideally uploaded plain text files could be stored somewhere on _AWS S3_ or similar services to leverage almost infinite scalability but for this exercise I'll keep those on the same server running application and executing Python scripts.
+Simplest approach to solving the upload problem is a basic html form. User should have _UTF-8_ encoded plain text file available on her system. And app should be able to render the form and process form _POST_ with `multipart/form-data`. Ideally uploaded plain text files could be stored somewhere on _AWS S3_ or similar services to leverage almost infinite scalability but for this exercise I'll keep those on the same server running application and executing _Python_ scripts.
 
 **Render upload form**
 
-Basic knowledge of Express framework here is assumed. Below example expects view engine along with default views directory set to be able to render `html`. If you follow code in [git repository](https://github.com/ivarprudnikov/char-rnn-tensorflow) it will be a bit different and will have more _features_ used. 
+Basic knowledge of _Express_ framework here is assumed. Below example expects view engine along with default views directory set to be able to render `html`. If you follow code in [git repository](https://github.com/ivarprudnikov/char-rnn-tensorflow) it will be a bit different and will have more _features_ used. 
 
 ```javascript
 router.get('/upload', (req, res) => {
@@ -169,13 +170,13 @@ One problem is _almost_ solved, training file is ready to be used.
 
 ### Storage
 
-We could store everything in the filesystem but eventually it gets quite complicated. Initially I thought example without database will be a bit more readable but the effect was opposite as soon as I wanted to render more details in html having not just generated ids. It is useful to track when user uploads data, when training starts and ends, even giving names to those training jobs is useful.
+We could store everything in the filesystem but eventually it gets quite complicated. Initially I thought example without database will be a bit more readable but the effect was opposite as soon as I wanted to render more details in html. It is useful to track when user uploads data, when training starts and ends, even giving names to those training jobs is useful, but storing them in filesystem seemed a bit dull and verbose to implement.
 
-Apart from those mentioned useful parts it will be necessary to store logs as well. Logs are going to be produced when training on uploaded data. I chose to store those in database after reading quite old _Travis_ blog post [add link] about how they process logging.
+Apart from those mentioned useful parts it will be necessary to store logs as well. Logs are going to be produced when training on uploaded data. I chose to store those in database after reading quite old _Travis_ blog post [Solving the Puzzle of Scalable Log Processing](https://blog.travis-ci.com/2013-08-08-solving-the-puzzle-of-scalable-log-processing).
 
 #### Model
 
-There are 2 thigs I want to store:
+There are 2 things I want to store:
 
 - `model` represents training job and contains details such as `id`, time it was created, training parameters, if user uploaded text data, is training complete, etc.
 - `log` is part of model but instead of having one big field containing all the text it will be split into lines which will make it easier to insert new data.
@@ -364,10 +365,6 @@ const trainOptionsSchema = require("train_arguments_schema.json")
 const ajv = new Ajv({allErrors: true, coerceTypes: true, removeAdditional: true})
 const validator = ajv.compile(trainOptionsSchema)
 
-/**
- * @param params {object}
- * @return {object} Errors if any
- */
 function chackTrainParams(params) {
   if (validator(params)) {
     return null
@@ -394,7 +391,7 @@ chackTrainParams({num_seqs: 0})
 
 #### Storage
 
-Previously for document upload I used `Busboy` but when using it with form fields it is a bit verbose, gladly there is a wrapper around that dependency called [`multer`](https://github.com/expressjs/multer#readme) which puts form fields into `req.body`. For just the form field submissions use `multerUpload.none()` middleware.
+Previously, for document upload, I used `Busboy` but when using it with form fields it is a bit verbose, gladly there is a wrapper around that dependency called [`multer`](https://github.com/expressjs/multer#readme) which puts form fields into `req.body`. For just the form field submissions use `multerUpload.none()` middleware.
 
 ```js
 router.post('/:id/options', checkPathParamSet("id"), loadInstanceById(), multerUpload.none(), asyncErrHandler.bind(null, async (req, res) => {
@@ -457,10 +454,10 @@ First I need action buttons in UI which will start/stop training process, upon c
 <% } %>
 ```
 
-Before executing training script we need to be sure it is not running currently, this is achieved by checking if `training_pid` is present on `model` instance. It is also necessary to clean up any existing log entries if those exist because relationship prohibits having more than one log representation for training, in other words - one model one log. Then script will be started in a separate process and events coming from it will be both stored in the database and sent to websocket connection to be rendered in real time.
+Before executing training script we need to be sure it is not running currently, this is achieved by checking if `training_pid` is present on `model` instance. It is also necessary to clean up any existing log entries if those exist because relationship prohibits having more than one log representation for training, in other words - one model one log. Then script will be started in a separate process and events coming from it will be both stored in the database and sent to websocket connection to be rendered in real time. Websocket will not be covered here as it is part of other article I mentioned above ["Using Python scripts in Node.js server"]({{ site.baseurl }}{% post_url 2018-11-11-nodejs-server-running-python-scripts %})
 
 ```javascript
-routerModel.post('/:id/start', checkPathParamSet("id"), loadInstanceById(), asyncErrHandler.bind(null, async (req, res) => {
+router.post('/:id/start', checkPathParamSet("id"), loadInstanceById(), asyncErrHandler.bind(null, async (req, res) => {
 
   let model = req.instance
   
@@ -521,7 +518,7 @@ routerModel.post('/:id/start', checkPathParamSet("id"), loadInstanceById(), asyn
 }))
 ```
 
-Script is launched in `trainModel()` function which returns `Promise`. In addition to checks above within router handler `trainModel()` will double check stored training parameters and will then merge them with defaults. Training data and pid file existence will also be checked before spawning a new _Python_ process.
+Script is launched in `trainModel()` function which returns `Promise`. In addition to checks above within router handler `trainModel()` will double check stored training parameters and will then merge them with defaults. Training data and `pid` file existence will also be checked before spawning a new _Python_ process.
 
 ```javascript
 function trainModel(submissionId, params) {
@@ -599,7 +596,7 @@ function trainModel(submissionId, params) {
 }
 ```
 
-Above will spawn _Python_ process which will execute training script I mentioned in the beginning. 
+Above will spawn _Python_ process which will execute training script I mentioned in the beginning. Some variables are not clear as they are not defined in this excerpt but you could always look at the [source code to see what values they hold](https://github.com/ivarprudnikov/char-rnn-tensorflow/blob/master/server/generator.js)
 
 #### Generating sample
 
@@ -642,7 +639,7 @@ Instead of making a form post I'm using some `ajax` here with a help from `jQuer
 Router will handle `/sample` endpoint which in turn checks if model finished training via its `is_complete` flag. It is also necessary to use same parameters as were used for training to make sure correct model representation is created before extracting a text sample.
 
 ```javascript
-routerModel.get('/:id/sample', checkPathParamSet("id"), loadInstanceById(), asyncErrHandler.bind(null, async (req, res) => {
+router.get('/:id/sample', checkPathParamSet("id"), loadInstanceById(), asyncErrHandler.bind(null, async (req, res) => {
   let model = req.instance
   if (!model.is_complete) {
     res.status(400).send({error: "Not ready yet"})
@@ -662,7 +659,7 @@ routerModel.get('/:id/sample', checkPathParamSet("id"), loadInstanceById(), asyn
     return memo;
   }, {})
 
-  // TODO add start_string and max_length from query params
+  // TODO somebody add start_string and max_length from query params
   let subprocess
   try {
     subprocess = await sampleModel(model.id, args)
@@ -680,13 +677,13 @@ routerModel.get('/:id/sample', checkPathParamSet("id"), loadInstanceById(), asyn
 
 As you see it is missing `start_string` and `max_length` arguments, this will be left for someone else to complete and add some input fields to UI, for now I've set some defaults for it to work.
 
-`sampleModel` function is similar to `trainModel` so it is not necessary for me to repeat it over here.
+`sampleModel()` function is similar to `trainModel()` so it is not necessary for me to repeat it over here you can check it out in [source code](https://github.com/ivarprudnikov/char-rnn-tensorflow/blob/master/server/generator.js).
 
 ## Docker
 
 Implementation here uses a mix of languages which is a bit of a challenge to make sure it runs across different machines. There are couple of issues I'd like to solve with _Docker_. Firstly correct dependencies have to be used for both _Python_ scripts and _Node.js_ server, then I'd like to run it all with one command, it all needs to be wrapped to be run in production environment. To solve dependency issue one could use `virtualenv` and `npm`, to run it all in one command developer could write a `shell` script but to run it all on production environment you need some orchestration. All mentioned issues can easily be resolved with _Docker_.
 
-Choosing a base _Docker_ image here is a challenge as I could not find the one with both _Node.js_ and _Python_ support, choose one or the other and install missing components. I chose _Python_ image as a base one as it is a bit more important to make certain those scripts run in consistent environment and I could not guarantee it would always be the same if it was installed from scratch at every deployment to production. Installing _Node.js_ on the other hand is not hard at all when using `nvm` besides developer usually locks its dependencies with `package-lock.json`. Furthermore if anything goes wrong with server it will be easier to spot rather that failing scripts.
+Choosing a base _Docker_ image here is a challenge as I could not find the one with both _Node.js_ and _Python_ support, choose one or the other and install missing components. I chose _Python_ image as a base one as it is a bit more important to make certain those scripts run in consistent environment and I could not guarantee it would always be the same if it was installed from scratch at every deployment to production. Installing _Node.js_ on the other hand is not hard at all when using `nvm` besides developer usually locks its dependencies with `package-lock.json`. Furthermore if anything goes wrong with server it will be easier to spot rather than checking in logs if scripts are failing.
 
 Directory structure is split into `server` and `generator`. Former contains all _Node.js_ server and latter the scripts.
 
@@ -750,7 +747,7 @@ EXPOSE 8080
 CMD ["npm", "start"]
 ```
 
-If you are not very familiar with _Docker_ then all it does is installs _Node.js_ with `nvm` which is also installed, then copies over the files and installs _Python_ dependencies for scripts:
+If you are not very familiar with _Docker_ then all it does is installs _Node.js_ along with `nvm`, then copies over the files and installs _Python_ dependencies for scripts:
 
 ```dockerfile
 COPY generator/requirements.txt $GENERATOR_PATH/requirements.txt
@@ -777,23 +774,25 @@ docker run --rm -ti \
     -p 8080:8080 foobar
 ```
 
+`docker.for.mac.localhost` is meant for OSX users, if you use something else try finding out the value in _Docker_ documentation.
+
 ## Deployment to AWS
 
-All this exercise was not only about being able to run those scripts locally but also to try and deploy them to environment close to production. For this reason I went with what I usually work with which is _AWS_. I say _close to production_ because I do not intend to spend lots of money on this example implementation I just made, it will run given tiny resources.
+All this exercise was not only about being able to run those scripts locally but also to try and deploy them to environment close to production. For this reason I went with what I usually work with which is _AWS_. I say _close to production_ because I do not intend to spend money on this example implementation I just made, it will run given tiny resources.
 
 I need couple of parts of infrastructure to make it all work:
 
-- database - RDS
-- Docker container registry - Elastic Container Registry ECR
-- Docker runner - Elastic beanstalk
+- database - _RDS_
+- Docker container registry - _Elastic Container Registry (ECR)_
+- Docker runner - _Elastic Beanstalk (EB)_
 
-I could have chosen Elastic Container Service (ECS) to run the _Docker_ image on but I got scared trying to use it as there were some many options compared to Elastic Beanstalk launch configuration. 
+I could have chosen _Elastic Container Service (ECS)_ to run the _Docker_ image on but I got scared trying to use it as there were some many options compared to _EB_ launch configuration. 
 
-Docker files can be run on Elastic Beanstalk but then it builds them at the time of deployment which might take really long time before instance becomes ready to respond to requests. It is much better to build the image on CI server and push it to registry before using it.
+Docker files can be run on _EB_ but then it builds them at the time of deployment which might take really long time before instance becomes ready to respond to requests. It is much better to build the image on _CI_ server and push it to registry before using it.
 
 ### CI server
 
-This whole example is hosted on _Github_ and is quite easy to integrate with _Travis CI_ which is also free when used with public repositories. I used it for building the _Docker_ image and pushing it to _ECR_ in _AWS_. CI configuration is relatively simple not talking into account the shell script I had to assemble for it to build and push image to _AWS_. It will run _Docker_ build every time there is a new `git` commit pushed to `Github` and then will deploy but only on `master` branch.
+This whole example is hosted on _Github_ and is quite easy to integrate with _Travis CI_ which is also free when used with public repositories. I used it for building the _Docker_ image and pushing it to _ECR_ in _AWS_. [CI configuration is relatively simple](https://github.com/ivarprudnikov/char-rnn-tensorflow/blob/master/.travis.yml) not taking into account the shell script I had to assemble for it to build and push image to _AWS_. It will run _Docker_ build every time there is a new `git` commit pushed to `Github` and then will deploy but only on `master` branch.
 
 ```yaml
 sudo: required
@@ -822,7 +821,7 @@ deploy:
     branch: master
 ```
 
-Deployment script is an assembled version from those I found in the wild internets, it relies on installed `awscli` to tag the build that was just made and then to push it to registry.
+Deployment script is an assembled version from those I found in the wild internets, it relies on installed `awscli` _sdk_ to tag the build that was just made and then to push it to registry.
 
 ```bash
 #!/bin/bash -e
@@ -849,9 +848,12 @@ docker push ${TARGET_IMAGE_LATEST}
 # push new version
 docker tag ${SOURCE_IMAGE} ${TARGET_IMAGE_VERSIONED}
 docker push ${TARGET_IMAGE_VERSIONED}
+
+# ...
+
 ```
 
-I do push 2 tags here, the `latest` one and the versioned one which will allow me to specify it when deploying to _Elastic Beanstalk_. Deployment to _EB_ requires me to push `zip` field with just the `Dockerrun.aws.json` in it which in tun tells what docker image to use:
+I do push 2 tags here, the `latest` one and the versioned one which will allow me to specify it when deploying to _Elastic Beanstalk_. Keep in mind that [_ECR_ has some limits on maximum amount of tags and images](https://docs.aws.amazon.com/AmazonECR/latest/userguide/service_limits.html). Deployment to _EB_ requires me to push `zip` field with just the [`Dockerrun.aws.json`](https://github.com/ivarprudnikov/char-rnn-tensorflow/blob/master/Dockerrun.aws.json ) in it which in tun tells what docker image to use:
 
 ```json
 {
@@ -878,6 +880,8 @@ I do push 2 tags here, the `latest` one and the versioned one which will allow m
 `json` file contains `<TARGET_IMAGE>` which is replaced in deployment script with a versioned image name:
 
 ```bash
+# ...
+
 ZIP="${VERSION}.zip"
 
 # Deploy new version to Elasticbeanstalk
@@ -902,6 +906,56 @@ aws elasticbeanstalk update-environment --environment-name ${EB_ENV} \
 ```
 
 ### Elastic beanstalk
+
+There is part of configuration on CI server which pushes 2 things to _AWS_: freshly built _Docker_ image and new _EB_ application version. This is almost everything we need except setting up _EB_ environment itself which proved to be _a bit_ catchy and time consuming so I'll outline some important bits I got caught on.
+
+To start I had to set up _AWS RDS_ _MySQL_ database which in turn resides in a _VPC_. Then I had to enable _Networking_ under _EB_ application which requires enabling _LoadBalancer_, the former allows setting up _VPC_ details which are necessary to allow your _EC2_ instance to be created in that same _VPC_ to then access the database. Apart from _VPC_ which is out of scope here I needed to make sure my application is using correct image and then is correctly mapped in _LoadBalancer_.
+
+<div class="d-flex justify-content-center align-items-start my-4">
+  <figure class="flex-fill text-center figure">
+    <img class="img-fluid" alt="app file structure" src="/assets/rnn-generator-aws-load-balancer-port-mapping.png" />
+    <figcaption class="figure-caption">
+      Load balancer port mapping
+    </figcaption>
+  </figure>
+</div>
+
+When creating an app make sure to select **Multi-container Docker running on 64bit Amazon Linux** as previously mentioned `Dockerrun.aws.json` is using `"AWSEBDockerrunVersion": "2"`.
+
+<div class="d-flex justify-content-center align-items-start my-4">
+  <figure class="flex-fill text-center figure">
+    <img class="img-fluid" alt="app file structure" src="/assets/rnn-generator-aws-app-docker-version.png" />
+    <figcaption class="figure-caption">
+      AWS EB app and container versions
+    </figcaption>
+  </figure>
+</div>
+
+## Summary
+
+Right this is a long one and took me some time to build. Eventually I've made it available to public under [rnn-generator.dasmicrobot.com](https://rnn-generator.dasmicrobot.com/) but I have little confidence in it working for more than one user as resources allocated to that instance are miserable.
+
+This exercise explored a naive way of running Tensorflow powered scripts via webapp. Even this basic functionality which was achieved required to use wide array of development techniques to make it successiful:
+- _Node.js_ powered web server
+- _Tensorflow_ powered recurrent neural net implementation
+- _Websockets_ to see live progress in UI
+- _Docker_ to make sure the application is running in predictable environment
+- _CI server_ to automate deployments
+- Docker container registry to store images
+- _Elastic Beanstalk_ to run Docker container images
+- _RDS_ to store sequential data
+
+If you asked me why is there no _React_ in this list I might do something stupid.
+
+**Improvements**
+
+Current implementation is clunky and hardly scalable as both training script and webserver lives on the same box. Making sure that scripts run in something with _GPU_ would be a great start, I would probably try _AWS Lambda_ or one of their Machine learning products.
+
+After splitting out _Python_ scripts it would be much easier to concentrate on implementing sort of REST API so that website could use more `ajax` instead of old school forms.
+
+UI could also have more pictures of unicorns to make sure MVP attracts first million in days and not years.
+
+Thank you for reading.
 
 ## Source code
 
