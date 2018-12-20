@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Wrap Tensorflow scripts in Docker and deploy to AWS
+title: Run Tensorflow scripts from Node.js server deployed on AWS as Docker container
 toc: true
 ---
 
@@ -441,7 +441,7 @@ const asyncErrHandler = (asyncFn, req, res) => asyncFn(req, res)
 
 All ingredients are ready to be used, training data will be uploaded to a location on disk, training parameters will be stored in a database. It is now necessary to use those details and run _Python_ scripts which were forked already. I've written about how to run _Python_ scripts from within _Node.js_ application already so will not delve into much details, make sure to skim it through though ["Using Python scripts in Node.js server"]({{ site.baseurl }}{% post_url 2018-11-11-nodejs-server-running-python-scripts %}).
 
-**Action buttons**
+#### Training
 
 First I need action buttons in UI which will start/stop training process, upon click those should hit appropriate path handler in application which will do the rest. Those buttons will be exposed only in certain conditions - start when training data is uploaded and stop only when training is in progress:
 
@@ -456,8 +456,6 @@ First I need action buttons in UI which will start/stop training process, upon c
   </form>
 <% } %>
 ```
-
-**Start training**
 
 Before executing training script we need to be sure it is not running currently, this is achieved by checking if `training_pid` is present on `model` instance. It is also necessary to clean up any existing log entries if those exist because relationship prohibits having more than one log representation for training, in other words - one model one log. Then script will be started in a separate process and events coming from it will be both stored in the database and sent to websocket connection to be rendered in real time.
 
@@ -523,12 +521,388 @@ routerModel.post('/:id/start', checkPathParamSet("id"), loadInstanceById(), asyn
 }))
 ```
 
+Script is launched in `trainModel()` function which returns `Promise`. In addition to checks above within router handler `trainModel()` will double check stored training parameters and will then merge them with defaults. Training data and pid file existence will also be checked before spawning a new _Python_ process.
+
+```javascript
+function trainModel(submissionId, params) {
+
+  // defaults
+  let args = {
+    num_seqs: 32,
+    num_steps: 50,
+    lstm_size: 128,
+    num_layers: 2,
+    use_embedding: false,
+    embedding_size: 128,
+    learning_rate: 0.001,
+    train_keep_prob: 0.5,
+    max_steps: 1000,
+    save_every_n: 1000,
+    log_every_n: 100,
+    max_vocab: 3500
+  }
+
+  return new Promise(function (resolve, reject) {
+    if (!submissionId) reject("submissionId required");
+
+    if (typeof params === "object") {
+      let errors = chackTrainParams(params)
+      if (errors) {
+        return reject(errors)
+      } else {
+        Object.assign(args, params)
+      }
+    }
+
+    const folderPath = path.join(UPLOADS_PATH, submissionId)
+    const trainFilePath = path.join(folderPath, TRAIN_FILENAME)
+    if (!fs.existsSync(trainFilePath))
+      return reject("missing training data file")
+
+    const trainPidPath = path.join(folderPath, TRAIN_PID_FILENAME)
+    const modelDir = path.join(GENERATOR_PATH, MODEL_DIR, submissionId)
+    // remove any existing checkpoints
+    rimraf.sync(modelDir)
+    mkdirp.sync(modelDir)
+
+    let spawnArgs = [
+      "-u",
+      path.join(GENERATOR_PATH, 'train.py'),
+      "--input_file", trainFilePath, // utf8 encoded text file
+      "--name", submissionId // name of the model
+    ]
+    Object.keys(args).forEach((k) => {
+      if (k != null && args[k] != null) {
+        spawnArgs.push(`--${k}`)
+        spawnArgs.push(args[k])
+      }
+    })
+    // run script
+    const subprocess = spawn('python', spawnArgs, {
+      stdio: ['ignore', "pipe", "pipe"]
+    });
+    // store pid file
+    fs.writeFileSync(trainPidPath, subprocess.pid)
+    
+    // cleanup in case of error
+    subprocess.on("error", () => {
+      rimraf.sync(trainPidPath)
+      setModelTrainingStopped(submissionId)
+    })
+    subprocess.on("exit", () => {
+      rimraf.sync(trainPidPath)
+      setModelTrainingStopped(submissionId)
+    })
+
+    resolve(subprocess);
+  })
+}
+```
+
+Above will spawn _Python_ process which will execute training script I mentioned in the beginning. 
+
+#### Generating sample
+
+This will be similar as in training, first I need a "button" in UI:
+
+```html
+<% if(model.is_complete){ %>
+  <button id="sampleBtn" type="button" class="btn btn-sm btn-primary" 
+      onclick="generateSample()">Generate sample
+  </button>
+<% } %>
+
+<div id="sample" class="my-3" style="display: none">
+  <p class="font-weight-bold">Generated sample</p>
+  <div id="sampleOutput" class="bg-dark text-light p-3 small"></div>
+</div>
+
+<script>
+  function generateSample() {
+    $("#sampleOutput").empty()
+    $("#sample").show()
+    $("#sampleBtn").prop("disabled", true)
+
+    $.get("/model/<%= model.id %>/sample")
+      .done(function (data) {
+        $("#sampleOutput").text(data)
+      })
+      .fail(function (data) {
+        $("#sampleOutput").text(JSON.stringify(data) || "Error occurred")
+      })
+      .always(function () {
+        $("#sampleBtn").prop("disabled", false)
+      })
+  }
+</script>
+```
+
+Instead of making a form post I'm using some `ajax` here with a help from `jQuery`. For anyone wondering why I did not use front end framework for this it is to keep things simpler.
+
+Router will handle `/sample` endpoint which in turn checks if model finished training via its `is_complete` flag. It is also necessary to use same parameters as were used for training to make sure correct model representation is created before extracting a text sample.
+
+```javascript
+routerModel.get('/:id/sample', checkPathParamSet("id"), loadInstanceById(), asyncErrHandler.bind(null, async (req, res) => {
+  let model = req.instance
+  if (!model.is_complete) {
+    res.status(400).send({error: "Not ready yet"})
+    return
+  }
+
+  // use same params from training
+  const trainingParams = JSON.parse(model.train_params)
+  let args = [
+    'lstm_size',
+    'num_layers',
+    'use_embedding',
+    'embedding_size'
+  ].reduce((memo, key) => {
+    if (trainingParams[key] != null)
+      memo[key] = trainingParams[key]
+    return memo;
+  }, {})
+
+  // TODO add start_string and max_length from query params
+  let subprocess
+  try {
+    subprocess = await sampleModel(model.id, args)
+  } catch (err) {
+    return res.status(400).send({error: util.inspect(err)})
+  }
+
+  subprocess.stderr.on('data', (data) => {
+    console.log(`Error: ${data}`)
+  });
+  res.set('Content-Type', 'text/plain');
+  subprocess.stdout.pipe(res)
+}))
+```
+
+As you see it is missing `start_string` and `max_length` arguments, this will be left for someone else to complete and add some input fields to UI, for now I've set some defaults for it to work.
+
+`sampleModel` function is similar to `trainModel` so it is not necessary for me to repeat it over here.
+
+## Docker
+
+Implementation here uses a mix of languages which is a bit of a challenge to make sure it runs across different machines. There are couple of issues I'd like to solve with _Docker_. Firstly correct dependencies have to be used for both _Python_ scripts and _Node.js_ server, then I'd like to run it all with one command, it all needs to be wrapped to be run in production environment. To solve dependency issue one could use `virtualenv` and `npm`, to run it all in one command developer could write a `shell` script but to run it all on production environment you need some orchestration. All mentioned issues can easily be resolved with _Docker_.
+
+Choosing a base _Docker_ image here is a challenge as I could not find the one with both _Node.js_ and _Python_ support, choose one or the other and install missing components. I chose _Python_ image as a base one as it is a bit more important to make certain those scripts run in consistent environment and I could not guarantee it would always be the same if it was installed from scratch at every deployment to production. Installing _Node.js_ on the other hand is not hard at all when using `nvm` besides developer usually locks its dependencies with `package-lock.json`. Furthermore if anything goes wrong with server it will be easier to spot rather that failing scripts.
+
+Directory structure is split into `server` and `generator`. Former contains all _Node.js_ server and latter the scripts.
+
+```text
+repo
+  +- generator/
+  +- server/
+  \ Dockerfile
+```
+
+_Dockerfile_ is simple enough without the part that installs _Node.js_
+
+```dockerfile
+FROM python:3.6
+
+# replace shell with bash so we can source files
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+
+# Install node.js
+ENV NODE_VERSION 10.12.0
+ENV NVM_DIR /usr/local/nvm
+RUN mkdir -p $NVM_DIR
+# install nvm
+# https://github.com/creationix/nvm#install-script
+RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+# install node and npm
+RUN echo "source $NVM_DIR/nvm.sh && \
+    nvm install $NODE_VERSION && \
+    nvm alias default $NODE_VERSION && \
+    nvm use default" | bash
+# add node and npm to path so the commands are available
+ENV NODE_PATH $NVM_DIR/versions/node/v$NODE_VERSION/lib/node_modules
+ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
+# confirm installation
+RUN node -v
+RUN npm -v
+
+# prepare workdir
+ENV APP_PATH /app
+ENV SERVER_PATH /app/server
+ENV GENERATOR_PATH /app/generator
+RUN mkdir -p $SERVER_PATH $GENERATOR_PATH
+
+# separate installation of python deps and copying python assets
+# to make sure docker caches installation step
+COPY generator/requirements.txt $GENERATOR_PATH/requirements.txt
+RUN pip install -r $GENERATOR_PATH/requirements.txt
+
+# separate installation of npm modules
+# to make sure docker caches installation step
+COPY server/package.json $SERVER_PATH/package.json
+COPY server/package-lock.json $SERVER_PATH/package-lock.json
+RUN cd $SERVER_PATH && npm install
+
+COPY . $APP_PATH
+
+WORKDIR $SERVER_PATH
+
+EXPOSE 8080
+
+CMD ["npm", "start"]
+```
+
+If you are not very familiar with _Docker_ then all it does is installs _Node.js_ with `nvm` which is also installed, then copies over the files and installs _Python_ dependencies for scripts:
+
+```dockerfile
+COPY generator/requirements.txt $GENERATOR_PATH/requirements.txt
+RUN pip install -r $GENERATOR_PATH/requirements.txt
+``` 
+ 
+and then _Node.js_ server dependencies:
+```dockerfile
+COPY server/package.json $SERVER_PATH/package.json
+COPY server/package-lock.json $SERVER_PATH/package-lock.json
+RUN cd $SERVER_PATH && npm install
+```
+
+To run the above you have to install _Docker_ on your machine and have _MySQL_ running with `rnn_generator` database created and schema applied to it:
+
+- `build` container image: `docker build -t foobar .`
+- `run` built image: 
+```bash
+docker run --rm -ti \
+    -e "MYSQL_HOST=docker.for.mac.localhost" \
+    -e "MYSQL_USER=root" \
+    -e "MYSQL_PASSWORD=" \
+    -e "MYSQL_DATABASE=rnn_generator" \
+    -p 8080:8080 foobar
+```
+
 ## Deployment to AWS
 
-### Docker
+All this exercise was not only about being able to run those scripts locally but also to try and deploy them to environment close to production. For this reason I went with what I usually work with which is _AWS_. I say _close to production_ because I do not intend to spend lots of money on this example implementation I just made, it will run given tiny resources.
 
-### Travis CI
+I need couple of parts of infrastructure to make it all work:
+
+- database - RDS
+- Docker container registry - Elastic Container Registry ECR
+- Docker runner - Elastic beanstalk
+
+I could have chosen Elastic Container Service (ECS) to run the _Docker_ image on but I got scared trying to use it as there were some many options compared to Elastic Beanstalk launch configuration. 
+
+Docker files can be run on Elastic Beanstalk but then it builds them at the time of deployment which might take really long time before instance becomes ready to respond to requests. It is much better to build the image on CI server and push it to registry before using it.
+
+### CI server
+
+This whole example is hosted on _Github_ and is quite easy to integrate with _Travis CI_ which is also free when used with public repositories. I used it for building the _Docker_ image and pushing it to _ECR_ in _AWS_. CI configuration is relatively simple not talking into account the shell script I had to assemble for it to build and push image to _AWS_. It will run _Docker_ build every time there is a new `git` commit pushed to `Github` and then will deploy but only on `master` branch.
+
+```yaml
+sudo: required
+language: python
+services:
+- docker
+env:
+  global:
+  - DOCKER_REPO=ivarprudnikov/rnn-generator
+  - AWS_ACCOUNT_ID=<redacted>
+  - EB_REGION="eu-west-1"
+  - EB_APP="<elastic beanstalk app name>"
+  - EB_ENV="<elastic beanstalk environment name>";
+  - S3_BUCKET="<s3 bucket name the zipped app will be uploaded to>"
+  - secure: <encrypted secret>
+  - secure: <encrypted access key>
+before_install:
+- pip install awscli
+- export PATH=$PATH:$HOME/.local/bin
+script:
+- docker build -t $DOCKER_REPO .
+deploy:
+  provider: script
+  script: bash docker_push.sh
+  on:
+    branch: master
+```
+
+Deployment script is an assembled version from those I found in the wild internets, it relies on installed `awscli` to tag the build that was just made and then to push it to registry.
+
+```bash
+#!/bin/bash -e
+
+TIMESTAMP=$(date '+%Y%m%d%H%M%S')
+VERSION="${TIMESTAMP}-${TRAVIS_COMMIT}"
+REGISTRY_URL=${AWS_ACCOUNT_ID}.dkr.ecr.${EB_REGION}.amazonaws.com
+SOURCE_IMAGE="${DOCKER_REPO}"
+TARGET_IMAGE="${REGISTRY_URL}/${DOCKER_REPO}"
+TARGET_IMAGE_LATEST="${TARGET_IMAGE}:latest"
+TARGET_IMAGE_VERSIONED="${TARGET_IMAGE}:${VERSION}"
+
+aws configure set default.region ${EB_REGION}
+
+# Push image to ECR
+###################
+
+$(aws ecr get-login --no-include-email)
+
+# update latest version
+docker tag ${SOURCE_IMAGE} ${TARGET_IMAGE_LATEST}
+docker push ${TARGET_IMAGE_LATEST}
+
+# push new version
+docker tag ${SOURCE_IMAGE} ${TARGET_IMAGE_VERSIONED}
+docker push ${TARGET_IMAGE_VERSIONED}
+```
+
+I do push 2 tags here, the `latest` one and the versioned one which will allow me to specify it when deploying to _Elastic Beanstalk_. Deployment to _EB_ requires me to push `zip` field with just the `Dockerrun.aws.json` in it which in tun tells what docker image to use:
+
+```json
+{
+  "AWSEBDockerrunVersion": "2",
+  "volumes": [],
+  "containerDefinitions": [
+    {
+      "name": "generator",
+      "image": "<TARGET_IMAGE>",
+      "essential": true,
+      "memoryReservation": 96,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 8080
+        }
+      ],
+      "mountPoints": []
+    }
+  ]
+}
+```
+
+`json` file contains `<TARGET_IMAGE>` which is replaced in deployment script with a versioned image name:
+
+```bash
+ZIP="${VERSION}.zip"
+
+# Deploy new version to Elasticbeanstalk
+########################################
+
+# Interpolate Dockerrun.aws.json and also create backup .bak file
+sed -i.bak "s#<TARGET_IMAGE>#$TARGET_IMAGE_VERSIONED#" Dockerrun.aws.json
+
+# Zip application
+zip -r ${ZIP} Dockerrun.aws.json
+
+# Copy application version over to S3
+aws s3 cp ${ZIP} s3://${S3_BUCKET}/${ZIP}
+
+# Create a new application version with the zipped up Dockerrun file
+aws elasticbeanstalk create-application-version --application-name ${EB_APP} \
+    --version-label ${VERSION} --source-bundle S3Bucket=${S3_BUCKET},S3Key=${ZIP}
+
+# Update the environment to use the new application version
+aws elasticbeanstalk update-environment --environment-name ${EB_ENV} \
+      --version-label ${VERSION}
+```
 
 ### Elastic beanstalk
 
 ## Source code
+
+Source code is available in [Github repo ivarprudnikov/char-rnn-tensorflow](https://github.com/ivarprudnikov/char-rnn-tensorflow)
