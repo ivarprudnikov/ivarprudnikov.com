@@ -10,7 +10,7 @@ A while back ago I was learning/playing with machine/deep learning but all that 
 
 There was [an attempt](https://github.com/ivarprudnikov/facial-keypoints) to use _Python_ alone for both the server and scripting, unfortunately it failed, most likely due to the fact that I am mostly _Javascript_ / _Java_ programmer these days. [Writing webapp](https://github.com/ivarprudnikov/facial-keypoints/tree/master/app) with _Flask_, which is one of the popular choices among _Python_ developers, was a tedious experience for me compared to development process with _Express_(_Node.js_) or _Spring Boot_(_Java_). I still managed to [wrap that half finished _attempt_ in _Docker_](https://github.com/ivarprudnikov/facial-keypoints/blob/master/Dockerfile) and deploy to _AWS_ though.
 
-Another more elaborate and a bit more successful implementation of this idea using _Node.js_ can be found in _Github_ repository [ivarprudnikov/char-rnn-tensorflow](https://github.com/ivarprudnikov/char-rnn-tensorflow). It uses a _Python_ script which is an implementation of _Recurrent Neural Network (RNN)_ character generator written in _Tensorflow_ framework.
+Another more elaborate and a bit more successful implementation of this idea using _Node.js_ can be found in _Github_ repository [ivarprudnikov/char-rnn-tensorflow](https://github.com/ivarprudnikov/char-rnn-tensorflow). It uses a _Python_ script which is an implementation of _Recurrent Neural Network (RNN)_ character generator written in _Tensorflow_ framework. I've written about it as well in another post ["Run Tensorflow scripts from Node.js server deployed on AWS as Docker container"]({{ site.baseurl }}{% post_url 2018-12-20-run-tensorflow-scripts-nodejs-server-deployed-aws-docker-container %})
 
 **Source code**
 
@@ -320,6 +320,6 @@ server.listen(8080, () => console.log('Server running'))
 
 Above will start a server and will render simple _HTML_ which will be able to deal with _WebSocket_.
 
-------------------------
+## Source code
 
-**The source files for this example are available in my repo** [ivarprudnikov/use-python-in-node](https://github.com/ivarprudnikov/use-python-in-node)
+**The source files for this example are available in Github repository** [ivarprudnikov/use-python-in-node](https://github.com/ivarprudnikov/use-python-in-node)
