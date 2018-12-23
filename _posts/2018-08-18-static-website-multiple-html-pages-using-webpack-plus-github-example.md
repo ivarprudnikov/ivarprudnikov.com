@@ -15,18 +15,18 @@ Writing `html` with a bit of `css` and `javascript` is not that hard, but making
 **Reference implementation (example) of what I talk about is in the following repository:**
 [**ivarprudnikov/webpack-static-html-pages**](https://github.com/ivarprudnikov/webpack-static-html-pages)
 
-### 1. Requirements at hand
+## Requirements at hand
 
 * Multiple `html` pages (no [SPA](https://en.wikipedia.org/wiki/Single-page_application))
 * Minify and cache bust `css` and `js` files in production
 * Usage of [_NPM_](https://www.npmjs.com/) modules
 * Development server
 
-### 2. Choosing task runner/bundler
+## Choosing task runner/bundler
 
 I used to do *Grunt*, *Gulp*, *Browserify*, but lately switched to *Webpack* — preferred choice alongside [_React_](https://reactjs.org/) development. There was no hesitation in being consistent with what I use most often, so to fulfill above requirements I tried *Webpack*. Did not believe at first it will be possible or viable as usually it would be used for a single page app having just one `html` page.
 
-### 3. Development server
+## Development server
 
 To start development of an app you could choose one of [Webpack’s starter kits](https://webpack.js.org/starter-kits/) provided by developers in the community, but when you have so many choices (not limited to above link) it is hard to make up your mind. It is necessary to know the API to allow oneself evaluating starter kit properly, or just try one by one. Because my goal was to make plain `html` pages without any use of *React* or *Vue.js* or *Angular* or else, I looked for lightest setup. There was one that caught my eye:
 [**lifenautjoe/webpack-starter-basic**](https://github.com/lifenautjoe/webpack-starter-basic)
@@ -123,7 +123,7 @@ You will see previously created `index.html` with injected `index.js` in it. Thi
 }
 ```
 
-### 4. More HTML pages
+## More HTML pages
 
 Let’s add more basic `html` pages like `about.html` and `contacts.html`, next to current `index.html` **I will deal with CSS later**. Now update Webpack config to serve those pages:
 
@@ -187,7 +187,7 @@ plugins: [
 
 **Pro tip**: develop naming convention for your `html` and `js` files and configure them all at once by loading them via [`fs`](https://nodejs.org/api/fs.html) in `webpack.dev.js`.
 
-### 5. Adding CSS
+## Adding CSS
 
 This might seem counter intuitive but those *Javascript* files created previously will serve as a proxy to get to `css`. First get the [normalize.css](https://necolas.github.io/normalize.css/) :
 
@@ -232,7 +232,7 @@ Now after `npm start` you’ll see `css` inlined in the `head` element of `html`
 
 **Pro tip:** use Sass instead of plain `css` by adding one more loader [https://github.com/webpack-contrib/style-loader](https://github.com/webpack-contrib/style-loader)
 
-### 6. Use latest Javascript language features
+## Use latest Javascript language features
 
 Make sure we have *Javascript* file with very new features, like **class** and **static** methods. Below example is our `index.js` and it should print `1234` in the console when page loads.
 
@@ -308,7 +308,7 @@ var Foo = function () {
 console.log(Foo.instance().getValue());
 ```
 
-### 7. Assembling production release
+## Assembling production release
 
 At this time we have a project which can be run locally, but in order for it to be deployed to remote server couple of things need to happen:
 
@@ -432,7 +432,7 @@ To build and preview website locally run:
 $ npm run preview
 ```
 
-*Source files*
+## Source code
 
 Check out repository with above example, a better example to be frank, including image loader and links between pages.
 [**ivarprudnikov/webpack-static-html-pages**](https://github.com/ivarprudnikov/webpack-static-html-pages)
