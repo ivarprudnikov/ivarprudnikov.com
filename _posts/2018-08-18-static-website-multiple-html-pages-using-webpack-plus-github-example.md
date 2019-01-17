@@ -15,6 +15,8 @@ Writing `html` with a bit of `css` and `javascript` is not that hard, but making
 **Reference implementation (example) of what I talk about is in the following repository:**
 [**ivarprudnikov/webpack-static-html-pages**](https://github.com/ivarprudnikov/webpack-static-html-pages)
 
+**Note: Babel updated to `v7` on 2019-01-17.** You could check out reference implementation with `v6` by looking into `git` history.
+
 ## Requirements at hand
 
 * Multiple `html` pages (no [SPA](https://en.wikipedia.org/wiki/Single-page_application))
@@ -116,9 +118,9 @@ You will see previously created `index.html` with injected `index.js` in it. Thi
   "license": "ISC",
   "devDependencies": {
     "html-webpack-plugin": "^3.2.0",
-    "webpack": "^4.16.5",
-    "webpack-cli": "^3.1.0",
-    "webpack-dev-server": "^3.1.5"
+    "webpack": "^4.28.4",
+    "webpack-cli": "^3.2.1",
+    "webpack-dev-server": "^3.1.14"
   }
 }
 ```
@@ -257,7 +259,7 @@ console.log(Foo.instance().getValue())
 To make above work among browsers it needs to be *transpiled/compiled/desugared* into simpler form of *Javascript*. And again to do that we need to install new modules that will help us:
 
 ```bash
-$ npm i -D babel-core babel-loader babel-preset-env
+$ npm i -D @babel/core babel-loader @babel/preset-env
 ```
 
 Then define a new rule for *Javascript* files in `webpack.dev.js`:
@@ -271,7 +273,7 @@ module: {
             exclude: /node_modules/,
             loader: 'babel-loader',
             options: {
-                presets: ['env']
+                presets: ['@babel/preset-env']
             }
         },
         // ...
@@ -362,7 +364,7 @@ module.exports = {
                 exclude: /node_modules/,
                 loader: 'babel-loader',
                 options: {
-                    presets: ['env']
+                    presets: ['@babel/preset-env']
                 }
             },
             {
