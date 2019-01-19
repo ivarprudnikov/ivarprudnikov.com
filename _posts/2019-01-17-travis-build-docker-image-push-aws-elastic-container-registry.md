@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Build Docker image on Travis CI and push it to AWS ECR
+image: /assets/docker-travis-aws.svg
 toc: true
 ---
 
