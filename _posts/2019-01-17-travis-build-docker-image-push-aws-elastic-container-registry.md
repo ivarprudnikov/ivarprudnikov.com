@@ -123,9 +123,9 @@ env:
   global:
   - DOCKER_REPO=myorg/veryimportantimage
   - EB_REGION="eu-west-1"
-  - secure: travisEncodedAWS_ACCOUNT_ID
-  - secure: travisEncodedAWS_ACCESS_KEY_ID
-  - secure: travisEncodedAWS_SECRET_ACCESS_KEY
+  - secure: travisEncryptedAWS_ACCOUNT_ID
+  - secure: travisEncryptedAWS_ACCESS_KEY_ID
+  - secure: travisEncryptedAWS_SECRET_ACCESS_KEY
 before_install:
 - pip install awscli
 - export PATH=$PATH:$HOME/.local/bin
