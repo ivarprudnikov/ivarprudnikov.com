@@ -14,6 +14,18 @@ $font-family-sans-serif: "IBM Plex Serif", "Helvetica Neue", Arial, sans-serif, 
   min-height: 60vh;
 }
 
+.blog-header-logo {
+  background: -webkit-gradient(linear,left top,right top,from(#3f40a7),to(#b53093));
+  background: linear-gradient(to right,#3f40a7,#b53093);
+  background-clip: border-box;
+  background-clip: border-box;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  text-shadow: none;
+}
+
 .jumbotron-dark {
   background: #2b3a42;
   background: -moz-linear-gradient(-45deg, #2b3a42 0%, #232f3f 100%);
