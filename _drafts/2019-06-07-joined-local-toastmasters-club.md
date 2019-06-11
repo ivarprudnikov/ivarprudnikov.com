@@ -56,5 +56,15 @@ I was fascinated with it from the time it started as it was very well organised 
 
 ## Ice Breaker
 
-After you join the club the first big thing that happens is your first speach which is called _Ice Breaker_
+After you join the club the first important thing that happens is your first speech which is called _Ice Breaker_. On the one hand it is simple as you have to talk about yourself but preparation should not be ignored, you should write it down. In addition it is expected to follow a basic structure and talk for 4-6 minutes.
+
+Documentation and videos are available on toastmasters website where you can also find pdf document helping you to structure your speech.
+
+I went to penultimate club meeting before it suspends its activity over summer and decided to schedule my Ice Breaker. Bravery for such a thing primarily came from thinking that I will not have free _slots_ available before summer but I was wrong - there is always a space in calendar for Ice Breakers. Dizziness filled my gut but I knew this step is necessary to break your stage fears and start progressing as a _speaker_.
+
+In my case it was a train ride where I got the idea for the speech, so I quickly grabbed my notepad and started writing what came to the mind. It was rough and unusable but later I could reform and rewrite it into something which was not very annoying.
+
+As far as I understood speeches were to be rehearsed. There are couple of ways you can do it, the simplest - talking to the mirror. I did try mirror but it was hard to focus so I went on speaking without it and later started recording myself on camera which really helped. When I tried my first attempt in front of camera, the speech took me 15 minutes! 
+
+
 
