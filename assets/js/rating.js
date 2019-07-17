@@ -52,6 +52,7 @@
   }
 
   function addClass (el, className) {
+    if (!el) return
     var initialClasses = el.className || ''
     var classesArr = initialClasses.split(' ')
     var classNameIndex = classesArr.indexOf(className)
@@ -62,6 +63,7 @@
   }
 
   function removeClass (el, className) {
+    if (!el) return
     var initialClasses = el.className || ''
     var classesArr = initialClasses.split(' ')
     var classNameIndex = classesArr.indexOf(className)
