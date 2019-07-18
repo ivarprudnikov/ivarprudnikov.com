@@ -230,7 +230,7 @@ module.exports = {
 }
 ```
 
-Now after `npm start` you’ll see `css` inlined in the `head` element of `html` file. To add more styles just _require_ them in _Javascript_ file.
+Now after `npm start` you’ll see `css` file inlined in the `head` element of `html` file. To add more styles just _require_ them in _Javascript_ file.
 
 **Pro tip:** use Sass instead of plain `css` by adding one more loader [https://github.com/webpack-contrib/style-loader](https://github.com/webpack-contrib/style-loader)
 
