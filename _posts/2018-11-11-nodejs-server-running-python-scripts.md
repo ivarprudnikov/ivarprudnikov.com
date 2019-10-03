@@ -101,7 +101,7 @@ subprocess.stdout.on('data', (data) => {
 subprocess.stderr.on('data', (data) => {
   console.log(`error:${data}`);
 });
-subprocess.stderr.on('close', () => {
+subprocess.on('close', () => {
   console.log("Closed");
 });
 ```
