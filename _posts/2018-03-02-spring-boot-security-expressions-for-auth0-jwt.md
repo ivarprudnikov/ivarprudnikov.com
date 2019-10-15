@@ -329,7 +329,7 @@ Integration tests required a user to be set in security context but [`@WithMockU
 
 * `WithMockToken` — custom annotation, allowing to configure user details;
 * `WithMockTokenSecurityContextFactory` — created security context based on details in new annotation;
-* `MockAuthenticationJsonWebToken` — `Authentication` similar to the one used by *Auth0 *when validating token [*AuthenticationJsonWebToken](https://github.com/auth0/auth0-spring-security-api/blob/1.0.0/lib/src/main/java/com/auth0/spring/security/api/authentication/AuthenticationJsonWebToken.java) *but without verification. Did not extend it to avoid construction of *JWTVerifier*
+* `MockAuthenticationJsonWebToken` — `Authentication` similar to the one used by _Auth0_ when validating token [`AuthenticationJsonWebToken`](https://github.com/auth0/auth0-spring-security-api/blob/1.0.0/lib/src/main/java/com/auth0/spring/security/api/authentication/AuthenticationJsonWebToken.java) but without verification. Did not extend it to avoid construction of `JWTVerifier`.
 
 ```java
 // .../yourpackage/WithMockToken.java
