@@ -121,8 +121,43 @@ I'm still following [Auth0 steps here](https://auth0.com/docs/quickstart/spa/rea
 - Add routes and update NavBar ([git commit](https://github.com/ivarprudnikov/react-auth0-template/commit/f2fe93e7f1784372c9ae26f3401a0c9a80afe0b0))
 - [Protect routes with new PrivateRoute component](https://auth0.com/docs/quickstart/spa/react#secure-the-profile-page) ([git commit](https://github.com/ivarprudnikov/react-auth0-template/commit/50b1cd7f523dc112208b83f021c0c4113db32b00))
 
-## Preparing for production
+## Minor enhancements
 
-### Users database
-### Second factor
-### Social login
+Before website is deployed it seems to be optional but helpful to improve existing implementation. It comes from experience running similar authentication in production.
+
+### Update Auth0 hook
+
+[Git commit](https://github.com/ivarprudnikov/react-auth0-template/commit/0b6ac588e59fce1bd3c78cf55e98c888cea97f74)
+
+**Remove popup login option** I am not keen on using popup login due to couple of issues: 
+- popup would not always open in the same display when you have multiple of those,
+- it does not work on all browsers the same way (remember EasyXDM?)
+
+**Decode JWT** If you want to see what is in the JWT token then you need to decode it. This will be helpful when checking the roles user has.
+ 
+**Defaults in useState()** In Auth0 example they use `undefined`, it is not that readable.
+
+**Import config directly** Instead of relying on props do import configuration file in the hook itself.
+
+**Ask for scopes** We want to see all possible scopes user might have after they log in.
+
+**Scope check helper** Ability to check if user has an expected scope
+
+### Additional changes
+
+- Hint on expected Node.js version through `.nvmrc` file and set version to `12`.
+- Add `"homepage"` property to `package.json` to generate correct links when deploying to GitHub pages.
+- Add build version number (timestamp) to make sure `index.html` always changes upon every build.
+- Add production URLs to Auth0 config, in my case:
+  - Allowed Callback URLs - `http://localhost:3000, https://ivarprudnikov.github.io/react-auth0-template`
+  - Allowed Web Origins - `http://localhost:3000, https://ivarprudnikov.github.io`
+  - Allowed Logout URLs - `http://localhost:3000, https://ivarprudnikov.github.io/react-auth0-template`
+  - Allowed Origins (CORS) - `http://localhost:3000, https://ivarprudnikov.github.io`
+- Use "homepage" (from package.json) as production redirect uri.
+
+## Source code and demo
+
+For the purposes of a demo source code is deployed and hosted on GitHub pages.
+
+- Source code - [ivarprudnikov/react-auth0-template](https://github.com/ivarprudnikov/react-auth0-template)
+- Live demo - [https://ivarprudnikov.github.io/react-auth0-template/](https://ivarprudnikov.github.io/react-auth0-template/)
