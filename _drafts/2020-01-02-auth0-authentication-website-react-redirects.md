@@ -28,7 +28,7 @@ You should know that Auth0 provides some useful examples both on their website a
 - [github.com/auth0-samples/auth0-react-samples](https://github.com/auth0-samples/auth0-react-samples)
 - [auth0.com/docs/quickstart/spa/react](https://auth0.com/docs/quickstart/spa/react)
 
-In essence you need a couple of things, first create an _application_ and update some minor details in settings to be able to login when running locally. For now will leave defaults in application addons and connections (those are additional settings).
+In essence you need a couple of things, first create an _application_ and then update some minor details in settings to be able to login when running locally. Application _addons_ and _connections_ (those are additional settings) are left with default values.
 
 #### Create Auth0 application
 
@@ -56,7 +56,7 @@ All the rest are left to their default values. I do also use `localhost:3000` as
 
 ### Create basic React website
 
-Provided there are so many examples of react app structure I will stick to using `create-react-app` scripts - it will give some basic recognizable structure to the application. To keep things simple I will also use react router with just a couple of routes.
+Provided there are so many examples of react app structure I will stick to using `create-react-app` scripts - it will give some basic recognizable structure to the app. To keep things simple I will also use react router with just a couple of routes.
 
 ```
 $ npx create-react-app test-auth0-react-login
@@ -121,27 +121,66 @@ I'm still following [Auth0 steps here](https://auth0.com/docs/quickstart/spa/rea
 - Add routes and update NavBar ([git commit](https://github.com/ivarprudnikov/react-auth0-template/commit/f2fe93e7f1784372c9ae26f3401a0c9a80afe0b0))
 - [Protect routes with new PrivateRoute component](https://auth0.com/docs/quickstart/spa/react#secure-the-profile-page) ([git commit](https://github.com/ivarprudnikov/react-auth0-template/commit/50b1cd7f523dc112208b83f021c0c4113db32b00))
 
-## Minor enhancements
+## Further enhancements
 
-Before website is deployed it seems to be optional but helpful to improve existing implementation. It comes from experience running similar authentication in production.
+Before website is deployed it seems to be optional but helpful to improve existing implementation. It comes from experience of running similar authentication implementation in production.
 
 ### Update Auth0 hook
-
-[Git commit](https://github.com/ivarprudnikov/react-auth0-template/commit/0b6ac588e59fce1bd3c78cf55e98c888cea97f74)
 
 **Remove popup login option** I am not keen on using popup login due to couple of issues: 
 - popup would not always open in the same display when you have multiple of those,
 - it does not work on all browsers the same way (remember EasyXDM?)
 
-**Decode JWT** If you want to see what is in the JWT token then you need to decode it. This will be helpful when checking the roles user has.
- 
-**Defaults in useState()** In Auth0 example they use `undefined`, it is not that readable.
+**Get and decode access token** to have more details about the authentication like roles and scopes. This is not the same as primary ID token.
 
-**Import config directly** Instead of relying on props do import configuration file in the hook itself.
+```javascript
+const getTokenSilently = async () => {
+    const accessToken = await auth0Client.getTokenSilently();
+    return { raw: accessToken, decoded: jwt_decode(accessToken) };
+};
+```
 
-**Ask for scopes** We want to see all possible scopes user might have after they log in.
+**Set defaults in useState()** instead of Auth0 example ones where they use `undefined`.
 
-**Scope check helper** Ability to check if user has an expected scope
+```javascript
+const [isAuthenticated, setIsAuthenticated] = useState(false);
+const [user, setUser] = useState(null);
+const [auth0Client, setAuth0] = useState(null);
+const [loading, setLoading] = useState(true);
+```
+
+**Import config directly** instead of relying on props do import configuration file in the hook itself. Also **ask for scopes** we want to see all possible scopes user might have after they log in.
+
+```javascript
+import config from './auth_config';
+
+//...
+
+const auth0FromHook = await createAuth0Client({
+    domain: config.domain,
+    client_id: config.clientId,
+    scope: config.scope,
+    redirect_uri: config.loginCallbackUrl
+});
+```
+
+**Scope check helper** Ability to check if user has an expected scope.
+
+```javascript
+const hasAnyScopeAsync = async (scopes) => {
+    const token = await getTokenSilently();
+    const tokenScopes = (token.decoded.scope || '').split(/\W/);
+    return scopes && scopes.length && scopes.some(s => tokenScopes.indexOf(s) > -1);
+};
+```
+
+**Add logout redirect url** Redirect user to homepage after logging out.
+
+```javascript
+const logoutWithRedirect = () => auth0Client.logout({
+  returnTo: config.logoutRedirectUrl
+});
+```
 
 ### Additional changes
 
@@ -154,6 +193,7 @@ Before website is deployed it seems to be optional but helpful to improve existi
   - Allowed Logout URLs - `http://localhost:3000, https://ivarprudnikov.github.io/react-auth0-template`
   - Allowed Origins (CORS) - `http://localhost:3000, https://ivarprudnikov.github.io`
 - Use "homepage" (from package.json) as production redirect uri.
+- Add Bootstrap styling
 
 ## Source code and demo
 
