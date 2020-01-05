@@ -2,31 +2,43 @@
 layout: post
 title: Auth0 authentication in a React website
 toc: true
+image: /assets/auth0-login-dialog.png
 ---
 
 In a couple of posts I'll go through setup of Auth0 authentication for your website (React.js) and API server (Springboot) followed with examples in GitHub repositories. Primary reason for writing/documenting this is to cut down time next time I need to set it all up again.
 
-## Some context
+## Objective
+
+Current post will cover the following:
+
+- Set up of new [Auth0.com](https://auth0.com/) _application_
+- Bootstrap of basic React website
+- Custom hook and integration with Auth0 SDK by following example steps
+- Further enhancements
+
+### About
 
 Authentication is a sensitive subject and there are many permutations and possibilities of its implementation. Figuring out the constraints of the system is a first step in the right direction.
 
-For almost any commercial website out there in the wild a login and/or signup is a must. Whether it is a user profile that needs to be filled, or maybe user is contributing content to the system, or it is a subscription based API access - people are expected to land on some screen or get a popup asking for some sort of credentials to be able to continue. First thing first - you need to know your audience and preferably how often they will access the system and how many new users will possibly come to your site every once in a while.
+For almost any commercial website out there in the wild a login and/or signup is a must. Whether it is a user profile that needs to be filled, or maybe user is contributing content to the system, or it is a subscription based API access - people are expected to land on some screen or get a popup asking for some sort of credentials to be able to continue. First thing first - you need to know your audience and preferably how often they will access the system and how many new users will possibly come to your site every once in a while, with this knowledge it is easier to choose a better approach.
 
-For this particular example I'll assume a website targeted at your _local community_, or a specific group of people like _carers_, or a narrow topic such as _research in optogenetics_. It will reflect usual focus local business has as not all of us are building global unicorns.
+Current example - [Auth0](https://auth0.com/) - might be suitable for businesses that do not expect infinite amounts of user signups otherwise it could become [quite expensive](https://auth0.com/pricing/). On the other hand if you have hundreds of thousands of users then money should not be a problem.
 
-Now it is safe to predict that amount of users has some sort of upper bound and will not require sophisticated decisions when you need to accommodate 50 million accounts. This gives you some breathing space and allows to further gather information about your future users, what devices they use (mobile, tablets, PCs), would they have and know how to use social login, will they understand OTP with an SMS, do they know what second factor is, do they like using passwords with special characters, etc.
+### Alternatives
 
-In other cases the constraints are going to be dictated by the choice of programming language which in turn will have one or two most used security _plugins_ or _frameworks_. This will be covered more when protecting API endpoints.
+Some other user authentication solutions/products to consider:
 
-When working on the web platform (I mean browsers) there are couple of things you can do but they depend on why you want your users to login/signup. Provided there is no API yet let's assume we want to be able for the users to access a part of application where they can see their profile details stored after signup.
+- [Amazon Cognito](https://aws.amazon.com/cognito/)
+- [Firebase Authentication](https://firebase.google.com/docs/auth)
+- [Okta](https://www.okta.com)
 
 ## Basic setup
-
-### Setup on Auth0.com
 
 You should know that Auth0 provides some useful examples both on their website as posts and on GitHub, I'll follow their steps before applying my changes:
 - [github.com/auth0-samples/auth0-react-samples](https://github.com/auth0-samples/auth0-react-samples)
 - [auth0.com/docs/quickstart/spa/react](https://auth0.com/docs/quickstart/spa/react)
+
+### Setup on Auth0.com
 
 In essence you need a couple of things, first create an _application_ and then update some minor details in settings to be able to login when running locally. Application _addons_ and _connections_ (those are additional settings) are left with default values.
 
@@ -54,7 +66,7 @@ Picture below shows their dialog for creating an application.
 
 All the rest are left to their default values. I do also use `localhost:3000` as this is what react app will use locally.
 
-### Create basic React website
+### Basic React website
 
 Provided there are so many examples of react app structure I will stick to using `create-react-app` scripts - it will give some basic recognizable structure to the app. To keep things simple I will also use react router with just a couple of routes.
 
@@ -89,7 +101,7 @@ Above will produce the following directory structure ([git commit](https://githu
 └── package.json
 ```
 
-### Add Auth0 signup/login to website
+### Add login/signup
 
 Auth0 documented steps in [auth0.com/docs/quickstart/spa/react](https://auth0.com/docs/quickstart/spa/react):
 
@@ -113,7 +125,7 @@ So far it is a basic login experience as visible in the _gif_ image below.
   </figure>
 </div>
 
-### Add profile page
+### Profile page
 
 I'm still following [Auth0 steps here](https://auth0.com/docs/quickstart/spa/react#read-the-user-profile):
 
@@ -186,13 +198,13 @@ const logoutWithRedirect = () => auth0Client.logout({
 
 - Hint on expected Node.js version through `.nvmrc` file and set version to `12`.
 - Add `"homepage"` property to `package.json` to generate correct links when deploying to GitHub pages.
-- Add build version number (timestamp) to make sure `index.html` always changes upon every build.
+- Use "homepage" (from package.json) as production redirect uri.
 - Add production URLs to Auth0 config, in my case:
   - Allowed Callback URLs - `http://localhost:3000, https://ivarprudnikov.github.io/react-auth0-template`
   - Allowed Web Origins - `http://localhost:3000, https://ivarprudnikov.github.io`
   - Allowed Logout URLs - `http://localhost:3000, https://ivarprudnikov.github.io/react-auth0-template`
   - Allowed Origins (CORS) - `http://localhost:3000, https://ivarprudnikov.github.io`
-- Use "homepage" (from package.json) as production redirect uri.
+- Add build version number (timestamp) to make sure `index.html` always changes upon every build.
 - Add Bootstrap styling
 
 ## Source code and demo
