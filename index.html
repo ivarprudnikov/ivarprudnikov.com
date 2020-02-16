@@ -15,6 +15,11 @@ layout: default
       {% if first_post.image %}
       <img class="img-fluid rounded mb-4 mb-md-0" src="{{ first_post.image | prepend: site.baseurl }}">
       {% endif %}
+      {% if first_post.image_caption %}
+      <figcaption class="text-center text-muted">
+        {{ first_post.image_caption }}
+      </figcaption>
+      {% endif %}
     </div>
 
     <div class="col-md-6 order-md-1">
