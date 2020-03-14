@@ -8,6 +8,12 @@ image_caption: Photo by Michael Dziedzic on Unsplash
 
 To my surprise after writing a simple example which deals with Auth0 login I got blocked from logging into it.
 
+## Update 2020-02-22
+
+The issue resolved itself roughly after a week since it appeared. Ticket request could only be opened on a paid account therefore I went to twitter where I got a response from `@Auth0Community` albeit they could not do anything to help me.
+
+It was a total mystery, no logs, settings are in order. Most importantly it works again.  
+
 ## Sequence of events
 
 Just after New Years Eve in the very beginnings of 2020 I did create a new account on _Auth0_. It was meant to be used for examples I was developing: React and Springboot. It was also a free account, there was no credit card involved.
