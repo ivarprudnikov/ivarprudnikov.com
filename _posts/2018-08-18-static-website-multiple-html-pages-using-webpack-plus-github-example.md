@@ -322,18 +322,18 @@ At this time we have a project which can be run locally, but in order for it to 
 It is possible to use existing `webpack.dev.js` and have conditionals inside that differentiate between *production* and *development* environments to execute tasks mentioned above, but then it gets a bit complicated and harder to read, for this reason new `webpack.prod.js` configuration file will be setup. But first lets get more dependencies to help us with minification, optimization:
 
 ```bash
-npm i -D clean-webpack-plugin mini-css-extract-plugin optimize-css-assets-webpack-plugin uglifyjs-webpack-plugin http-server
+npm i -D clean-webpack-plugin mini-css-extract-plugin optimize-css-assets-webpack-plugin terser-webpack-plugin http-server
 ```
 
 Now we can safely write configuration, looks similar to `webpack.dev.js`:
 
 ```js
 const path = require('path');
-const CleanWebpackPlugin = require('clean-webpack-plugin'); 
+const { CleanWebpackPlugin } = require('clean-webpack-plugin'); 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const TerserPlugin = require('terser-webpack-plugin')
 const buildPath = path.resolve(__dirname, 'dist');
 
 module.exports = {
@@ -406,8 +406,9 @@ module.exports = {
 
     // https://webpack.js.org/configuration/optimization/
     optimization: {
+        minimize: true,
         minimizer: [
-            new UglifyJsPlugin({
+            new TerserPlugin({
                 cache: true,
                 parallel: true,
                 sourceMap: true
@@ -436,5 +437,6 @@ $ npm run preview
 
 ## Source code
 
-Check out repository with above example, a better example to be frank, including image loader and links between pages.
+Check out repository with above example, a better example to be frank, 
+including image loader, links between pages and functional tests.
 [**ivarprudnikov/webpack-static-html-pages**](https://github.com/ivarprudnikov/webpack-static-html-pages)
