@@ -5,7 +5,7 @@ toc: true
 image: /assets/auth0-login-dialog.png
 ---
 
-In a couple of posts I'll go through setup of Auth0 authentication for your website (React.js) and API server (Springboot) followed with examples in GitHub repositories. Primary reason for writing/documenting this is to cut down time next time I need to set it all up again.
+In a couple of posts I'll go through setup of Auth0 authentication for your website (React.js) and [API server](/micronaut-kotlin-jwt-secured-api-aws-lambda/) followed with examples in GitHub repositories. Primary reason for writing/documenting this is to cut down time next time I need to set it all up again.
 
 ## Objective
 
