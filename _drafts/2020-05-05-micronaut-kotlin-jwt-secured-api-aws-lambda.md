@@ -1,16 +1,16 @@
 ---
 layout: post
 toc: true
-title: Micronaut API server with JWT authentication 
+title: Micronaut API with JWT authentication on AWS Lambda 
+image: /assets/micronaut-lambda.jpg
+image_caption: "Micronaut and AWS Lambda"
 ---
 
-More and more time I spend using JWT tokens to authenticate API requests‍. 
-Most recently using [Auth0](https://auth0.com/); did reflect on it in recent posts:
+Quite often [JWT tokens](https://jwt.io/) are used to authenticate API requests‍. In previous example I got them issued by [Auth0](https://auth0.com/):
 
 * [Auth0 authentication in a React website](/auth0-authentication-website-react/)
-* [Auth0 blocked me from logging in](/auth0-blocked-ip-cannot-login/)
 
-As part of that first post I mentioned it was necessary to provide an API example that would consume [JWT tokens](https://jwt.io/) issued by [Auth0](https://auth0.com/). Initially [Spring Boot](https://spring.io/projects/spring-boot) was an approach I thought of (also have it running in production). At the same time I needed a live API - a demo. I did not want to pay for an idle server so [AWS Lambda](https://aws.amazon.com/lambda/) was a perfect candidate, unfortunately it does not play well with Spring Boot or any other JVM alternative for that matter (that is another topic). Until I tried [Micronaut](https://micronaut.io/).
+It was necessary to provide an API example. Initially [Spring Boot](https://spring.io/projects/spring-boot) was an approach I thought of (also have it running in production). At the same time I needed a live API - a demo. I did not want to pay for an idle server so [AWS Lambda](https://aws.amazon.com/lambda/) was a perfect candidate, unfortunately it does not play well with Spring Boot or any other JVM alternative for that matter (that is another topic). Until I tried [Micronaut](https://micronaut.io/).
 
 **Tech used:**
 
