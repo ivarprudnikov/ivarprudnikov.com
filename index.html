@@ -79,9 +79,75 @@ layout: default
 {% endif %}
 
 <div class="row">
-  <div class="col-lg-10 offset-lg-1 col-xl-8 offset-xl-2 blog-main">
+
+  <div class="col-md-5 order-md-1">
+
+    <h2>Coding / projects / OSS</h2>
+
+    <p class="lead">Publicly accessible stuff I've done. <a href="https://github.com/ivarprudnikov">Open Github to see more</a>.</p>
+
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Understanding investments & savings</h5>
+        <p class="card-text">How much should/could I save? Where do I start? How to invest? Similar questions bothered me for a while.</p>
+        <a href="https://ivarprudnikov.github.io/understanding-investments/" class="btn btn-outline-secondary btn-sm">Visit website</a>
+        <a href="https://github.com/ivarprudnikov/understanding-investments" class="btn btn-outline-secondary btn-sm">Source code</a>
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Build your own text generator</h5>
+        <p class="card-text">How hard can it be to train your own machine learning model which will generate text for you? Too expensive to run it purely for demos, only source code available.</p>
+        <a href="https://github.com/ivarprudnikov/char-rnn-tensorflow" class="btn btn-outline-secondary btn-sm">Source code</a>
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Search of Irish startups (outdated)</h5>
+        <p class="card-text">Had this idea of compiling all of the Irish startup companies in one place in 2015. Wanted to sift through and see what is happening, what problems people try to solve.</p>
+        <a href="http://ivarprudnikov.github.io/irish-startups-angular2/" class="btn btn-outline-secondary btn-sm">Visit website</a>
+        <a href="https://github.com/ivarprudnikov/irish-startups-angular2" class="btn btn-outline-secondary btn-sm">Source code</a>
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Android sensors app</h5>
+        <p class="card-text">Subscribe to device sensors and store data locally. Later use a URL to send the aggregated data somewhere you need.</p>
+        <a href="https://play.google.com/store/apps/details?id=com.ivarprudnikov.sensors" class="btn btn-outline-secondary btn-sm">Visit Google Play</a>
+        <a href="http://ivarprudnikov.github.io/android_sensors/" class="btn btn-outline-secondary btn-sm">Visit website</a>
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Local internet speed monitor</h5>
+        <p class="card-text">Because you just never know when your internet service provider will ask you "How's your internet?".</p>
+        <a href="https://speed-test.lila.io/" class="btn btn-outline-secondary btn-sm">Visit website</a>
+        <a href="https://github.com/ivarprudnikov/rpi-speedtest" class="btn btn-outline-secondary btn-sm">Source code</a>
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">User authentication templates</h5>
+        <p class="card-text">Templates to authenticate users and then authorize them to access an API on Lambda. By using a free Auth0 account. Another idea doomed to fail.</p>
+        <a href="https://ivarprudnikov.github.io/react-auth0-template/" class="btn btn-outline-secondary btn-sm">Visit website</a>
+        <a href="https://github.com/ivarprudnikov/react-auth0-template" class="btn btn-outline-secondary btn-sm">Website source</a>
+        <a href="https://github.com/ivarprudnikov/auth0-micronaut-template" class="btn btn-outline-secondary btn-sm">Lambda source</a>
+      </div>
+    </div>
+
+    <hr class="my-5 d-md-none">
+
+  </div>
+  <div class="col-md-7 order-md-0 blog-main">
 
     {% if site.posts.size > 3 %}
+
+    <h2 class="d-md-none mb-4">Blog posts (continued)</h2>
 
     <div class="posts">
 
@@ -92,7 +158,7 @@ layout: default
         {% if i < sz %}
         <div class="blog-post">
 
-          <div class="d-flex flex-column flex-md-row">
+          <div class="d-flex flex-column flex-lg-row">
 
             {% if site.posts[i].image %}
               <div class="flex-auto mr-3 mb-3">
