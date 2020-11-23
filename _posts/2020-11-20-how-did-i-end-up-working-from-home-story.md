@@ -70,7 +70,7 @@ I'll leave you with a list of things that helped me, some of it might help you a
 * Having strict time for yourself, reading/listening books, podcasts;
 * Taking an online course. This proved to have a weird effect on me, I felt like I've done something outstanding despite the practicalities of content being questionable.
 * Join a local club, nowadays people use conference call apps like Zoom to keep in touch. There is no exception in my local [Toastmasters club](https://www.toastmasters.org/find-a-club), you might try it as well, guests can join for free.
-* Doing an entire course. I got my motorcycle licence and now fantasise myself on a trip around the world.
+* Doing an entire course. I got my motorcycle licence and now fantasise being on a trip around the world.
 * Using your hands more. Buy that IKEA set and enjoy building it.
 * Experiments with the food - try fasting.
 * Try eliminating one habit.
