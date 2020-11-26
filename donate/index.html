@@ -1,0 +1,100 @@
+---
+layout: default
+title: Donate
+---
+
+<div class="row">
+  <div class="col-md-6 offset-md-3 py-5">
+
+    <div class="card">
+      <div class="card-header">
+        Hey! Donate and be saved!
+      </div>
+      <div class="card-body">
+        <span class="text-muted">
+          Whatever the support I'll take it. If there is no will to sacrifice real money you could just send me an email. Otherwise the payment is going to be processed by Stripe.
+        </span>
+      </div>
+      <div class="list-group list-group-flush">
+        <button id="donate_3" type="button" class="list-group-item list-group-item-action d-flex justify-content-between">
+          <span>☕ A cup of coffee️</span>
+          <span>€3.00</span>
+        </button>
+        <button id="donate_7" type="button" class="list-group-item list-group-item-action d-flex justify-content-between">
+          <span>🌯 A snack</span>
+          <span>€7.00</span>
+        </button>
+        <button id="donate_19" type="button" class="list-group-item list-group-item-action d-flex justify-content-between">
+          <span>🥡 Something from the takeaway</span>
+          <span>€19.00</span>
+        </button>
+        <button id="donate_50" type="button" class="list-group-item list-group-item-action d-flex justify-content-between">
+          <span>🍽 3 course meal</span>
+          <span>€50.00</span>
+        </button>
+        <button id="donate_250" type="button" class="list-group-item list-group-item-action d-flex justify-content-between">
+          <span>💻 Service of the laptop battery</span>
+          <span>€250.00</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+(function(){
+  {% if jekyll.environment == "development" %}
+  var PUBLISHABLE_KEY = 'pk_test_13UjdwDKTmEcfL6nPoWJYunY';
+  var BTN_ID_TO_PRICE_ID = {
+    donate_3: 'price_1HrsiiATy5wwYzaXrb5JicHV',
+    donate_7: 'price_1HrsiiATy5wwYzaXxHunv7Vl',
+    donate_19: 'price_1HrsiiATy5wwYzaXrLBYU6Lt',
+    donate_50: 'price_1HrsiiATy5wwYzaXSAIH3Prk',
+    donate_250: 'price_1Hrtc5ATy5wwYzaXh5TAD8VT',
+  };
+  {% else %}
+  var PUBLISHABLE_KEY = 'pk_live_518gL1MATy5wwYzaX63bbWOznodqJK4sRkfx71DnLkf5K9xagv5cxAVrRbiEN7ZdzTmSUTBkPR7QVjhdoJMeAcDhx000lS0HO2O';
+  var BTN_ID_TO_PRICE_ID = {
+    donate_3: 'price_1HrtL4ATy5wwYzaX5BX8ABlD',
+    donate_7: 'price_1HrtL4ATy5wwYzaXwQEgqryM',
+    donate_19: 'price_1HrtL4ATy5wwYzaXT8p734AT',
+    donate_50: 'price_1HrtL3ATy5wwYzaXfa1HcuC9',
+    donate_250: 'price_1HrtMDATy5wwYzaXi0Si0H3J',
+  };
+  {% endif %}
+  var stripe = Stripe(PUBLISHABLE_KEY);
+  function redirectToPayment(price) {
+    return stripe
+      .redirectToCheckout({
+        lineItems: [
+          {price: price, quantity: 1},
+        ],
+        mode: 'payment',
+        submitType: 'donate',
+        successUrl: "{{ '/donate/success/' | prepend: site.url }}",
+        cancelUrl: "{{ '/donate/' | prepend: site.url }}",
+      })
+      .then(function(result) {
+        alert(result.error.message);
+      });
+  }
+
+  Object.keys(BTN_ID_TO_PRICE_ID).forEach(function(id) {
+    var btn = document.getElementById(id);
+    btn.addEventListener("click", function (evt) {
+      btn.setAttribute('disabled', 'disabled');
+      evt.preventDefault();
+      evt.stopPropagation();
+      redirectToPayment(BTN_ID_TO_PRICE_ID[id])
+        .then(function(){
+          btn.removeAttribute('disabled');
+        })
+        .catch(function(){
+          btn.removeAttribute('disabled');
+        });
+    })
+  });
+}());
+</script>
