@@ -54,6 +54,10 @@ $font-family-sans-serif: "IBM Plex Serif", "Helvetica Neue", Arial, sans-serif, 
 .blog-header-logo {
   font-family: $font-family-serif;
   font-size: 2rem;
+
+  .dimmed {
+    opacity: 0.2
+  }
 }
 
 .blog-header-logo:hover {
