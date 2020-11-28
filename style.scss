@@ -62,6 +62,9 @@ button {
   .dimmed {
     opacity: 0.2;
     visibility: visible;
+    color: #3f40a7;
+    background: transparent;
+    -webkit-text-fill-color: initial;
   }
 }
 
