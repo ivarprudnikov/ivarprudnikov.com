@@ -27,10 +27,11 @@
     </div>
   </header>
 
-  <div class="nav-scroller py-1 mb-2">
+  <div class="nav-scroller py-1 mt-1 mb-2">
     <nav class="nav d-flex justify-content-between">
+      <a class="btn btn-sm btn-outline-primary" href="{{ '/donate/' | prepend: site.baseurl }}" >Donate</a>
       {% for external_link in site.external_links %}
-      <a class="p-2 text-muted" href="{{ external_link.href }}">{{ external_link.label }}</a>
+      <a class="btn btn-sm btn-link" href="{{ external_link.href }}">{{ external_link.label }}</a>
       {% endfor %}
     </nav>
   </div>

@@ -15,6 +15,10 @@ $font-family-sans-serif: "IBM Plex Serif", "Helvetica Neue", Arial, sans-serif, 
   min-height: 60vh;
 }
 
+button {
+  cursor: pointer;
+}
+
 .blog-header-logo {
   background: -webkit-gradient(linear,left top,right top,from(#3f40a7),to(#b53093));
   background: linear-gradient(to right,#3f40a7,#b53093);
