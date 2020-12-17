@@ -4,8 +4,6 @@ toc: true
 title: Lessons learned after being a Zoom host in a global event
 ---
 
-## The event
-
 Toastmasters virtually hosted the global event over a 24-hour Zoom call on 12-13 December. Clubs around the world joined and talked about "Holidays around the world". It all started over in Japan and was rolling over through all the time zones until it reached the end in Hawaii.
 
 Irish Toastmasters club in Killarney got the honour to represent its timezone and more generally - Europe. Multiple people from nearby clubs (Ireland and UK) joined and helped. We had to host the call for a given timeslot of 2 hours after taking over from Kenya, and then pass the reins to Brazil when finished.
