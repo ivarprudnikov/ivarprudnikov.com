@@ -2,6 +2,8 @@
 layout: post
 toc: true
 title: Lessons learned after being a Zoom host in a global event
+image: /assets/zoom-call-pixelated.jpg
+image_caption: "Zoom call in progress"
 ---
 
 Toastmasters virtually hosted the global event over a 24-hour Zoom call on 12-13 December. Clubs around the world joined and talked about "Holidays around the world". It all started over in Japan and was rolling over through all the time zones until it reached the end in Hawaii.
