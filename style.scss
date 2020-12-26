@@ -57,15 +57,7 @@ button {
 
 .blog-header-logo {
   font-family: $font-family-serif;
-  font-size: 2rem;
-
-  .dimmed {
-    opacity: 0.2;
-    visibility: visible;
-    color: #3f40a7;
-    background: transparent;
-    -webkit-text-fill-color: initial;
-  }
+  font-size: 1.5rem;
 }
 
 .blog-header-logo:hover {

@@ -13,23 +13,23 @@
 <div class="container">
 
   <header class="blog-header py-3">
-    <div class="row flex-nowrap justify-content-between align-items-center">
-      <div class="col-12 text-center">
-        <a class="blog-header-logo text-dark" href="{{ site.baseurl }}/" title="{{ site.name }}">
-          <span class="name">
-            <span class="dimmed">A</span><span>Ivar</span><span class="dimmed">as</span>
-          </span>
-          <span class="name">
-            <span>Prudnikov</span><span class="dimmed">as</span>
-          </span>
-        </a>
-      </div>
+    <div class="d-flex flex-nowrap justify-content-between align-items-center">
+      <a href="{{ site.baseurl }}/" title="{{ site.name }}">
+        <img class="rounded-circle img-fluid"
+                 alt="Avatar"
+                 src="{{ site.avatar }}"
+                 width="35"
+                 height="35"/>
+      </a>
+      <a class="blog-header-logo text-dark" href="{{ site.baseurl }}/" title="{{ site.name }}">
+        {{ site.name }}
+      </a>
+      <a class="btn btn-sm btn-outline-primary" href="{{ '/donate/' | prepend: site.baseurl }}" >Donate</a>
     </div>
   </header>
 
   <div class="nav-scroller py-1 mt-1 mb-2">
     <nav class="nav d-flex justify-content-between">
-      <a class="btn btn-sm btn-outline-primary" href="{{ '/donate/' | prepend: site.baseurl }}" >Donate</a>
       {% for external_link in site.external_links %}
       <a class="btn btn-sm btn-link" href="{{ external_link.href }}">{{ external_link.label }}</a>
       {% endfor %}
