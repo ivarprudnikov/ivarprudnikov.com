@@ -1,6 +1,8 @@
 ---
 layout: post
-title: The Connection
+title: Bloodshed, screams and fights for the amusement
+image: /assets/blurry-screenshot-of-windows-98.jpg
+image_caption: A blurry screenshot of Windows 98
 ---
 
 > Some events in your life get imprinted you like it or not. My short miserable life gets no exceptions.
@@ -28,3 +30,5 @@ Another great thing about school-time was the proximity to the city you had ever
 After enduring the 5 lessons (each 45 mins) I left the school and went for a bus. It took me to the complex of buildings for the show. There were lots of people around, sales people I guessed. The goal was to cruise around and find some "demo" computers, there were more kids doing the same. Half an hour of cruising around and I saw a line of PCs integrated into portable walls. It was a long day and there was never a better prize than to get access to those machines and just explore them. When getting closer I saw one PC was being _occupied_. The kid had a familiar look, he wore camouflage pants! My heart sank, but it was too late to turn back, he was staring at me. "Whatever happens" I told myself. There were maybe 5 steps separating us, we looked at each other and then started smiling and laughing. We did a handshake, and I joined a neighboring PC. Like nothing ever happened we talked and browsed, and browsed, and talked. Who knew we'll have so much in common, if only there was a PC at the pond.
 
 The above story connects me to the beginning of a relationship with a computer. I still remember the feeling I got when touching the keyboard, dragging the mouse, browsing screens on Windows 95, searching for a chat.
+
+The guy I mentioned here (Edward) has died fairly recently due to the liver failure. He was not able to steer himself away from the destructive behavior that started early in our lives. If only he was interested in computers... 
