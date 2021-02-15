@@ -9,8 +9,8 @@ Broke the ice with my first meetup talk in ["Dublin Node.js Meetup"](https://www
 
 Topic is quite basic but was connected with the story about the origins of such requirement - executing Python from NodeJS. I wrote about it a bit earlier:
 
-- [Using Python scripts in Node.js server]({{ site.baseurl }}{% post_url 2018-11-11-nodejs-server-running-python-scripts %})
-- [Run Tensorflow scripts from Node.js server deployed on AWS as Docker container]({{ site.baseurl }}{% post_url 2018-12-20-run-tensorflow-scripts-nodejs-server-deployed-aws-docker-container %})
+- [Using Python scripts in Node.js server]({{ site.baseurl }}{% post_url long/2018-11-11-nodejs-server-running-python-scripts %})
+- [Run Tensorflow scripts from Node.js server deployed on AWS as Docker container]({{ site.baseurl }}{% post_url long/2018-12-20-run-tensorflow-scripts-nodejs-server-deployed-aws-docker-container %})
 
 ## Slides
 

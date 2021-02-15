@@ -436,7 +436,7 @@ const asyncErrHandler = (asyncFn, req, res) => asyncFn(req, res)
 
 ### Running python scripts
 
-All ingredients are ready to be used, training data will be uploaded to a location on disk, training parameters will be stored in a database. It is now necessary to use those details and run _Python_ scripts which were forked already. I've written about how to run _Python_ scripts from within _Node.js_ application already so will not delve into much details, make sure to skim it through though ["Using Python scripts in Node.js server"]({{ site.baseurl }}{% post_url 2018-11-11-nodejs-server-running-python-scripts %}).
+All ingredients are ready to be used, training data will be uploaded to a location on disk, training parameters will be stored in a database. It is now necessary to use those details and run _Python_ scripts which were forked already. I've written about how to run _Python_ scripts from within _Node.js_ application already so will not delve into much details, make sure to skim it through though ["Using Python scripts in Node.js server"]({{ site.baseurl }}{% post_url long/2018-11-11-nodejs-server-running-python-scripts %}).
 
 #### Training
 
@@ -454,7 +454,7 @@ First I need action buttons in UI which will start/stop training process, upon c
 <% } %>
 ```
 
-Before executing training script we need to be sure it is not running currently, this is achieved by checking if `training_pid` is present on `model` instance. It is also necessary to clean up any existing log entries if those exist because relationship prohibits having more than one log representation for training, in other words - one model one log. Then script will be started in a separate process and events coming from it will be both stored in the database and sent to websocket connection to be rendered in real time. Websocket will not be covered here as it is part of other article I mentioned above ["Using Python scripts in Node.js server"]({{ site.baseurl }}{% post_url 2018-11-11-nodejs-server-running-python-scripts %})
+Before executing training script we need to be sure it is not running currently, this is achieved by checking if `training_pid` is present on `model` instance. It is also necessary to clean up any existing log entries if those exist because relationship prohibits having more than one log representation for training, in other words - one model one log. Then script will be started in a separate process and events coming from it will be both stored in the database and sent to websocket connection to be rendered in real time. Websocket will not be covered here as it is part of other article I mentioned above ["Using Python scripts in Node.js server"]({{ site.baseurl }}{% post_url long/2018-11-11-nodejs-server-running-python-scripts %})
 
 ```javascript
 router.post('/:id/start', checkPathParamSet("id"), loadInstanceById(), asyncErrHandler.bind(null, async (req, res) => {

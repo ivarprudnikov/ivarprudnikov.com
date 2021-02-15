@@ -2,9 +2,9 @@
 layout: default
 ---
 
-{% assign first_post = site.posts[0] %}
-{% assign second_post = site.posts[1] %}
-{% assign third_post = site.posts[2] %}
+{% assign first_post = site.categories.long[0] %}
+{% assign second_post = site.categories.long[1] %}
+{% assign third_post = site.categories.long[2] %}
 {% assign excerpt_max_len = 180 %}
 
 <!-- top most blog entry -->
@@ -35,6 +35,22 @@ layout: default
 
   </div>
 </div>
+
+{% if site.categories.short.size > 0 %}
+<div class="row">
+  {% for post in site.categories.short %}
+    <div class="col-4">
+      <div class="card mb-4">
+        <div class="card-body">
+          <a href="{{ post.url }}">{{ post.title }}</a>
+          <small class="text-muted">{{ post.date | date: "%B %e, %Y" }}</small>
+          <small class="badge badge-pill badge-light">Short</small>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endif %}
 
 {% if second_post or third_post %}
 
@@ -145,13 +161,13 @@ layout: default
   </div>
   <div class="col-md-7 order-md-0 blog-main">
 
-    {% if site.posts.size > 3 %}
+    {% if site.categories.long.size > 3 %}
 
     <h2 class="d-md-none mb-4">Blog posts (continued)</h2>
 
     <div class="posts">
 
-      {% assign sz = site.posts.size %}
+      {% assign sz = site.categories.long.size %}
 
       {% for i in (3..sz) %}
 
@@ -160,19 +176,19 @@ layout: default
 
           <div class="d-flex flex-column flex-lg-row">
 
-            {% if site.posts[i].image %}
+            {% if site.categories.long[i].image %}
               <div class="flex-auto mr-3 mb-3">
-                <img width="150" class="rounded" src="{{ site.posts[i].image | prepend: site.baseurl }}">
+                <img width="150" class="rounded" src="{{ site.categories.long[i].image | prepend: site.baseurl }}">
               </div>
             {% endif %}
 
             <div class="d-flex flex-column align-items-start">
               <h3 class="mb-0">
-                <a class="text-dark" href="{{ site.posts[i].url | prepend: site.baseurl }}">{{ site.posts[i].title }}</a>
+                <a class="text-dark" href="{{ site.categories.long[i].url | prepend: site.baseurl }}">{{ site.categories.long[i].title }}</a>
               </h3>
-              <div class="mb-1 text-muted">{{ site.posts[i].date | date: "%B %e, %Y" }}</div>
-              <div class="mb-1">{{ site.posts[i].excerpt | strip_html | strip_newlines | truncate: excerpt_max_len }}</div>
-              <a href="{{ site.posts[i].url | prepend: site.baseurl }}">Continue reading</a>
+              <div class="mb-1 text-muted">{{ site.categories.long[i].date | date: "%B %e, %Y" }}</div>
+              <div class="mb-1">{{ site.categories.long[i].excerpt | strip_html | strip_newlines | truncate: excerpt_max_len }}</div>
+              <a href="{{ site.categories.long[i].url | prepend: site.baseurl }}">Continue reading</a>
             </div>
           </div>
 
