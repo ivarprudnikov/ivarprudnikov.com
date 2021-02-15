@@ -50,9 +50,11 @@ baseurl: ""
 permalink: /:title/
 
 # The release of Jekyll Now that you're using
+# https://github.com/barryclark/jekyll-now
 version: v1.2.0
 
 # Jekyll 3 now only supports Kramdown for Markdown
+# https://pages.github.com/versions/
 kramdown:
   auto_ids: true # automatic generation of header IDs
   # Use GitHub flavored markdown, including triple backtick fenced code blocks
