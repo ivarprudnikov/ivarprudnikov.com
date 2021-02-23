@@ -16,7 +16,7 @@ layout: default
       <img class="img-fluid rounded mb-4 mb-md-0" src="{{ first_post.image | prepend: site.baseurl }}">
       {% endif %}
       {% if first_post.image_caption %}
-      <figcaption class="text-center text-muted">
+      <figcaption class="text-center text-muted mb-4 mb-md-0">
         {{ first_post.image_caption }}
       </figcaption>
       {% endif %}
@@ -39,7 +39,7 @@ layout: default
 {% if site.categories.short.size > 0 %}
 <div class="row">
   {% for post in site.categories.short %}
-    <div class="col-4">
+    <div class="col-md-6 col-lg-4">
       <div class="card mb-4">
         <div class="card-body">
           <a href="{{ post.url }}">{{ post.title }}</a>
