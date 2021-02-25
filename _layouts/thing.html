@@ -1,0 +1,61 @@
+---
+layout: default
+---
+
+<article class="row my-4">
+
+  <div class="col-lg-8 offset-lg-2">
+
+    <h2 id="blog-post-title" class="blog-post-title">{{ page.title }}</h2>
+    <p class="blog-post-meta">{{ page.date | date: "%B %e, %Y" }}</p>
+
+    {% if page.image %}
+    <figure class="blog-post-image">
+      <img class="mx-auto d-block img-fluid rounded" src="{{ page.image | prepend: site.baseurl }}" />
+      {% if page.image_caption %}
+      <figcaption class="text-center text-muted">
+        {{ page.image_caption }}
+      </figcaption>
+      {% endif %}
+    </figure>
+    {% endif %}
+
+  </div>
+
+  <div class="col-lg-8 offset-lg-2">
+    {% if page.links.size > 0 %}
+      <div class="mb-3">
+        {% for thinglink in page.links %}
+          <a href="{{thinglink.url}}" class="btn btn-primary btn-sm">{{thinglink.label}}</a>
+        {% endfor %}
+      </div>
+    {% endif %}
+    <div class="blog-post-content">
+      {{ content }}
+    </div>
+    <hr class="mb-5" />
+  </div>
+
+  <div class="col-12">
+    {% if site.categories.projects.size > 0 %}
+      <div class="card-columns">
+        {% for thing in site.categories.projects %}
+          <div class="card mb-3">
+            <div class="card-body">
+              <a class="card-title h5" href="{{ thing.url }}">{{ thing.title }}</a>
+              <p class="card-text">
+                {{ thing.content }}
+              </p>
+              {% for thinglink in thing.links %}
+              <a href="{{thinglink.url}}" class="btn btn-outline-secondary btn-sm">{{thinglink.label}}</a>
+              {% endfor %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+
+</article>
+
+

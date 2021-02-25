@@ -19,6 +19,22 @@ button {
   cursor: pointer;
 }
 
+.card-columns {
+  @include media-breakpoint-only(sm) {
+    column-count: 1;
+  }
+  @include media-breakpoint-only(md) {
+    column-count: 2;
+  }
+  @include media-breakpoint-only(lg) {
+    column-count: 3;
+  }
+  @include media-breakpoint-only(xl) {
+    column-count: 3;
+  }
+}
+
+
 .blog-header-logo {
   background: -webkit-gradient(linear,left top,right top,from(#3f40a7),to(#b53093));
   background: linear-gradient(to right,#3f40a7,#b53093);
