@@ -10,5 +10,5 @@ links:
   label: Source code
 ---
 
-A simple questionnaire app.
-Focuses an individual on his/her past performance, achievements or failures.
+A simple questionnaire app focuses an individual on his/her past 
+performance, achievements or failures.
