@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Local development needs a reverse proxy
+title: Local dev environment needs a reverse proxy
 ---
 
 Another day, another problem. I need to replicate the production deployment, 
