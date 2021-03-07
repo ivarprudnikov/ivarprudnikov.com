@@ -13,4 +13,4 @@ I hope it'll end up being a free service for everyone. Developers
 should sign in with Github and observe structured (or even graphed) 
 commits among various repositories.
 
-Announcement page: https://dasmicrobot.github.io/github-activity-web/
+Announcement page: [http://www.gitactivity.com/](http://www.gitactivity.com/)
