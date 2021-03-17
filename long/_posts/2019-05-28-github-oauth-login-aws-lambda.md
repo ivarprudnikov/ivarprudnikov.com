@@ -360,7 +360,7 @@ Another thing is setting up your website so it can deal with a callback from _au
 
 **Thoughts**
 
-The whole experience was interesting to say at least. It is very different to what you'd do when writing code in say Spring Boot application, but the advantage here is that functions ought to scale infinitely and you should be charged only for usage. I cannot prove last point yet as there was no significant usage of my test application which uses this code [commits.dasmicrobot.com](https://commits.dasmicrobot.com) and I'm not using it long enough to tell you if I get charged when it is not used.
+The whole experience was interesting to say at least. It is very different to what you'd do when writing code in say Spring Boot application, but the advantage here is that functions ought to scale infinitely and you should be charged only for usage. I cannot prove last point yet as there was no significant usage of my test application which uses this code [app.gitactivity.com](https://app.gitactivity.com) and I'm not using it long enough to tell you if I get charged when it is not used.
 
 Writing YAML configuration was a horrendous experience, I've spent hours understanding how to write it having more than one api stage, and eventually ditched this idea, I'll attempt that some time later again.
 
