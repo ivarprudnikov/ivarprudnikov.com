@@ -5,7 +5,7 @@ image: /assets/microphone.jpg
 image_caption: Photo by Matthias Wagner on Unsplash
 ---
 
-I was provided with an incredible opportunity to deliver my first-ever conference presentation at a security conference [BSides Dublin](https://www.bsidesdub.ie/) on May 27th. The event, known for its vibrant and inclusive atmosphere, welcomed security enthusiasts from various backgrounds. The organizers were truly exceptional, ensuring a seamless experience for both speakers and attendees alike.
+I had the privilege of being granted a remarkable opportunity to deliver my inaugural conference presentation at the esteemed security conference, [BSides Dublin](https://www.bsidesdub.ie/), on May 27th. Renowned for its dynamic and inclusive atmosphere, the event attracted a diverse range of security enthusiasts from various backgrounds. The organizers demonstrated exceptional proficiency, meticulously orchestrating a seamless experience for both speakers and attendees, ensuring a memorable and impactful gathering.
 
 With great excitement and a touch of nervous anticipation, I took the stage to share insights on a topic: "Signatures and Receipts in Supply Chain Security."
 
