@@ -3,11 +3,12 @@
 #
 
 # Name of your site (displayed in the header)
-name: Ivar Prudnikovas
-title: Ivar Prudnikovas
+name: Ivar P.
+title: Ivar P.
 
 # Short bio or description (displayed in the header)
-description: Software engineer specializing in web application development. Building enterprise web products, Microservices and Android apps.
+description: Ivar is a seasoned and accomplished software engineer renowned for his adeptness in executing complex
+technical implementations spanning diverse domains.
 
 # URL of your avatar or profile pic (you could use your GitHub profile pic)
 avatar: https://avatars.githubusercontent.com/u/1052642
@@ -17,15 +18,9 @@ avatar: https://avatars.githubusercontent.com/u/1052642
 #
 external_links:
 - label: 'Email me'
-  href: 'mailto:ivar.prudnikov@gmail.com'
+  href: 'mailto:ivar.prudnikov+blog@gmail.com'
 - label: 'Github'
   href: 'https://github.com/ivarprudnikov'
-- label: 'Linkedin'
-  href: 'https://www.linkedin.com/in/ivarprudnikov'
-- label: 'Stackoverflow'
-  href: 'http://stackoverflow.com/users/906265/aivaras-prudnikovas'
-- label: 'Twitter'
-  href: 'https://www.twitter.com/ivarprudnikov'
 - label: 'RSS feed'
   href: 'http://www.ivarprudnikov.com/feed.xml'
 

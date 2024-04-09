@@ -45,15 +45,3 @@ Configuration file: /Users/hacker/cloned/repo/_config.yml
 
 Above flag `--drafts` includes draft posts from `_drafts/` directory. [Docs](https://jekyllrb.com/docs/posts/#drafts)
 
-## Import post from Medium
-
-Install [`mediumexporter`](https://www.npmjs.com/package/mediumexporter)
-```bash
-npm install -g mediumexporter
-```
-
-**Convert post to markdown**
-
-```bash
-$ mediumexporter link-to-medium-post > _posts/2018-02-01-post-name.md
-```
