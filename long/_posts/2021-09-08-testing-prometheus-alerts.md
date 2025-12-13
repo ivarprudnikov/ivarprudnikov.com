@@ -14,6 +14,7 @@ Now you want to get notified when servers will reach some usage thresholds.
 For instance, you want to get an alert if the CPU is running high
 for at least 24 hours. No problem:
 
+{% raw %}
 ```yaml
 # prometheus-alerts.yaml
 groups:
@@ -27,6 +28,7 @@ groups:
     annotations:
       summary: High CPU usage on {{$labels.instance}}
 ```
+{% endraw %}
 
 The question is, how do you test the above alert `HighCPU24`? One way is to deploy such 
 an alert and expect that it works. Another approach could be to try and make some 
