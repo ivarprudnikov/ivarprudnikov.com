@@ -44,6 +44,16 @@ button {
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
   text-shadow: none;
+
+  @include media-breakpoint-up(sm) {
+    // center the logo on larger screens
+    display: block;
+    position: absolute;
+    left: 50%;
+    margin-left: -150px;
+    width: 300px;
+    text-align: center;
+  }
 }
 
 .jumbotron-dark {

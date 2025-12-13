@@ -24,10 +24,14 @@
       <a class="blog-header-logo text-dark" href="{{ site.baseurl }}/" title="{{ site.name }}">
         {{ site.name }}
       </a>
-      <a class="btn btn-sm btn-outline-primary" href="{{ '/donate/' | prepend: site.baseurl }}" >Donate</a>
+      <div class="d-flex">
+        <a class="btn btn-sm btn-outline-primary" href="{{ '/donate/' | prepend: site.baseurl }}" >Donate</a>
+        <a class="btn btn-sm btn-outline-primary ml-1" href="https://github.com/ivarprudnikov" >GitHub</a>
+      </div>
     </div>
   </header>
 
+  {% if site.external_links.size > 0 %}
   <div class="nav-scroller py-1 mt-1 mb-2">
     <nav class="nav d-flex justify-content-between">
       {% for external_link in site.external_links %}
@@ -35,6 +39,7 @@
       {% endfor %}
     </nav>
   </div>
+  {% endif %}
 
 </div>
 

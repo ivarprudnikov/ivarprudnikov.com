@@ -16,12 +16,10 @@ avatar: https://avatars.githubusercontent.com/u/1052642
 # Flags below are optional
 #
 external_links:
-- label: 'Email me'
-  href: 'mailto:ivar.prudnikov+blog@gmail.com'
-- label: 'Github'
-  href: 'https://github.com/ivarprudnikov'
-- label: 'RSS feed'
-  href: 'http://www.ivarprudnikov.com/feed.xml'
+# - label: 'Github'
+#   href: 'https://github.com/ivarprudnikov'
+# - label: 'RSS feed'
+#   href: 'http://www.ivarprudnikov.com/feed.xml'
 
 
 # Enter your Google Analytics web tracking code to activate tracking

@@ -45,3 +45,15 @@ Configuration file: /Users/hacker/cloned/repo/_config.yml
 
 Above flag `--drafts` includes draft posts from `_drafts/` directory. [Docs](https://jekyllrb.com/docs/posts/#drafts)
 
+## Troubleshooting
+
+- `rvm` is outdated, cannot see newer versions:
+
+    ```bash
+    # use latest version as the stable was not released for a couple of years
+    $ rvm get head
+    # now you'll see newer versions
+    $ rvm list known
+    # install newer version
+    $ rvm install 3.2
+    ```
