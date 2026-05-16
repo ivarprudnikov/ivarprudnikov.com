@@ -5,6 +5,9 @@ image: /assets/cat-chasing-squirrel.png
 image_caption: Cat chasing a squirrel
 ---
 
+> This post is a fictional speculative story exploring themes of social isolation, technology, misinformation and radicalization. It does not represent advocacy or endorsement of the views or actions described.
+
+
 What if you had someone who could hold your hand at any time? Then would make you smile, cry, or laugh, would teach and even challenge you?
 
 I was in a terrible state, continually pondering about the job, family, home and all the related issues. Restless and exhausted all the time. I could not sleep and did not want to go anywhere. My mind was desperate for a change. It was that exact period when Our relationship has begun.
